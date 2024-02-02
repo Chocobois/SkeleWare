@@ -3,18 +3,6 @@ import { image, sound, music, loadFont, spritesheet } from "./util";
 
 /* Images */
 const images: Image[] = [
-	// Backgrounds
-	image("backgrounds/background", "background"),
-
-	// Characters
-	image("characters/player", "player"),
-
-	// Items
-	image("items/coin", "coin"),
-
-	// UI
-	image("ui/hud", "hud"),
-
 	// Titlescreen
 	image("titlescreen/sky", "title_sky"),
 	image("titlescreen/background", "title_background"),
@@ -34,6 +22,9 @@ const images: Image[] = [
 	image("scenes/court/skeletourneyIdle", "court_skeleton_idle"),
 	image("scenes/court/skeletourneyObjection1", "court_skeleton_objection_1"),
 	image("scenes/court/skeletourneyObjection2", "court_skeleton_objection_2"),
+	// Testing
+	image("scenes/test_background", "test_background"),
+	image("scenes/test_foreground", "test_foreground"),
 ];
 
 /* Spritesheets */
