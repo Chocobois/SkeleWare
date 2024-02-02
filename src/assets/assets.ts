@@ -15,6 +15,10 @@ const images: Image[] = [
 	image("scenes/dishes/plate", "dishes_plate"),
 	image("scenes/dishes/sparkles", "dishes_sparkles"),
 	image("scenes/dishes/sponge", "dishes_sponge"),
+
+	// Testing
+	image("scenes/test_background", "test_background"),
+	image("scenes/test_foreground", "test_foreground"),
 ];
 
 /* Spritesheets */
