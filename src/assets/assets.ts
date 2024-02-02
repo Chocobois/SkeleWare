@@ -3,18 +3,6 @@ import { image, sound, music, loadFont, spritesheet } from "./util";
 
 /* Images */
 const images: Image[] = [
-	// Backgrounds
-	image("backgrounds/background", "background"),
-
-	// Characters
-	image("characters/player", "player"),
-
-	// Items
-	image("items/coin", "coin"),
-
-	// UI
-	image("ui/hud", "hud"),
-
 	// Titlescreen
 	image("titlescreen/sky", "title_sky"),
 	image("titlescreen/background", "title_background"),
