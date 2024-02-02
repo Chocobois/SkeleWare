@@ -27,6 +27,13 @@ const images: Image[] = [
 	image("scenes/dishes/plate", "dishes_plate"),
 	image("scenes/dishes/sparkles", "dishes_sparkles"),
 	image("scenes/dishes/sponge", "dishes_sponge"),
+
+	// Court
+	image("scenes/court/bgCourt", "court_background"),
+	image("scenes/court/foregroundTable", "court_foreground"),
+	image("scenes/court/skeletourneyIdle", "court_skeleton_idle"),
+	image("scenes/court/skeletourneyObjection1", "court_skeleton_objection_1"),
+	image("scenes/court/skeletourneyObjection2", "court_skeleton_objection_2"),
 ];
 
 /* Spritesheets */
