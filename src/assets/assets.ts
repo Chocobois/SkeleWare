@@ -19,9 +19,9 @@ const images: Image[] = [
 	// Court
 	image("scenes/court/bgCourt", "court_background"),
 	image("scenes/court/foregroundTable", "court_foreground"),
-	image("scenes/court/skeletourneyIdle", "court_skeleton_idle"),
-	image("scenes/court/skeletourneyObjection1", "court_skeleton_objection_1"),
-	image("scenes/court/skeletourneyObjection2", "court_skeleton_objection_2"),
+	image("scenes/court/skeletoruneyIdle", "court_skeleton_idle"),
+	image("scenes/court/skeletoruneyObjection1", "court_skeleton_objection_1"),
+	image("scenes/court/skeletoruneyObjection2", "court_skeleton_objection_2"),
 	// Testing
 	image("scenes/test_background", "test_background"),
 	image("scenes/test_foreground", "test_foreground"),
