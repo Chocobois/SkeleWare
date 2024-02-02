@@ -1,44 +1,45 @@
-import { Image, SpriteSheet, Audio } from './util';
-import { image, sound, music, loadFont, spritesheet } from './util';
+import { Image, SpriteSheet, Audio } from "./util";
+import { image, sound, music, loadFont, spritesheet } from "./util";
 
 /* Images */
 const images: Image[] = [
 	// Backgrounds
-	image('backgrounds/background', 'background'),
+	image("backgrounds/background", "background"),
 
 	// Characters
-	image('characters/player', 'player'),
+	image("characters/player", "player"),
 
 	// Items
-	image('items/coin', 'coin'),
+	image("items/coin", "coin"),
 
 	// UI
-	image('ui/hud', 'hud'),
+	image("ui/hud", "hud"),
 
 	// Titlescreen
-	image('titlescreen/sky', 'title_sky'),
-	image('titlescreen/background', 'title_background'),
-	image('titlescreen/foreground', 'title_foreground'),
-	image('titlescreen/character', 'title_character'),
+	image("titlescreen/sky", "title_sky"),
+	image("titlescreen/background", "title_background"),
+	image("titlescreen/foreground", "title_foreground"),
+	image("titlescreen/character", "title_character"),
+
+	// Dishes
+	image("scenes/dishes/background", "dishes_background"),
+	image("scenes/dishes/dirt", "dishes_dirt"),
+	image("scenes/dishes/plate", "dishes_plate"),
+	image("scenes/dishes/sparkles", "dishes_sparkles"),
+	image("scenes/dishes/sponge", "dishes_sponge"),
 ];
 
 /* Spritesheets */
-const spritesheets: SpriteSheet[] = [
-
-];
+const spritesheets: SpriteSheet[] = [];
 
 /* Audios */
 const audios: Audio[] = [
-	music('title', 'm_main_menu'),
-	music('first', 'm_first'),
-	sound('tree/rustle', 't_rustle', 0.5),
+	music("title", "m_main_menu"),
+	music("first", "m_first"),
+	sound("tree/rustle", "t_rustle", 0.5),
 ];
 
 /* Fonts */
-await loadFont('Sketch', 'Game Font');
+await loadFont("Sketch", "Game Font");
 
-export {
-	images,
-	spritesheets,
-	audios
-};
+export { images, spritesheets, audios };

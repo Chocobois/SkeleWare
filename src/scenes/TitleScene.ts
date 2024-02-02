@@ -62,9 +62,9 @@ export class TitleScene extends BaseScene {
 		this.title = this.addText({
 			x: 0.25 * this.W,
 			y: 0.7 * this.H,
-			size: 160,
+			size: 130,
 			color: "#000",
-			text: "Game Title",
+			text: "SkeleWare\nin Delaware",
 		});
 		this.title.setOrigin(0.5);
 		this.title.setStroke("#FFF", 8);
