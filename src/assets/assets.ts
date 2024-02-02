@@ -26,6 +26,7 @@ const images: Image[] = [
 	// Testing
 	image("scenes/test_background", "test_background"),
 	image("scenes/test_foreground", "test_foreground"),
+	image("scenes/test_circle", "test_circle"),
 	image("brush", "brush"),
 	image("circle", "circle"),
 ];
