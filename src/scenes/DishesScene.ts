@@ -19,7 +19,7 @@ export class DishesScene extends BaseScene {
 		this.fade(false, 200, 0x000000);
 		this.cameras.main.setBackgroundColor(0x777777);
 
-		/* Sprites */
+		/* Objects */
 
 		this.background = this.add.image(this.CX, this.CY, "dishes_background");
 
@@ -40,6 +40,14 @@ export class DishesScene extends BaseScene {
 			color: "black",
 		});
 		this.text.setOrigin(0.5, 0.0);
+
+		/* Mask */
+
+		let maskGraphics = this.make.graphics({}, false);
+		maskGraphics.fillStyle(0xffffff);
+		maskGraphics.fillRect(0, 0, 100, 100);
+		let maskArea = new Phaser.Display.Masks.GeometryMask(this, maskGraphics);
+		this.dirt.setMask(maskArea);
 
 		/* Interactions */
 
