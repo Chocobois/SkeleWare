@@ -97,7 +97,9 @@ export class BoxingScene extends BaseScene {
 		});
 
 		this.opponent.on("defeat", () => {
-			console.log("You won!")
+			setTimeout(() => {
+				this.startScene("ComputerScene");
+			}, 800);
 		});
 	}
 
