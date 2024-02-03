@@ -46,10 +46,10 @@ export class BoxingScene extends BaseScene {
 
 		this.background = this.add.image(this.CX, this.CY, "boxing_background");
 
-		this.opponent = new SkeletonOpponent(this, 3);
+		this.opponent = new SkeletonOpponent(this, 4);
 		this.add.existing(this.opponent);
 
-		this.player = new SkeletonPlayer(this, 3);
+		this.player = new SkeletonPlayer(this, 2);
 		this.add.existing(this.player);
 
 		this.jabLeftButton = this.createButton(300, this.CY*0.7, "boxing_ui_jab_left");

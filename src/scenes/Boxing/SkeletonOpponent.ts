@@ -129,7 +129,7 @@ export class SkeletonOpponent extends Phaser.GameObjects.GameObject {
 		// Can be hit
 		tell.visible = true;
 		this.canHit = dir;
-		await wait(1000);
+		await wait(800);
 
 		// When he is punching
 		// @ts-ignore
