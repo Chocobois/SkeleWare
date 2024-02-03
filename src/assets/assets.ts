@@ -9,26 +9,53 @@ const images: Image[] = [
 	image("titlescreen/foreground", "title_foreground"),
 	image("titlescreen/character", "title_character"),
 
-	// Dishes
-	image("scenes/dishes/background", "dishes_background"),
-	image("scenes/dishes/dirt", "dishes_dirt"),
-	image("scenes/dishes/plate", "dishes_plate"),
-	image("scenes/dishes/sparkles", "dishes_sparkles"),
-	image("scenes/dishes/sponge", "dishes_sponge"),
-
-	// Court
-	image("scenes/court/bgCourt", "court_background"),
-	image("scenes/court/foregroundTable", "court_foreground"),
-	image("scenes/court/skeletourneyIdle", "court_skeleton_idle"),
-	image("scenes/court/skeletourneyObjection1", "court_skeleton_objection_1"),
-	image("scenes/court/skeletourneyObjection2", "court_skeleton_objection_2"),
-
 	// Brushes
 	image("brushes/soft_brush", "soft_brush"),
 	image("brushes/bite_brush", "bite_brush"),
 
 	// Misc
 	image("circle", "circle"),
+
+	/* Scenes */
+
+	// Baseball scene
+	image("scenes/baseball/background", "baseball_background"),
+
+	// Boxing scene
+	image("scenes/boxing/boxer concept", "boxing_background"),
+
+	// Computer scene
+	image("scenes/computer/background", "computer_background"),
+
+	// Court scene
+	image("scenes/court/bgCourt", "court_background"),
+	image("scenes/court/foregroundTable", "court_foreground"),
+	image("scenes/court/skeletourneyIdle", "court_skeleton_idle"),
+	image("scenes/court/skeletourneyObjection1", "court_skeleton_objection_1"),
+	image("scenes/court/skeletourneyObjection2", "court_skeleton_objection_2"),
+
+	// Cutscene scene
+	image("scenes/cutscene/background", "cutscene_background"),
+
+	// Dig scene
+	image("scenes/dig/background", "dig_background"),
+	image("scenes/dig/foreground", "dig_foreground"),
+	image("scenes/dig/dirt", "dig_dirt"),
+	image("scenes/dig/shoe", "dig_shoe"),
+	image("scenes/dig/shovel", "dig_shovel"),
+
+	// Dishes scene
+	image("scenes/dishes/background", "dishes_background"),
+	image("scenes/dishes/dirt", "dishes_dirt"),
+	image("scenes/dishes/plate", "dishes_plate"),
+	image("scenes/dishes/sparkles", "dishes_sparkles"),
+	image("scenes/dishes/sponge", "dishes_sponge"),
+
+	// Drivethru scene
+	image("scenes/drivethru/background", "drivethru_background"),
+
+	// Ironing scene
+	image("scenes/ironing/background", "ironing_background"),
 ];
 
 /* Spritesheets */
@@ -42,6 +69,6 @@ const audios: Audio[] = [
 ];
 
 /* Fonts */
-await loadFont("Sketch", "Game Font");
+await loadFont("DynaPuff-Medium", "Game Font");
 
 export { images, spritesheets, audios };

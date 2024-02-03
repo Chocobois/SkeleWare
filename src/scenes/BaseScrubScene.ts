@@ -32,6 +32,9 @@ export class BaseScrubScene extends BaseScene {
 		centerY?: number;
 		debug?: boolean;
 	}) {
+		console.assert(this.textures.exists(textureKey), `Texture '${textureKey}' not found`);
+		console.assert(this.textures.exists(brushKey), `Texture '${brushKey}' not found`);
+
 		this.progress = 0;
 		this.isComplete = false;
 

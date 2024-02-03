@@ -19,6 +19,13 @@ export class BaseScene extends Phaser.Scene {
 		this.flashRect = null;
 	}
 
+	startScene(key: string): void {
+		this.fade(true, 100, 0x000000);
+		this.addEvent(100, () => {
+			this.scene.start(key);
+		});
+	}
+
 	// Start a camera fade effect to a specific color
 	fade(fadeOut: boolean, time: number, hexColor: number) {
 		let c = Phaser.Display.Color.ColorToRGBA(hexColor);
@@ -71,7 +78,7 @@ export class BaseScene extends Phaser.Scene {
 		fontFamily = "Game Font",
 		x = 0,
 		y = 0,
-		size = 12,
+		size = 32,
 		weight = 500,
 		color = "#FFFFFF",
 		alpha = 1.0,

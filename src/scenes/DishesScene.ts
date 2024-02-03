@@ -1,3 +1,4 @@
+import { NextButton } from "@/components/NextButton";
 import { BaseScrubScene } from "@/scenes/BaseScrubScene";
 
 export class DishesScene extends BaseScrubScene {
@@ -5,8 +6,9 @@ export class DishesScene extends BaseScrubScene {
 	private plate: Phaser.GameObjects.Image;
 	private sparkles: Phaser.GameObjects.Image;
 	private sponge: Phaser.GameObjects.Image;
-
 	private text: Phaser.GameObjects.Text;
+
+	private nextButton: NextButton;
 
 	constructor() {
 		super({ key: "DishesScene" });
@@ -35,20 +37,27 @@ export class DishesScene extends BaseScrubScene {
 
 		this.sponge = this.add.image(300, 800, "dishes_sponge");
 
-		// this.text = this.addText({
-		// 	x: this.CX,
-		// 	y: 0,
-		// 	size: 60,
-		// 	text: "Eat the cookie, Mato!",
-		// 	color: "black",
-		// });
-		// this.text.setOrigin(0.5, 0.0);
+		this.text = this.addText({
+			x: this.CX,
+			y: 0,
+			size: 60,
+			text: "Do the dishes!",
+			color: "black",
+		});
+		this.text.setOrigin(0.5, 0.0);
+
+		this.nextButton = new NextButton(this);
+		this.nextButton.on("click", () => {
+			this.startScene("DrivethruScene");
+		});
 	}
 
 	update(time: number, delta: number) {
 		// this.dirt.setAlpha(0.5 + 0.5 * Math.sin((4 * time) / 1000));
 
 		this.sparkles.setScale(1.0 + 0.05 * Math.sin((8 * time) / 1000));
+
+		this.nextButton.update(time, delta);
 	}
 
 	onPointerMove(pointer: Phaser.Input.Pointer) {
