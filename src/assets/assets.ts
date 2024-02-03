@@ -81,6 +81,9 @@ const images: Image[] = [
 
 	// Ironing scene
 	image("scenes/ironing/background", "ironing_background"),
+	image("scenes/ironing/iron", "ironing_iron"),
+	image("scenes/ironing/shirt", "ironing_shirt"),
+	image("scenes/ironing/shirt_ironed", "ironing_shirt_ironed"),
 ];
 
 /* Spritesheets */
