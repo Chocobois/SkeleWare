@@ -22,7 +22,25 @@ const images: Image[] = [
 	image("scenes/baseball/background", "baseball_background"),
 
 	// Boxing scene
-	image("scenes/boxing/boxer concept", "boxing_background"),
+	image("scenes/boxing/BGboxingring", "boxing_background"),
+	image("scenes/boxing/jabRight", "boxing_ui_jab_right"),
+	image("scenes/boxing/jabLeft", "boxing_ui_jab_left"),
+	image("scenes/boxing/SkeletonIdle", "boxing_skeleton_idle"),
+	image("scenes/boxing/SkeletonDefeat", "boxing_skeleton_defeat"),
+	image("scenes/boxing/SkeletonPunchLeft1", "boxing_punch_left1"),
+	image("scenes/boxing/SkeletonPunchLeft2", "boxing_punch_left2"),
+	image("scenes/boxing/SkeletonPunchRight1", "boxing_punch_right1"),
+	image("scenes/boxing/SkeletonPunchRight2", "boxing_punch_right2"),
+	// boxer animations left
+	image("scenes/boxing/BoxerIdleLeft", "boxing_boxer_idle_left"),
+	image("scenes/boxing/BoxerLeftTell", "boxing_boxer_tell_left"),
+	image("scenes/boxing/BoxerLeftAttack", "boxing_boxer_attack_left"),
+	image("scenes/boxing/BoxerLeftHIT", "boxing_boxer_hit_left"),
+	// boxer animation right
+	image("scenes/boxing/BoxerIdleRight", "boxing_boxer_idle_right"),
+	image("scenes/boxing/BoxerRightTell", "boxing_boxer_tell_right"),
+	image("scenes/boxing/BoxerRightAttack", "boxing_boxer_attack_right"),
+	image("scenes/boxing/BoxerRightHIT", "boxing_boxer_hit_right"),
 
 	// Computer scene
 	image("scenes/computer/background", "computer_background"),
