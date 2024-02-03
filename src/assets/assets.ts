@@ -72,6 +72,12 @@ const images: Image[] = [
 
 	// Drivethru scene
 	image("scenes/drivethru/background", "drivethru_background"),
+	image("scenes/drivethru/burger", "drivethru_burger"),
+	image("scenes/drivethru/coffe", "drivethru_coffe"),
+	image("scenes/drivethru/fries", "drivethru_fries"),
+	image("scenes/drivethru/nuggets", "drivethru_nuggets"),
+	image("scenes/drivethru/salad", "drivethru_salad"),
+	image("scenes/drivethru/soda", "drivethru_soda"),
 
 	// Ironing scene
 	image("scenes/ironing/background", "ironing_background"),
