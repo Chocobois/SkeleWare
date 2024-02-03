@@ -1,6 +1,4 @@
 import { BaseScene } from "@/scenes/BaseScene";
-import { Player } from "@/components/Player";
-import { UI } from "@/components/UI";
 
 export class BaseScrubScene extends BaseScene {
 	protected texture: Phaser.GameObjects.RenderTexture;
@@ -11,41 +9,28 @@ export class BaseScrubScene extends BaseScene {
 
 	protected progress: number;
 	protected isComplete: boolean;
+	protected lastMousePos: Phaser.Types.Math.Vector2Like;
 
 	constructor(config: Phaser.Types.Scenes.SettingsConfig) {
 		super(config);
-	}
-
-	create(): void {
-		this.fade(false, 200, 0x000000);
-		this.cameras.main.setBackgroundColor(0x777777);
 
 		this.progress = 1;
 		this.isComplete = false;
-
-		// this.initDynamicTexture("test_foreground", this.CX, this.CY, false, false);
-		// this.initDynamicTexture("test_circle", this.CX, this.CY, true, true);
+		this.lastMousePos = { x: 0, y: 0 };
 	}
-
-	update(time: number, delta: number) {
-		// this.dirt.setAlpha(0.5 + 0.5 * Math.sin((4 * time) / 1000));
-		// this.sparkles.setAlpha(0.75 + 0.25 * Math.sin((40 * time) / 1000));
-	}
-
-	/* Mask */
 
 	initDynamicTexture({
 		textureKey,
+		brushKey,
 		centerX = 1920 / 2,
 		centerY = 1080 / 2,
-		asCircle = false,
 		debug = false,
 	}: {
 		textureKey: string;
-		centerX: number;
-		centerY: number;
-		asCircle: boolean;
-		debug: boolean;
+		brushKey: string;
+		centerX?: number;
+		centerY?: number;
+		debug?: boolean;
 	}) {
 		this.progress = 0;
 		this.isComplete = false;
@@ -58,35 +43,23 @@ export class BaseScrubScene extends BaseScene {
 		let { width, height } = this.textures.getFrame(textureKey);
 		this.texture.draw(textureKey, centerX - width / 2, centerY - height / 2);
 
-		this.brush = this.make.image({ key: "brush" }, false);
-		this.brush.setAlpha(0.5);
+		this.brush = this.make.image({ key: brushKey }, false);
+		// this.brush.setAlpha(0.7);
 		this.brush.setScale(this.brushSize / this.brush.width);
 
 		this.clearBrush = this.make.image({ key: "circle" }, false);
 		this.clearBrush.setScale(100);
 
-		let left = centerX - width / 2;
-		let right = centerX + width / 2;
-		let top = centerY - height / 2;
-		let bottom = centerY + height / 2;
-
 		this.dirtParticles = [];
-		let k = 0;
-		for (let x = left; x <= right; x += this.dirtSize / 2) {
-			for (let y = top; y <= bottom; y += this.dirtSize / 2) {
-				// Skip every other
-				if (k++ % 2 == 0) {
-					continue;
-				}
-				// Circle test
-				let dist = Phaser.Math.Distance.Between(x, y, centerX, centerY);
-				if (asCircle && dist > width / 2) {
-					continue;
-				}
-
-				this.dirtParticles.push({ x, y, hp: 1 });
+		const gap = this.dirtSize * Math.SQRT1_2;
+		for (let x = 0; x <= this.W; x += gap) {
+			for (let y = 0; y <= this.W; y += gap) {
+				this.texture.snapshotPixel(x, y, (snapshot: any) => {
+					if (snapshot.a > 0) {
+						this.dirtParticles.push({ x, y, hp: 1 });
+					}
+				});
 			}
-			k++;
 		}
 
 		if (debug) {
@@ -98,13 +71,18 @@ export class BaseScrubScene extends BaseScene {
 	onPointerDown(pointer: Phaser.Input.Pointer) {
 		if (this.isComplete) return;
 
-		for (let i = 0; i < 5; i++) {
-			this.onRub(pointer);
-		}
+		// for (let i = 0; i < 5; i++) {
+		this.onRub(pointer);
+		// }
 	}
 
 	onPointerMove(pointer: Phaser.Input.Pointer) {
 		if (this.isComplete) return;
+
+		// let dist = Phaser.Math.Distance.BetweenPoints(this.lastMousePos, pointer);
+		// if (dist < this.brushSize / 16) return;
+		// this.lastMousePos.x = pointer.x;
+		// this.lastMousePos.y = pointer.y;
 
 		if (pointer.isDown) {
 			this.onRub(pointer);
@@ -145,7 +123,7 @@ export class BaseScrubScene extends BaseScene {
 	drawDebug() {
 		this.dirtDebug.clear();
 		this.dirtParticles.forEach(({ x, y, hp }) => {
-			this.dirtDebug.fillStyle(0xffffff, hp > 0 ? 0.5 : 0);
+			this.dirtDebug.fillStyle(0xff00ff, hp > 0 ? 0.5 : 0);
 			this.dirtDebug.fillCircle(x, y, this.dirtSize / 2);
 		});
 	}

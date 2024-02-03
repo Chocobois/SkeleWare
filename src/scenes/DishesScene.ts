@@ -1,6 +1,4 @@
 import { BaseScrubScene } from "@/scenes/BaseScrubScene";
-import { Player } from "@/components/Player";
-import { UI } from "@/components/UI";
 
 export class DishesScene extends BaseScrubScene {
 	private background: Phaser.GameObjects.Image;
@@ -16,7 +14,7 @@ export class DishesScene extends BaseScrubScene {
 
 	create(): void {
 		this.fade(false, 200, 0x000000);
-		this.cameras.main.setBackgroundColor(0x777777);
+		this.cameras.main.setBackgroundColor(0x67e8f9);
 
 		/* Objects */
 
@@ -26,10 +24,10 @@ export class DishesScene extends BaseScrubScene {
 
 		this.initDynamicTexture({
 			textureKey: "dishes_dirt",
+			brushKey: "soft_brush",
 			centerX: this.CX,
 			centerY: this.CY,
-			asCircle: true,
-			debug: false,
+			// debug: true,
 		});
 
 		this.sparkles = this.add.image(this.CX, this.CY, "dishes_sparkles");
@@ -37,14 +35,14 @@ export class DishesScene extends BaseScrubScene {
 
 		this.sponge = this.add.image(300, 800, "dishes_sponge");
 
-		this.text = this.addText({
-			x: this.CX,
-			y: 0,
-			size: 60,
-			text: "Do the dishes!",
-			color: "black",
-		});
-		this.text.setOrigin(0.5, 0.0);
+		// this.text = this.addText({
+		// 	x: this.CX,
+		// 	y: 0,
+		// 	size: 60,
+		// 	text: "Eat the cookie, Mato!",
+		// 	color: "black",
+		// });
+		// this.text.setOrigin(0.5, 0.0);
 	}
 
 	update(time: number, delta: number) {
@@ -53,10 +51,11 @@ export class DishesScene extends BaseScrubScene {
 		this.sparkles.setScale(1.0 + 0.05 * Math.sin((8 * time) / 1000));
 	}
 
-	onRub(pointer: Phaser.Input.Pointer): void {
-		super.onRub(pointer);
-
-		this.sponge.setPosition(pointer.x, pointer.y);
+	onPointerMove(pointer: Phaser.Input.Pointer) {
+		super.onPointerMove(pointer);
+		if (pointer.isDown && !this.isComplete) {
+			this.sponge.setPosition(pointer.x, pointer.y);
+		}
 	}
 
 	onComplete(): void {
