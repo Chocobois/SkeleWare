@@ -15,6 +15,8 @@ export class SkeletonPlayer extends Phaser.GameObjects.GameObject {
 
 	public health: number;
 
+	private isShaking: boolean;
+
 	private skeleton: {
 		idle: Phaser.GameObjects.Image;
 		defeat: Phaser.GameObjects.Image;
@@ -31,6 +33,7 @@ export class SkeletonPlayer extends Phaser.GameObjects.GameObject {
 		this.offsetX = 0;
 		this.offsetY = 0;
 		this.health = health;
+		this.isShaking = false;
 
 		this.skeleton = {
 			idle: this.addSprite('boxing_skeleton_idle'),
@@ -62,12 +65,25 @@ export class SkeletonPlayer extends Phaser.GameObjects.GameObject {
 	};
 
 	update(time: number, delta: number) {
-		if(this.health == 0) return;
+
+		const shakeX = this.isShaking ? Math.random()*20 : 0;
+		const shakeY = this.isShaking ? Math.random()*20 : 0;
+
+		const offsetX = this.health > 0 ? this.offsetX : 0;
+		const offsetY = this.health > 0 ? this.offsetY : 0;
+
 		Object.values(this.skeleton).forEach((sprite) => {
-			sprite.x = this.x + this.offsetX;
-			sprite.y = this.y + this.offsetY;
+			sprite.x = this.x + offsetX + shakeX;
+			sprite.y = this.y + offsetY + shakeY;
 		});
 	};
+
+	shake() {
+		this.isShaking = true;
+		setTimeout(() => {
+			this.isShaking = false;
+		}, 250);
+	}
 
 	async jabLeft() {
 		if(this.health == 0) return;

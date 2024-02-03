@@ -170,6 +170,8 @@ export class SkeletonOpponent extends Phaser.GameObjects.GameObject {
 			return;
 		}
 
+		if(this.isJabOut()) return;
+
 		switch(dir) {
 		case AnimDir.LEFT: {
 			if( this.eventState == AnimState.WINNER ) {
@@ -192,6 +194,5 @@ export class SkeletonOpponent extends Phaser.GameObjects.GameObject {
 			}
 		} break;
 		}
-
 	};
 }

@@ -87,8 +87,12 @@ export class BoxingScene extends BaseScene {
 		this.opponent.on("punch", () => {
 			const remaining = removeLast(this.playerHealth);
 			this.player.setHealth(remaining);
+			this.player.shake();
 			if( remaining == 0 ) {
 				this.opponent.setWinner();
+				setTimeout(() => {
+					this.startScene("BoxingScene");
+				}, 800);
 			}
 		});
 
