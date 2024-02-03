@@ -23,6 +23,7 @@ const images: Image[] = [
 
 	// Boxing scene
 	image("scenes/boxing/BGboxingring", "boxing_background"),
+	image("scenes/boxing/heart", "boxing_heart"),
 	image("scenes/boxing/jabRight", "boxing_ui_jab_right"),
 	image("scenes/boxing/jabLeft", "boxing_ui_jab_left"),
 	image("scenes/boxing/SkeletonIdle", "boxing_skeleton_idle"),
