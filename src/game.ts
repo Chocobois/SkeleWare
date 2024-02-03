@@ -6,7 +6,7 @@ import { TitleScene } from "@/scenes/TitleScene";
 import { GameScene } from "@/scenes/GameScene";
 
 import { BaseballScene } from "@/scenes/BaseballScene";
-import { BoxingScene } from "@/scenes/BoxingScene";
+import { BoxingScene } from "@/scenes/Boxing/BoxingScene";
 import { ComputerScene } from "@/scenes/ComputerScene";
 import { CourtScene } from "@/scenes/CourtScene";
 import { CutsceneScene } from "@/scenes/CutsceneScene";
