@@ -1,10 +1,15 @@
 import { BaseScene } from "./BaseScene";
 import { NextButton } from "@/components/NextButton";
-import dict from './dictionary.txt?raw'
+import dict1 from './bone_dictionary.txt?raw'
+import dict2 from './devonly_dictionary.txt?raw'
 import { TextButton } from "@/components/TextButton";
 
 
 export class BombScene extends BaseScene {
+
+	//DEV OPTION ENABLE FOR FURRY DICTIONARY
+	private FURRYDICTIONARY: boolean = false;
+
 	private background: Phaser.GameObjects.Image;
 	private nextButton: NextButton;
     private currentWords: string[] = ["","",""];
@@ -300,6 +305,9 @@ export class BombScene extends BaseScene {
 			this.resetGameStateVariables();
 		} else if (this.isVictorious)
 		{
+			this.isVictorious = false;
+			this.exploded = false;
+			this.resetGameStateVariables();
 			this.startScene("BoxingScene");
 		}
 	}
@@ -423,6 +431,7 @@ export class BombScene extends BaseScene {
 			} else if (this.fails >= 3){
 				this.sound.play("fail_3")
 			}
+			this.shake(500);
 		}
 	}
 
@@ -661,7 +670,12 @@ export class BombScene extends BaseScene {
 	}
 
     loadDictionary() {
-		this.dictionary = dict.split('\n');
+		if(this.FURRYDICTIONARY)
+		{
+			this.dictionary = dict2.split('\n');
+		} else {
+			this.dictionary = dict1.split('\n');
+		}
 	}
 
 	reloadCurrentWords(){
