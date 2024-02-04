@@ -17,7 +17,7 @@ export class BaseballScene extends BaseScene {
 
 		this.nextButton = new NextButton(this);
 		this.nextButton.on("click", () => {
-			this.startScene("BoxingScene");
+			this.startScene("BombScene");
 		});
 	}
 

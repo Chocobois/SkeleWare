@@ -5,6 +5,7 @@ import { PreloadScene } from "@/scenes/PreloadScene";
 import { TitleScene } from "@/scenes/TitleScene";
 import { GameScene } from "@/scenes/GameScene";
 
+import { BombScene } from "@/scenes/BombScene";
 import { BaseballScene } from "@/scenes/BaseballScene";
 import { BoxingScene } from "@/scenes/BoxingScene";
 import { ComputerScene } from "@/scenes/ComputerScene";
@@ -29,6 +30,7 @@ const config: Phaser.Types.Core.GameConfig = {
 		TitleScene,
 		GameScene,
 		// Minigame scenes
+		BombScene,
 		BaseballScene,
 		BoxingScene,
 		ComputerScene,

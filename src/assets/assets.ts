@@ -74,16 +74,43 @@ const images: Image[] = [
 
 	// Ironing scene
 	image("scenes/ironing/background", "ironing_background"),
+
+	//mutually assured destruction
+	image("scenes/bomb/bomb_background", "bomb_background"),
+	image("scenes/bomb/button_up", "button_up"),
+	image("scenes/bomb/button_down", "button_up"),
+	image("scenes/bomb/c1", "c1"),
+	image("scenes/bomb/c2", "c2"),
+	image("scenes/bomb/c3", "c3"),
+	image("scenes/bomb/c4", "c4"),
+	image("scenes/bomb/c5", "c5"),
+	image("scenes/bomb/c6", "c6"),
+	image("scenes/bomb/c7", "c7"),
+	image("scenes/bomb/c8", "c8"),
+	image("scenes/bomb/rip", "rip")
 ];
 
 /* Spritesheets */
-const spritesheets: SpriteSheet[] = [];
+const spritesheets: SpriteSheet[] = [
+	spritesheet('sprites/enter_button', 'enter_button', 100, 100),
+	spritesheet('sprites/button_text', 'text_button', 120, 120),
+	spritesheet('sprites/erase_button', 'erase_button', 100, 100)
+];
 
 /* Audios */
 const audios: Audio[] = [
 	music("title", "m_main_menu"),
 	music("first", "m_first"),
 	sound("tree/rustle", "t_rustle", 0.5),
+	sound("bomb/bad_beep", "beep", 0.5),
+	sound("bomb/button", "button_press", 0.5),
+	sound("bomb/victory", "victory", 0.5),
+	sound("bomb/fail_1", "fail_1", 0.5),
+	sound("bomb/fail_2", "fail_2", 0.5),
+	sound("bomb/fail_3", "fail_3", 0.5),
+	sound("bomb/success", "success", 0.5),
+	sound("bomb/darksouls", "darksouls", 0.5),
+	sound("bomb/air_on_g", "air_on_g", 0.5),
 ];
 
 /* Fonts */

@@ -50,7 +50,7 @@ export class DigScene extends BaseScrubScene {
 
 		this.nextButton = new NextButton(this);
 		this.nextButton.on("click", () => {
-			this.startScene("DishesScene");
+			this.startScene("BombScene");
 		});
 	}
 

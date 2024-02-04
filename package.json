@@ -4,7 +4,7 @@
 	"type": "module",
 	"license": "MIT",
 	"scripts": {
-		"start": "vite-node automation/dev.ts",
+		"start": "vite-node automation/dev.ts --host=127.0.0.1",
 		"dev": "vite-node automation/dev.ts",
 		"dev-neu": "vite-node automation/neu-dev.ts",
 		"build": "rimraf dist && vite build",
@@ -12,6 +12,7 @@
 	},
 	"dependencies": {
 		"@neutralinojs/lib": "^5.0.0",
+		"browserify-fs": "^1.0.0",
 		"phaser": "^3.70.0",
 		"phaser3-rex-plugins": "^1.60.10"
 	},
