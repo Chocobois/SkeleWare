@@ -105,7 +105,9 @@ const images: Image[] = [
 ];
 
 /* Spritesheets */
-const spritesheets: SpriteSheet[] = [];
+const spritesheets: SpriteSheet[] = [
+	spritesheet("effects/meme_explosion", "meme_explosion", 200, 282),
+];
 
 /* Audios */
 const audios: Audio[] = [
@@ -113,6 +115,7 @@ const audios: Audio[] = [
 	music("title", "m_main_menu"),
 	music("first", "m_first"),
 	sound("tree/rustle", "t_rustle", 0.5),
+	sound("w_explosion", "w_explosion", 0.5),
 
 	/* Scenes */
 
