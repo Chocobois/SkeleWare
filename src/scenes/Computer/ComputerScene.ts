@@ -1,12 +1,35 @@
-import { BaseScene } from "./BaseScene";
+import { BaseScene } from "../BaseScene";
 import { NextButton } from "@/components/NextButton";
+import { ComputerPopup } from "./Popup";
+import { Button } from "@/components/elements/Button";
 
 export class ComputerScene extends BaseScene {
 	private background: Phaser.GameObjects.Image;
 	private nextButton: NextButton;
 
+	private popups: ComputerPopup<string[]>[];
+
 	constructor() {
 		super({ key: "ComputerScene" });
+	}
+
+	addPopup(x: number, y: number, frame: string, close: "close_horizontal" | "close_vertical") {
+		const popup = this.add.sprite(0, 0, frame).setOrigin(0,0);
+		const button = new Button(this, 0, 0);
+		const closeSprite = this.add.sprite(0,0, close).setOrigin(1,0).setX(popup.width - 20).setY(15);
+		button.add(closeSprite);
+		button.bindInteractive(closeSprite);
+
+		const container = this.add.container(x,y,[
+			popup, 
+			button
+		]);
+
+		button.on("click", () => {
+			container.setVisible(false);
+		})
+
+		return [container, button];
 	}
 
 	create(): void {
@@ -16,6 +39,9 @@ export class ComputerScene extends BaseScene {
 		this.background = this.add.image(this.CX, this.CY, "computer_background");
 
 		this.input.on("pointerdown", this.onPointerDown, this);
+
+		this.addPopup(500,200, "computer_ibone_horizontal", "close_horizontal");
+
 
 		this.nextButton = new NextButton(this);
 		this.nextButton.on("click", () => {
