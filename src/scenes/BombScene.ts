@@ -51,9 +51,11 @@ export class BombScene extends BaseScene {
 	private stopTimer: boolean = false;
 	private exploded: boolean = false;
 	private flashScreen: Phaser.GameObjects.Graphics;
+	private warningScreen: Phaser.GameObjects.Graphics;
 	private maxStopLight: number = 3000;
 	private currentColor: string = "yellow";
 	private victoryTimer: number = 250;
+	private warningTimer: number = 0;
 
 	private introText: Phaser.GameObjects.Text;
 	private introTimer: number = 5000;
@@ -182,6 +184,7 @@ export class BombScene extends BaseScene {
 		this.drawlanes();
 		this.correctLane = Math.round(Math.random()*3);
 		this.initiateButtons();
+		this.warningScreen = this.add.graphics();
 		this.flashScreen = this.add.graphics();
 		this.baseImage = this.add.image(this.CX, this.CY, "c1");
 		this.baseImage.setAlpha(0);
@@ -312,6 +315,16 @@ export class BombScene extends BaseScene {
 		}
 	}
 
+	warningFlash()
+	{
+		this.sound.play("alarm");
+		this.warningTimer = 1000;
+		this.warningScreen.clear();
+		this.warningScreen.setVisible(true);
+		this.warningScreen.fillStyle(0xFF1A10, 100);
+		this.warningScreen.fillRect(-25,-25,this.W+50,this.H+50);
+	}
+
 	playButton(){
 		if(!this.exploded) {
 			this.sound.play("button_press");
@@ -394,6 +407,7 @@ export class BombScene extends BaseScene {
 			{
 				this.fails++;
 				this.failSound();
+				this.warningFlash();
 			}
 			let sf = "";
 			for(let r = 0; r < this.fails; r++)
@@ -521,6 +535,7 @@ export class BombScene extends BaseScene {
 		this.eraseButton.setVisible(false);
 		this.enterButton.setVisible(false);
 		this.introText.setVisible(false);
+		this.warningScreen.setVisible(false);
 		for(let i = 0; i < this.buttons.length; i++)
 		{
 			this.buttons[i].setVisible(false);
@@ -802,8 +817,6 @@ export class BombScene extends BaseScene {
 			}
 		}
 
-
-
 		this.timer -= d;
 		if(this.timer <= 0)
 		{
@@ -996,6 +1009,24 @@ export class BombScene extends BaseScene {
 		}
 	}
 
+	updateFlashes(d: number)
+	{
+		//ticks even if timer is stopped so the flash screens don't hang
+		if(this.warningTimer > 0) {
+			this.warningTimer -= d;
+			this.warningScreen.clear();
+			this.warningScreen.fillStyle(0xFF1A10, (this.warningTimer/1000));
+			this.warningScreen.fillRect(-25, -25, this.W+50, this.H+50);
+			if(this.warningTimer <= 0)
+			{
+				this.warningTimer = 0;
+				this.warningScreen.clear();
+				this.warningScreen.fillStyle(0xFF1A10, 0);
+				this.warningScreen.setVisible(false);
+			}
+		}
+	}
+
 	updateVictory(d: number){
 		this.victoryTimer -= d;
 		if(this.victoryTimer <= 0)
@@ -1036,6 +1067,7 @@ export class BombScene extends BaseScene {
 		{
 			this.updateVictory(delta);
 		}
+		this.updateFlashes(delta);
 		if(this.cinematicState > 0)
 		{
 			this.updateCinematics(delta);
