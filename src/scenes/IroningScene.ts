@@ -17,7 +17,10 @@ export class IroningScene extends BaseScene {
 
 		this.nextButton = new NextButton(this);
 		this.nextButton.on("click", () => {
-			this.startScene("BaseballScene");
+			this.startScene("CutsceneScene", {
+				textureKey: "6_baseball",
+				nextScene: "BaseballScene",
+			});
 		});
 	}
 

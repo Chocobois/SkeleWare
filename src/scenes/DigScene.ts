@@ -50,7 +50,10 @@ export class DigScene extends BaseScrubScene {
 
 		this.nextButton = new NextButton(this);
 		this.nextButton.on("click", () => {
-			this.startScene("BombScene");
+			this.startScene("CutsceneScene", {
+				textureKey: "3_loot",
+				nextScene: "PolishScene",
+			});
 		});
 	}
 
@@ -62,6 +65,19 @@ export class DigScene extends BaseScrubScene {
 		super.onPointerMove(pointer);
 		if (pointer.isDown && !this.isComplete) {
 			this.shovel.setPosition(pointer.x, pointer.y);
+		}
+	}
+
+	onPointerDown(pointer: Phaser.Input.Pointer) {
+		super.onPointerMove(pointer);
+		if (pointer.isDown && !this.isComplete) {
+			this.tweens.add({
+				targets: this.shovel,
+				x: pointer.x,
+				y: pointer.y,
+				duration: 120,
+				ease: "Quart",
+			});
 		}
 	}
 

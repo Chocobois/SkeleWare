@@ -48,7 +48,10 @@ export class DishesScene extends BaseScrubScene {
 
 		this.nextButton = new NextButton(this);
 		this.nextButton.on("click", () => {
-			this.startScene("DrivethruScene");
+			this.startScene("CutsceneScene", {
+				textureKey: "0_crimes",
+				nextScene: "BoxingScene",
+			});
 		});
 	}
 
@@ -67,7 +70,19 @@ export class DishesScene extends BaseScrubScene {
 		}
 	}
 
+	onPointerDown(pointer: Phaser.Input.Pointer) {
+		super.onPointerMove(pointer);
+		if (pointer.isDown && !this.isComplete) {
+			this.tweens.add({
+				targets: this.sponge,
+				x: pointer.x, y: pointer.y,
+				duration: 120, ease: "Quart"
+			})
+		}
+	}
+
 	onComplete(): void {
+		this.sound.play("dishes_sparkle", { volume: 0.8 });
 		this.sparkles.setVisible(true);
 
 		this.tweens.add({
@@ -77,5 +92,9 @@ export class DishesScene extends BaseScrubScene {
 			x: { from: this.sponge.x, to: 300 },
 			y: { from: this.sponge.y, to: 800 },
 		});
+
+		// setTimeout(() => {
+		// 	this.startScene("DrivethruScene");
+		// }, 800);
 	}
 }

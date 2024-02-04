@@ -17,7 +17,10 @@ export class BaseballScene extends BaseScene {
 
 		this.nextButton = new NextButton(this);
 		this.nextButton.on("click", () => {
-			this.startScene("BombScene");
+			this.startScene("CutsceneScene", {
+				textureKey: "7_argument",
+				nextScene: "CourtScene",
+			});
 		});
 	}
 

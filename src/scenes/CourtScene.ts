@@ -49,7 +49,10 @@ export class CourtScene extends BaseScene {
 
 		this.nextButton = new NextButton(this);
 		this.nextButton.on("click", () => {
-			this.startScene("CutsceneScene");
+			this.startScene("CutsceneScene", {
+				textureKey: "8_court",
+				nextScene: "DrivethruScene",
+			});
 		});
 	}
 
