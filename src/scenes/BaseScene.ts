@@ -20,8 +20,8 @@ export class BaseScene extends Phaser.Scene {
 	}
 
 	startScene(key: string, args?: any): void {
-		this.fade(true, 100, 0x000000);
-		this.addEvent(100, () => {
+		this.fade(true, 200, 0x000000);
+		this.addEvent(200, () => {
 			this.scene.start(key, args);
 		});
 	}
