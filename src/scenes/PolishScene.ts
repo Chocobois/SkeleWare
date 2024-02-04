@@ -83,6 +83,8 @@ export class PolishScene extends BaseScrubScene {
 	}
 
 	onComplete(): void {
+		super.onComplete();
+
 		this.numberPolished += 1;
 
 		this.tweens.add({
@@ -105,7 +107,7 @@ export class PolishScene extends BaseScrubScene {
 		this.tweens.add({
 			targets: [this.shoe, this.texture],
 			delay: 500,
-			duration: 1000,
+			duration: 600,
 			ease: "Cubic.In",
 			y: "+=1000",
 			onComplete: () => {
@@ -122,7 +124,7 @@ export class PolishScene extends BaseScrubScene {
 				this.tweens.add({
 					targets: [this.shoe, this.texture],
 					delay: 500,
-					duration: 1000,
+					duration: 600,
 					ease: "Cubic.Out",
 					y: "-=1000",
 				});

@@ -81,7 +81,7 @@ export class BaseScrubScene extends BaseScene {
 				}
 
 				this.texture.snapshotPixel(x, y, (snapshot: any) => {
-					if (snapshot.a > 0) {
+					if (snapshot.a > 20) {
 						this.dirtParticles.push({ x, y, hp: 1 });
 					}
 				});
@@ -163,7 +163,7 @@ export class BaseScrubScene extends BaseScene {
 		this.tweens.addCounter({
 			from: 0,
 			to: 1,
-			duration: 1000,
+			duration: 500,
 			ease: "Quad.In",
 			onUpdate: (tween, target, key, current) => {
 				this.clearBrush.setAlpha(current);
@@ -172,7 +172,10 @@ export class BaseScrubScene extends BaseScene {
 		});
 	}
 
-	onComplete() {}
+	onComplete() {
+		this.flash(1000, 0xffffff, 0.25);
+		this.sound.play("dishes_sparkle", { volume: 0.8 });
+	}
 
 	get brushSize(): number {
 		return 256;
