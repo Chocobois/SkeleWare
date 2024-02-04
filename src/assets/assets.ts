@@ -109,14 +109,43 @@ const spritesheets: SpriteSheet[] = [];
 
 /* Audios */
 const audios: Audio[] = [
+	// Placeholder template
 	music("title", "m_main_menu"),
 	music("first", "m_first"),
 	sound("tree/rustle", "t_rustle", 0.5),
+
+	/* Scenes */
+
+	// Baseball scene
+	sound("baseball/smashping", "baseball_smashping"),
+
+	// Boxing scene
 	sound("boxing/punch1", "boxing_punch1"),
 	sound("boxing/punch2", "boxing_punch2"),
 	sound("boxing/punch3", "boxing_punch3"),
 	sound("boxing/tunsingle", "boxing_tunsingle"),
 	sound("boxing/tundouble", "boxing_tundouble"),
+
+	// Computer scene
+	sound("computer/navigationstart", "computer_click"),
+	sound("computer/balloon", "computer_popup"),
+
+	// Dig scene
+	
+
+	// Dishes scene
+	sound("dishes/rub", "dishes_rub"),
+	sound("dishes/wipe", "dishes_wipe"),
+	sound("dishes/sparkle", "dishes_sparkle"),
+
+	// Drivethru scene
+	sound("drivethru/os_beep_success", "drivethru_success"),
+	sound("drivethru/os_beep_failure", "drivethru_failure"),
+	sound("drivethru/sim_startclick", "drivethru_clickdown"),
+	sound("drivethru/sim_stopclick", "drivethru_clickup"),
+
+	// Ironing scene
+	
 ];
 
 /* Fonts */

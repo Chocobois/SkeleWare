@@ -15,6 +15,8 @@ export class ComputerScene extends BaseScene {
 
 		this.background = this.add.image(this.CX, this.CY, "computer_background");
 
+		this.input.on("pointerdown", this.onPointerDown, this);
+
 		this.nextButton = new NextButton(this);
 		this.nextButton.on("click", () => {
 			this.startScene("CutsceneScene", {
@@ -26,5 +28,10 @@ export class ComputerScene extends BaseScene {
 
 	update(time: number, delta: number) {
 		this.nextButton.update(time, delta);
+	}
+
+	onPointerDown(pointer: Phaser.Input.Pointer) {
+		// console.count("click bwah")
+		this.sound.play("computer_click", { volume: 1 });
 	}
 }

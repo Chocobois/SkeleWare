@@ -82,6 +82,7 @@ export class DishesScene extends BaseScrubScene {
 	}
 
 	onComplete(): void {
+		this.sound.play("dishes_sparkle", { volume: 0.8 });
 		this.sparkles.setVisible(true);
 
 		this.tweens.add({
