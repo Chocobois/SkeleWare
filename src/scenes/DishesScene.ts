@@ -77,5 +77,9 @@ export class DishesScene extends BaseScrubScene {
 			x: { from: this.sponge.x, to: 300 },
 			y: { from: this.sponge.y, to: 800 },
 		});
+
+		setTimeout(() => {
+			this.startScene("DrivethruScene");
+		}, 800);
 	}
 }
