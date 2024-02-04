@@ -182,6 +182,6 @@ const audios: Audio[] = [
 ];
 
 /* Fonts */
-await loadFont("DynaPuff-Medium", "Game Font");
+await loadFont("Pangolin-Regular", "Game Font");
 
 export { images, spritesheets, audios };
