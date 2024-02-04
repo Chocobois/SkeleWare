@@ -47,6 +47,7 @@ export class BaseScrubScene extends BaseScene {
 		this.isComplete = false;
 
 		this.input.on("pointerdown", this.onPointerDown, this);
+		this.input.on("pointerup", this.onPointerUp, this);
 		this.input.on("pointermove", this.onPointerMove, this);
 
 		this.texture = this.add.renderTexture(0, 0, this.W, this.H);
@@ -65,9 +66,17 @@ export class BaseScrubScene extends BaseScene {
 		const gap = this.dirtSize * Math.SQRT1_2;
 		for (let x = 0; x <= this.W; x += gap) {
 			for (let y = 0; y <= this.W; y += gap) {
+				if (
+					x < centerX - width / 2 ||
+					x > centerX + width / 2 ||
+					y < centerY - height / 2 ||
+					y > centerY + height / 2
+				) {
+					continue;
+				}
 
 				// Only include points inside filters
-				if (filter && filter.every(shape => !shape.contains(x, y))) {
+				if (filter && filter.every((shape) => !shape.contains(x, y))) {
 					continue;
 				}
 
@@ -92,6 +101,8 @@ export class BaseScrubScene extends BaseScene {
 		this.onRub(pointer);
 		// }
 	}
+
+	onPointerUp(pointer: Phaser.Input.Pointer) {}
 
 	onPointerMove(pointer: Phaser.Input.Pointer) {
 		if (this.isComplete) return;

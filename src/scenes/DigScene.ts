@@ -1,12 +1,10 @@
-import { NextButton } from "@/components/NextButton";
 import { BaseScrubScene } from "@/scenes/BaseScrubScene";
 
 export class DigScene extends BaseScrubScene {
 	private shovel: Phaser.GameObjects.Image;
 	private shoes: Phaser.GameObjects.Image[];
+	private sparkles: Phaser.GameObjects.Image[];
 	private text: Phaser.GameObjects.Text;
-
-	private nextButton: NextButton;
 
 	constructor() {
 		super({ key: "DigScene" });
@@ -36,9 +34,9 @@ export class DigScene extends BaseScrubScene {
 			);
 
 			let shoe = this.add.image(x, y, "dig_shoe");
-			shoe.setScale(0.5);
+			shoe.setScale(0.6);
 			shoe.setTint(0xaaaaaa);
-			shoe.setAngle(360 * Math.random());
+			shoe.setAngle(400 * Math.random());
 			this.shoes.push(shoe);
 		}
 
@@ -47,9 +45,10 @@ export class DigScene extends BaseScrubScene {
 			brushKey: "soft_brush",
 			centerX: this.CX,
 			centerY: this.CY,
-			debug: true,
+			debug: false,
 			filter: this.shoes.map(
-				(shoe) => new Phaser.Geom.Circle(shoe.x, shoe.y, 0.55 * shoe.displayWidth)
+				(shoe) =>
+					new Phaser.Geom.Circle(shoe.x, shoe.y, 0.55 * shoe.displayWidth)
 			),
 		});
 
@@ -59,33 +58,40 @@ export class DigScene extends BaseScrubScene {
 		this.shovel.setOrigin(0.9, 0.8);
 		this.shovel.setScale(0.5);
 
+		this.sparkles = [];
+		this.shoes.forEach((shoe) => {
+			let sparkle = this.add.image(shoe.x, shoe.y, "polish_sparkles");
+			sparkle.setVisible(false);
+			sparkle.setDepth(100);
+			this.sparkles.push(sparkle);
+		});
+
 		this.text = this.addText({
 			x: this.CX,
 			y: 0,
 			size: 60,
-			text: "Dig away!",
+			text: "Dig the grave!",
 			color: "black",
 		});
+		this.text.setDepth(1000);
 		this.text.setOrigin(0.5, 0.0);
-
-		this.nextButton = new NextButton(this);
-		this.nextButton.on("click", () => {
-			this.startScene("CutsceneScene", {
-				textureKey: "3_loot",
-				nextScene: "PolishScene",
-			});
-		});
 	}
 
 	update(time: number, delta: number) {
-		this.nextButton.update(time, delta);
-	}
-
-	onPointerMove(pointer: Phaser.Input.Pointer) {
-		super.onPointerMove(pointer);
+		const pointer = this.input.activePointer;
 		if (pointer.isDown && !this.isComplete) {
-			this.shovel.setPosition(pointer.x, pointer.y);
+			this.shovel.x += (pointer.x - this.shovel.x) / 2;
+			this.shovel.y += (pointer.y - this.shovel.y) / 2;
+		} else {
+			this.shovel.x += (300 - this.shovel.x) / 5;
+			this.shovel.y += (300 - this.shovel.y) / 5;
 		}
+
+		this.sparkles.forEach((sparkle, index) => {
+			sparkle.setScale(
+				0.4 + 0.05 * Math.sin((8 * time) / 1000 + (Math.PI / 2) * index)
+			);
+		});
 	}
 
 	onPointerDown(pointer: Phaser.Input.Pointer) {
@@ -102,12 +108,33 @@ export class DigScene extends BaseScrubScene {
 	}
 
 	onComplete(): void {
-		this.tweens.add({
-			targets: this.shovel,
-			duration: 1000,
-			ease: "Cubic",
-			x: { from: this.shovel.x, to: 300 },
-			y: { from: this.shovel.y, to: 300 },
+		this.flash(500, 0xffffff, 0.5);
+
+		this.sparkles.forEach((sparkle) => sparkle.setVisible(true));
+
+		this.shoes.forEach((shoe, index) => {
+			shoe.setDepth(100);
+			this.tweens.add({
+				targets: shoe,
+				duration: 1500,
+				delay: 250 * (index + 1),
+				ease: "Sine.In",
+				x: { from: shoe.x, to: this.CX },
+				y: { from: shoe.y, to: -500 },
+				scaleX: { from: 0.6, to: 0.9 },
+				angle: { from: shoe.angle, to: shoe.angle + 360 },
+			});
+		});
+
+		this.addEvent(2500, () => {
+			this.nextScene();
+		});
+	}
+
+	nextScene() {
+		this.startScene("CutsceneScene", {
+			textureKey: "3_loot",
+			nextScene: "PolishScene",
 		});
 	}
 }
