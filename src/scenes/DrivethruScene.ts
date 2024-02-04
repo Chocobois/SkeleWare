@@ -107,7 +107,10 @@ export class DrivethruScene extends BaseScene {
 				this.sound.play(`drivethru_${correct ? "success" : "failure"}`, { volume: 0.5 });
 
 				if (correct) {
-					this.startScene("IroningScene");
+					this.startScene("CutsceneScene", {
+						textureKey: "9_dinner",
+						nextScene: "DishesScene",
+					});
 				}
 			}, 150);
 		});
