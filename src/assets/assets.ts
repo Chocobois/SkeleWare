@@ -18,6 +18,18 @@ const images: Image[] = [
 
 	/* Scenes */
 
+	// Cutscenes
+	image("scenes/cutscene/0_crimes", "0_crimes"),
+	image("scenes/cutscene/1_intro", "1_intro"),
+	image("scenes/cutscene/2_dig", "2_dig"),
+	image("scenes/cutscene/3_loot", "3_loot"),
+	image("scenes/cutscene/4_shoes", "4_shoes"),
+	image("scenes/cutscene/5_package", "5_package"),
+	image("scenes/cutscene/6_baseball", "6_baseball"),
+	image("scenes/cutscene/7_argument", "7_argument"),
+	image("scenes/cutscene/8_court", "8_court"),
+	image("scenes/cutscene/9_dinner", "9_dinner"),
+
 	// Baseball scene
 	image("scenes/baseball/background", "baseball_background"),
 
@@ -55,9 +67,6 @@ const images: Image[] = [
 	image("scenes/court/skeletourneyObjection1", "court_skeleton_objection_1"),
 	image("scenes/court/skeletourneyObjection2", "court_skeleton_objection_2"),
 
-	// Cutscene scene
-	image("scenes/cutscene/background", "cutscene_background"),
-
 	// Dig scene
 	image("scenes/dig/background", "dig_background"),
 	image("scenes/dig/foreground", "dig_foreground"),
@@ -86,6 +95,13 @@ const images: Image[] = [
 	image("scenes/ironing/iron", "ironing_iron"),
 	image("scenes/ironing/shirt", "ironing_shirt"),
 	image("scenes/ironing/shirt_ironed", "ironing_shirt_ironed"),
+
+	// Polish scene
+	image("scenes/polish/background", "polish_background"),
+	image("scenes/polish/dirt", "polish_dirt"),
+	image("scenes/polish/shoe", "polish_shoe"),
+	image("scenes/polish/sparkles", "polish_sparkles"),
+	image("scenes/polish/brush", "polish_brush"),
 ];
 
 /* Spritesheets */

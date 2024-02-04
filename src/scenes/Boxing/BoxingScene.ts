@@ -57,7 +57,7 @@ export class BoxingScene extends BaseScene {
 
 		this.nextButton = new NextButton(this);
 		this.nextButton.on("click", () => {
-			this.startScene("ComputerScene");
+			this.startScene("CutsceneScene");
 		});
 
 		this.jabLeftButton.on("click", () => {

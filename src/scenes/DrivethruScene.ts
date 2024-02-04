@@ -4,42 +4,48 @@ import { NextButton } from "@/components/NextButton";
 import { RoundRectangle } from "@/components/elements/RoundRectangle";
 
 type Item = {
-	key: string,
-	x: number,
-	y: number,
-	name: string
-}
+	key: string;
+	x: number;
+	y: number;
+	name: string;
+};
 
-const MenuItems = [{
-		key: "drivethru_burger", 
+const MenuItems = [
+	{
+		key: "drivethru_burger",
 		x: 800,
 		y: 280,
-		name: "burger"
-	}, {
+		name: "burger",
+	},
+	{
 		key: "drivethru_coffe",
 		x: 800,
 		y: 800,
-		name: "coffe"
-	}, {
+		name: "coffe",
+	},
+	{
 		key: "drivethru_fries",
 		x: 1200,
 		y: 550,
-		name: "fries"
-	}, {
+		name: "fries",
+	},
+	{
 		key: "drivethru_nuggets",
 		x: 800,
 		y: 520,
-		name: "nuggets"
-	}, {
+		name: "nuggets",
+	},
+	{
 		key: "drivethru_salad",
 		x: 1200,
 		y: 280,
-		name: "salad"
-	}, {
+		name: "salad",
+	},
+	{
 		key: "drivethru_soda",
 		x: 1200,
 		y: 800,
-		name: "soda"
+		name: "soda",
 	},
 ];
 
@@ -64,11 +70,14 @@ export class DrivethruScene extends BaseScene {
 
 		this.randomItem = MenuItems[Math.floor(Math.random() * MenuItems.length)];
 
-		this.add.sprite(280, this.CY-80, this.randomItem.key);
+		this.add.sprite(280, this.CY - 80, this.randomItem.key);
 
 		this.nextButton = new NextButton(this);
 		this.nextButton.on("click", () => {
-			this.startScene("IroningScene");
+			this.startScene("CutsceneScene", {
+				textureKey: "9_dinner",
+				nextScene: "DishesScene",
+			});
 		});
 	}
 
@@ -79,7 +88,7 @@ export class DrivethruScene extends BaseScene {
 		this.nextButton.update(time, delta);
 	}
 
-	addMenuButton({x, y, key, name}: Item) {
+	addMenuButton({ x, y, key, name }: Item) {
 		const button = new Button(this, x, y);
 		this.buttons.push(button);
 
@@ -88,7 +97,7 @@ export class DrivethruScene extends BaseScene {
 
 		button.bindInteractive(image);
 		button.on("click", () => {
-			if(this.randomItem.name == name) {
+			if (this.randomItem.name == name) {
 				this.startScene("IroningScene");
 			}
 		});

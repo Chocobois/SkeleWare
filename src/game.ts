@@ -5,6 +5,7 @@ import { PreloadScene } from "@/scenes/PreloadScene";
 import { TitleScene } from "@/scenes/TitleScene";
 import { GameScene } from "@/scenes/GameScene";
 
+import { IntroScene } from "@/scenes/IntroScene";
 import { BaseballScene } from "@/scenes/BaseballScene";
 import { BoxingScene } from "@/scenes/Boxing/BoxingScene";
 import { ComputerScene } from "@/scenes/ComputerScene";
@@ -12,6 +13,7 @@ import { CourtScene } from "@/scenes/CourtScene";
 import { CutsceneScene } from "@/scenes/CutsceneScene";
 import { DigScene } from "@/scenes/DigScene";
 import { DishesScene } from "@/scenes/DishesScene";
+import { PolishScene } from "@/scenes/PolishScene";
 import { DrivethruScene } from "@/scenes/DrivethruScene";
 import { IroningScene } from "@/scenes/IroningScene";
 
@@ -29,6 +31,7 @@ const config: Phaser.Types.Core.GameConfig = {
 		TitleScene,
 		GameScene,
 		// Minigame scenes
+		IntroScene,
 		BaseballScene,
 		BoxingScene,
 		ComputerScene,
@@ -36,6 +39,7 @@ const config: Phaser.Types.Core.GameConfig = {
 		CutsceneScene,
 		DigScene,
 		DishesScene,
+		PolishScene,
 		DrivethruScene,
 		IroningScene,
 	],

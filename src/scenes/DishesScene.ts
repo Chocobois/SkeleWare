@@ -48,7 +48,10 @@ export class DishesScene extends BaseScrubScene {
 
 		this.nextButton = new NextButton(this);
 		this.nextButton.on("click", () => {
-			this.startScene("DrivethruScene");
+			this.startScene("CutsceneScene", {
+				textureKey: "0_crimes",
+				nextScene: "BoxingScene",
+			});
 		});
 	}
 
@@ -89,8 +92,8 @@ export class DishesScene extends BaseScrubScene {
 			y: { from: this.sponge.y, to: 800 },
 		});
 
-		setTimeout(() => {
-			this.startScene("DrivethruScene");
-		}, 800);
+		// setTimeout(() => {
+		// 	this.startScene("DrivethruScene");
+		// }, 800);
 	}
 }

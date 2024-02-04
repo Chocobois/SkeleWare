@@ -17,7 +17,10 @@ export class ComputerScene extends BaseScene {
 
 		this.nextButton = new NextButton(this);
 		this.nextButton.on("click", () => {
-			this.startScene("CourtScene");
+			this.startScene("CutsceneScene", {
+				textureKey: "5_package",
+				nextScene: "IroningScene",
+			});
 		});
 	}
 

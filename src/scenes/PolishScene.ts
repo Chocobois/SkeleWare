@@ -1,14 +1,17 @@
 import { NextButton } from "@/components/NextButton";
 import { BaseScrubScene } from "@/scenes/BaseScrubScene";
 
-export class DigScene extends BaseScrubScene {
-	private shovel: Phaser.GameObjects.Image;
+export class PolishScene extends BaseScrubScene {
+	private background: Phaser.GameObjects.Image;
+	private shoe: Phaser.GameObjects.Image;
+	private sparkles: Phaser.GameObjects.Image;
+	private tool: Phaser.GameObjects.Image;
 	private text: Phaser.GameObjects.Text;
 
 	private nextButton: NextButton;
 
 	constructor() {
-		super({ key: "DigScene" });
+		super({ key: "PolishScene" });
 	}
 
 	create(): void {
@@ -17,33 +20,28 @@ export class DigScene extends BaseScrubScene {
 
 		/* Objects */
 
-		let background = this.add.image(this.CX, this.CY, "dig_background");
+		this.background = this.add.image(this.CX, this.CY, "polish_background");
 
-		for (let i = 0; i < 5; i++) {
-			let x = this.W * (0.2 + 0.6 * Math.random());
-			let y = this.H * (0.1 + 0.9 * Math.random());
-			let shoe = this.add.image(x, y, "dig_shoe");
-			shoe.setAngle(360 * Math.random());
-		}
+		this.shoe = this.add.image(this.CX, this.CY, "polish_shoe");
 
 		this.initDynamicTexture({
-			textureKey: "dig_dirt",
+			textureKey: "polish_dirt",
 			brushKey: "soft_brush",
 			centerX: this.CX,
 			centerY: this.CY,
 			// debug: true,
 		});
 
-		let foreground = this.add.image(this.CX, this.CY, "dig_foreground");
+		this.sparkles = this.add.image(this.CX, this.CY, "polish_sparkles");
+		this.sparkles.setVisible(false);
 
-		this.shovel = this.add.image(100, 1000, "dig_shovel");
-		this.shovel.setOrigin(0, 1);
+		this.tool = this.add.image(300, 800, "polish_brush");
 
 		this.text = this.addText({
 			x: this.CX,
 			y: 0,
 			size: 60,
-			text: "Dig away!",
+			text: "Do the polish!",
 			color: "black",
 		});
 		this.text.setOrigin(0.5, 0.0);
@@ -51,20 +49,24 @@ export class DigScene extends BaseScrubScene {
 		this.nextButton = new NextButton(this);
 		this.nextButton.on("click", () => {
 			this.startScene("CutsceneScene", {
-				textureKey: "3_loot",
-				nextScene: "PolishScene",
+				textureKey: "4_shoes",
+				nextScene: "ComputerScene",
 			});
 		});
 	}
 
 	update(time: number, delta: number) {
+		// this.dirt.setAlpha(0.5 + 0.5 * Math.sin((4 * time) / 1000));
+
+		this.sparkles.setScale(1.0 + 0.05 * Math.sin((8 * time) / 1000));
+
 		this.nextButton.update(time, delta);
 	}
 
 	onPointerMove(pointer: Phaser.Input.Pointer) {
 		super.onPointerMove(pointer);
 		if (pointer.isDown && !this.isComplete) {
-			this.shovel.setPosition(pointer.x, pointer.y);
+			this.tool.setPosition(pointer.x, pointer.y);
 		}
 	}
 
@@ -72,7 +74,7 @@ export class DigScene extends BaseScrubScene {
 		super.onPointerMove(pointer);
 		if (pointer.isDown && !this.isComplete) {
 			this.tweens.add({
-				targets: this.shovel,
+				targets: this.tool,
 				x: pointer.x,
 				y: pointer.y,
 				duration: 120,
@@ -82,12 +84,18 @@ export class DigScene extends BaseScrubScene {
 	}
 
 	onComplete(): void {
+		this.sparkles.setVisible(true);
+
 		this.tweens.add({
-			targets: this.shovel,
+			targets: this.tool,
 			duration: 1000,
 			ease: "Cubic",
-			x: { from: this.shovel.x, to: 100 },
-			y: { from: this.shovel.y, to: 1000 },
+			x: { from: this.tool.x, to: 300 },
+			y: { from: this.tool.y, to: 800 },
 		});
+
+		// setTimeout(() => {
+		// 	this.startScene("DrivethruScene");
+		// }, 800);
 	}
 }
