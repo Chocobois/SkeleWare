@@ -17,12 +17,14 @@ role`;
 
 export class TitleScene extends BaseScene {
 	public sky: Phaser.GameObjects.Image;
-	public background: Phaser.GameObjects.Image;
 	public foreground: Phaser.GameObjects.Image;
-	public character: Phaser.GameObjects.Image;
+	public skeleton1: Phaser.GameObjects.Image;
+	public skeleton2: Phaser.GameObjects.Image;
+	public skeleton3: Phaser.GameObjects.Image;
+	public skeleton4: Phaser.GameObjects.Image;
 
 	public credits: Phaser.GameObjects.Container;
-	public title: Phaser.GameObjects.Text;
+	public title: Phaser.GameObjects.Image;
 	public subtitle: Phaser.GameObjects.Text;
 	public tap: Phaser.GameObjects.Text;
 	public version: Phaser.GameObjects.Text;
@@ -42,35 +44,29 @@ export class TitleScene extends BaseScene {
 
 		this.sky = this.add.image(this.CX, this.CY, "title_sky");
 		this.containToScreen(this.sky);
-		this.background = this.add.image(
-			this.CX,
-			0.9 * this.CY,
-			"title_background"
-		);
-		this.containToScreen(this.background);
-		this.foreground = this.add.image(this.CX, this.CY, "title_foreground");
-		this.containToScreen(this.foreground);
-		this.character = this.add.image(this.CX, this.CY, "title_character");
-		this.containToScreen(this.character);
+		this.skeleton1 = this.add.image(this.CX, this.CY, "title_skeleton_1");
+		this.skeleton2 = this.add.image(this.CX, this.CY, "title_skeleton_2");
+		this.skeleton3 = this.add.image(this.CX, this.CY, "title_skeleton_3");
+		this.skeleton4 = this.add.image(this.CX, this.CY, "title_skeleton_4");
+		this.containToScreen(this.skeleton1);
+		this.containToScreen(this.skeleton2);
+		this.containToScreen(this.skeleton3);
+		this.containToScreen(this.skeleton4);
 
-		this.background.setVisible(false);
-		this.background.setAlpha(0);
-		this.background.y += 4000;
-		this.foreground.y += 1000;
-		this.character.y += 1000;
+		this.skeleton1.setAlpha(0);
+		this.skeleton2.setAlpha(-1);
+		this.skeleton3.setAlpha(-2);
+		this.skeleton4.setAlpha(-3);
+		this.skeleton1.x -= 1 * 200;
+		this.skeleton2.x += 2 * 200;
+		this.skeleton3.x -= 3 * 200;
+		this.skeleton4.x += 4 * 200;
 
-		this.title = this.addText({
-			x: 0.25 * this.W,
-			y: 0.7 * this.H,
-			size: 130,
-			color: "#000",
-			text: "SkeleWare\nin Delaware",
-		});
-		this.title.setOrigin(0.5);
-		this.title.setStroke("#FFF", 8);
-		this.title.setPadding(2);
+		this.title = this.add.image(400, 200, "title_title");
 		this.title.setVisible(false);
-		this.title.setAlpha(0);
+		this.title.setScale(0.5);
+		this.title.setAngle(-10);
+		this.title.setAlpha(-2);
 
 		this.subtitle = this.addText({
 			x: 0.25 * this.W,
@@ -80,7 +76,7 @@ export class TitleScene extends BaseScene {
 			text: "Tap to start",
 		});
 		this.subtitle.setOrigin(0.5);
-		this.subtitle.setStroke("#FFF", 3);
+		this.subtitle.setStroke("#FFF", 8);
 		this.subtitle.setPadding(2);
 		this.subtitle.setVisible(false);
 		this.subtitle.setAlpha(0);
@@ -94,7 +90,7 @@ export class TitleScene extends BaseScene {
 		});
 		this.tap.setOrigin(0.5);
 		this.tap.setAlpha(-1);
-		this.tap.setStroke("#FFF", 4);
+		this.tap.setStroke("#FFF", 8);
 		this.tap.setPadding(2);
 
 		this.version = this.addText({
@@ -106,7 +102,7 @@ export class TitleScene extends BaseScene {
 		});
 		this.version.setOrigin(1, 1);
 		this.version.setAlpha(-1);
-		this.version.setStroke("#FFF", 4);
+		this.version.setStroke("#FFF", 8);
 		this.version.setPadding(2);
 
 		this.credits = this.add.container(0, 0);
@@ -139,7 +135,7 @@ export class TitleScene extends BaseScene {
 
 		// Music
 		if (!this.musicTitle) {
-			this.musicTitle = new Music(this, "m_first", { volume: 0.4 });
+			this.musicTitle = new Music(this, "m_first", { volume: 0.0 });
 			this.musicTitle.on("bar", this.onBar, this);
 			this.musicTitle.on("beat", this.onBeat, this);
 
@@ -166,13 +162,25 @@ export class TitleScene extends BaseScene {
 	}
 
 	update(time: number, delta: number) {
-		if (this.background.visible) {
-			this.background.y += 0.02 * (this.CY - this.background.y);
-			this.foreground.y += 0.025 * (this.CY - this.foreground.y);
-			this.character.y += 0.02 * (this.CY - this.character.y);
+		if (this.title.visible) {
+			// this.title.y += 0.02 * (this.CY - this.title.y);
+			// this.foreground.y += 0.025 * (this.CY - this.foreground.y);
+			this.skeleton1.x += 0.02 * (this.CX - this.skeleton1.x);
+			this.skeleton2.x += 0.02 * (this.CX - this.skeleton2.x);
+			this.skeleton3.x += 0.02 * (this.CX - this.skeleton3.x);
+			this.skeleton4.x += 0.02 * (this.CX - this.skeleton4.x);
 
-			this.background.alpha += 0.03 * (1 - this.background.alpha);
-			this.character.scaleX = Math.sin((3 * time) / 1000);
+			this.skeleton1.alpha += 0.02 * (1 - this.skeleton1.alpha);
+			this.skeleton2.alpha += 0.02 * (1 - this.skeleton2.alpha);
+			this.skeleton3.alpha += 0.02 * (1 - this.skeleton3.alpha);
+			this.skeleton4.alpha += 0.02 * (1 - this.skeleton4.alpha);
+			this.title.alpha += 0.02 * (1 - this.title.alpha);
+
+			// this.title.alpha += 0.03 * (1 - this.title.alpha);
+			// this.skeleton1.scaleX = Math.sin((3 * time) / 1000);
+			// this.skeleton2.scaleX = Math.sin((3 * time) / 1000);
+			// this.skeleton3.scaleX = Math.sin((3 * time) / 1000);
+			// this.skeleton4.scaleX = Math.sin((3 * time) / 1000);
 
 			this.title.alpha +=
 				0.02 * ((this.title.visible ? 1 : 0) - this.title.alpha);
@@ -188,7 +196,7 @@ export class TitleScene extends BaseScene {
 			this.tap.alpha += 0.01 * (1 - this.tap.alpha);
 
 			if (this.musicTitle.seek > 0) {
-				this.background.setVisible(true);
+				this.title.setVisible(true);
 				this.tap.setVisible(false);
 			}
 		}
@@ -201,7 +209,7 @@ export class TitleScene extends BaseScene {
 	}
 
 	progress() {
-		if (!this.background.visible) {
+		if (!this.title.visible) {
 			this.onBar(1);
 		} else if (!this.subtitle.visible) {
 			this.title.setVisible(true);
@@ -220,7 +228,7 @@ export class TitleScene extends BaseScene {
 				this.fade(true, 1000, 0x000000);
 				this.addEvent(1050, () => {
 					this.musicTitle.stop();
-					this.scene.start("GameScene");
+					this.scene.start("IntroScene");
 				});
 			});
 		}

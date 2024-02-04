@@ -42,10 +42,10 @@ export class DigScene extends BaseScrubScene {
 
 		this.initDynamicTexture({
 			textureKey: "dig_dirt",
-			brushKey: "soft_brush",
+			brushKey: "bite_brush",
 			centerX: this.CX,
 			centerY: this.CY,
-			debug: false,
+			// debug: true,
 			filter: this.shoes.map(
 				(shoe) =>
 					new Phaser.Geom.Circle(shoe.x, shoe.y, 0.55 * shoe.displayWidth)
@@ -108,7 +108,7 @@ export class DigScene extends BaseScrubScene {
 	}
 
 	onComplete(): void {
-		this.flash(500, 0xffffff, 0.5);
+		super.onComplete();
 
 		this.sparkles.forEach((sparkle) => sparkle.setVisible(true));
 

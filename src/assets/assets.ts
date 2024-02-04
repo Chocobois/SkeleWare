@@ -81,9 +81,9 @@ const images: Image[] = [
 
 	// Dishes scene
 	image("scenes/dishes/background", "dishes_background"),
+	image("scenes/dishes/foreground", "dishes_foreground"),
 	image("scenes/dishes/dirt", "dishes_dirt"),
 	image("scenes/dishes/plate", "dishes_plate"),
-	image("scenes/dishes/sparkles", "dishes_sparkles"),
 	image("scenes/dishes/sponge", "dishes_sponge"),
 
 	// Drivethru scene
@@ -188,6 +188,6 @@ const audios: Audio[] = [
 ];
 
 /* Fonts */
-await loadFont("DynaPuff-Medium", "Game Font");
+await loadFont("Pangolin-Regular", "Game Font");
 
 export { images, spritesheets, audios };
