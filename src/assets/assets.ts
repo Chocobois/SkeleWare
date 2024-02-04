@@ -5,9 +5,11 @@ import { image, sound, music, loadFont, spritesheet } from "./util";
 const images: Image[] = [
 	// Titlescreen
 	image("titlescreen/sky", "title_sky"),
-	image("titlescreen/background", "title_background"),
-	image("titlescreen/foreground", "title_foreground"),
-	image("titlescreen/character", "title_character"),
+	image("titlescreen/title", "title_title"),
+	image("titlescreen/character1", "title_skeleton_1"),
+	image("titlescreen/character2", "title_skeleton_2"),
+	image("titlescreen/character3", "title_skeleton_3"),
+	image("titlescreen/character4", "title_skeleton_4"),
 
 	// Brushes
 	image("brushes/soft_brush", "soft_brush"),
