@@ -82,6 +82,7 @@ export class IroningScene extends BaseScrubScene {
 	}
 
 	onComplete(): void {
+		super.onComplete();
 		this.numberIroned += 1;
 
 		this.tweens.add({

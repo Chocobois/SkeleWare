@@ -74,6 +74,6 @@ export class PreloadScene extends BaseScene {
 	}
 
 	create() {
-		this.startScene("TitleScene");
+		this.startScene("DishesScene");
 	}
 }

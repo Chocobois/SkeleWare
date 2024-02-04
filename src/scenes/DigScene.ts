@@ -42,7 +42,7 @@ export class DigScene extends BaseScrubScene {
 
 		this.initDynamicTexture({
 			textureKey: "dig_dirt",
-			brushKey: "bite_brush",
+			brushKey: "soft_brush",
 			centerX: this.CX,
 			centerY: this.CY,
 			// debug: true,
