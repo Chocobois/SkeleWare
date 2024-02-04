@@ -73,6 +73,7 @@ export class Button extends Phaser.GameObjects.Container {
 
 	onOut(pointer: Phaser.Input.Pointer, event: Phaser.Types.Input.EventData) {
 		// this.hover = false;
+		if (this.hold) this.emit("up");
 		this.hold = false;
 	}
 
@@ -91,6 +92,7 @@ export class Button extends Phaser.GameObjects.Container {
 		localY: number,
 		event: Phaser.Types.Input.EventData
 	) {
+		if (!this.hold) this.emit("down");
 		this.hold = true;
 		this.blocked = false;
 	}
@@ -104,6 +106,7 @@ export class Button extends Phaser.GameObjects.Container {
 		if (this.hold && !this.blocked) {
 			this.emit("click");
 		}
+		if (this.hold) this.emit("up");
 		this.hold = false;
 	}
 

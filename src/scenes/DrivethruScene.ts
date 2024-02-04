@@ -87,10 +87,20 @@ export class DrivethruScene extends BaseScene {
 		button.add(image);
 
 		button.bindInteractive(image);
+
+		button.on("down", () => this.sound.play("drivethru_clickdown", { volume: 0.2 }) );
+		button.on("up",   () => this.sound.play("drivethru_clickup",   { volume: 0.2 }) );
+
 		button.on("click", () => {
-			if(this.randomItem.name == name) {
-				this.startScene("IroningScene");
-			}
+			const correct = this.randomItem.name == name;
+
+			setTimeout(() => {
+				this.sound.play(`drivethru_${correct ? "success" : "failure"}`, { volume: 0.5 });
+
+				if (correct) {
+					this.startScene("IroningScene");
+				}
+			}, 150);
 		});
 	}
 }
