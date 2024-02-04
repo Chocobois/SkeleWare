@@ -31,6 +31,11 @@ const images: Image[] = [
 	image("scenes/cutscene/7_argument", "7_argument"),
 	image("scenes/cutscene/8_court", "8_court"),
 	image("scenes/cutscene/9_dinner", "9_dinner"),
+	image("scenes/cutscene/10_bomb", "10_bomb"),
+	image("scenes/cutscene/11_defused", "11_defused"),
+	image("scenes/cutscene/12_miku", "12_miku"),
+	image("scenes/cutscene/13_victory", "13_victory"),
+	image("scenes/cutscene/14_final", "14_final"),
 
 	// Baseball scene
 	image("scenes/baseball/background", "baseball_background"),

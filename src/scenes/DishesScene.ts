@@ -96,10 +96,10 @@ export class DishesScene extends BaseScrubScene {
 			alpha: { from: 1, to: 0 },
 		});
 
-		if (this.numberPolished >= 4) {
+		if (this.numberPolished >= 3) {
 			this.addEvent(2000, () => {
 				this.startScene("CutsceneScene", {
-					textureKey: "0_crimes",
+					textureKey: "10_bomb",
 					nextScene: "BombScene",
 				});
 			});

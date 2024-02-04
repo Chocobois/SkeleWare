@@ -308,7 +308,15 @@ export class BombScene extends BaseScene {
 			this.isVictorious = false;
 			this.exploded = false;
 			this.resetGameStateVariables();
-			this.startScene("BoxingScene");
+			
+			this.startScene("CutsceneScene", {
+				textureKey: "11_defused",
+				nextScene: "CutsceneScene",
+				nextArgs: {
+					textureKey: "12_miku",
+					nextScene: "BoxingScene",
+				},
+			});
 		}
 	}
 

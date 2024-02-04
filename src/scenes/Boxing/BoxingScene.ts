@@ -1,6 +1,5 @@
 import { Button } from "@/components/elements/Button";
 import { BaseScene } from "@/scenes/BaseScene";
-import { NextButton } from "@/components/NextButton";
 import { SkeletonPlayer } from "./SkeletonPlayer";
 import { AnimDir, SkeletonOpponent } from "./SkeletonOpponent";
 
@@ -25,8 +24,6 @@ export class BoxingScene extends BaseScene {
 
 	private jabLeftButton: Button;
 	private jabRightButton: Button;
-
-	private nextButton: NextButton;
 
 	constructor() {
 		super({ key: "BoxingScene" });
@@ -54,11 +51,6 @@ export class BoxingScene extends BaseScene {
 
 		this.jabLeftButton = this.createButton(300, this.CY*0.7, "boxing_ui_jab_left");
 		this.jabRightButton = this.createButton(this.W - 300, this.CY*0.7, "boxing_ui_jab_right");
-
-		this.nextButton = new NextButton(this);
-		this.nextButton.on("click", () => {
-			this.startScene("CutsceneScene");
-		});
 
 		this.jabLeftButton.on("click", () => {
 			this.player.jabLeft();
@@ -112,7 +104,7 @@ export class BoxingScene extends BaseScene {
 				this.sound.play("boxing_tundouble", { volume: 0.6 });
 			}, 200);
 			setTimeout(() => {
-				this.startScene("ComputerScene");
+				this.nextScene();
 			}, 800);
 		});
 
@@ -122,7 +114,6 @@ export class BoxingScene extends BaseScene {
 	}
 
 	update(time: number, delta: number) {
-		this.nextButton.update(time, delta);
 		this.player.offsetX = Math.cos(time/1000)*20;
 		this.player.offsetY = Math.sin(time/200)*6;
 
@@ -131,5 +122,16 @@ export class BoxingScene extends BaseScene {
 
 		this.player.update(time, delta);
 		this.opponent.update(time, delta);
+	}
+
+	nextScene() {
+		this.startScene("CutsceneScene", {
+			textureKey: "13_victory",
+			nextScene: "CutsceneScene",
+			nextArgs: {
+				textureKey: "14_final",
+				nextScene: "TitleScene",
+			},
+		});
 	}
 }

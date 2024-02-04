@@ -12,9 +12,11 @@ export class CutsceneScene extends BaseScene {
 	create({
 		textureKey,
 		nextScene,
+		nextArgs,
 	}: {
 		textureKey: string;
 		nextScene: string;
+		nextArgs?: any;
 	}): void {
 		console.log(textureKey, nextScene);
 		this.fade(false, 200, 0x000000);
@@ -36,8 +38,11 @@ export class CutsceneScene extends BaseScene {
 
 		this.nextButton = new NextButton(this);
 		this.nextButton.on("click", () => {
-			console.log("OnClick");
-			this.startScene(nextScene);
+			if (nextArgs) {
+				this.startScene("CutsceneScene", nextArgs);
+			} else {
+				this.startScene(nextScene);
+			}
 		});
 	}
 
