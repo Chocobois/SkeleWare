@@ -19,7 +19,7 @@ export class BombScene extends BaseScene {
 	private index2: number;
 	private index3: number;
 	private stopLight: number; //how long before wrong lane changes
-	private timer: number = 30000;
+	private timer: number = 45000;
 	private secondTimer: number = 1000;
 	static LANES: number[] = [0.05, 0.2, 0.35];
 	private displayBars: Phaser.GameObjects.Graphics;

@@ -169,6 +169,7 @@ const audios: Audio[] = [
 
 	// Ironing scene
 	
+	//Bomb scene
 	sound("bomb/bad_beep", "beep", 0.5),
 	sound("bomb/button", "button_press", 0.5),
 	sound("bomb/victory", "victory", 0.5),
