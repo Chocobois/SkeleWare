@@ -25,15 +25,23 @@ export class BaseScrubScene extends BaseScene {
 		centerX = 1920 / 2,
 		centerY = 1080 / 2,
 		debug = false,
+		filter,
 	}: {
 		textureKey: string;
 		brushKey: string;
 		centerX?: number;
 		centerY?: number;
 		debug?: boolean;
+		filter?: Phaser.Geom.Circle[];
 	}) {
-		console.assert(this.textures.exists(textureKey), `Texture '${textureKey}' not found`);
-		console.assert(this.textures.exists(brushKey), `Texture '${brushKey}' not found`);
+		console.assert(
+			this.textures.exists(textureKey),
+			`Texture '${textureKey}' not found`
+		);
+		console.assert(
+			this.textures.exists(brushKey),
+			`Texture '${brushKey}' not found`
+		);
 
 		this.progress = 0;
 		this.isComplete = false;
@@ -57,6 +65,12 @@ export class BaseScrubScene extends BaseScene {
 		const gap = this.dirtSize * Math.SQRT1_2;
 		for (let x = 0; x <= this.W; x += gap) {
 			for (let y = 0; y <= this.W; y += gap) {
+
+				// Only include points inside filters
+				if (filter && filter.every(shape => !shape.contains(x, y))) {
+					continue;
+				}
+
 				this.texture.snapshotPixel(x, y, (snapshot: any) => {
 					if (snapshot.a > 0) {
 						this.dirtParticles.push({ x, y, hp: 1 });

@@ -3,6 +3,7 @@ import { BaseScrubScene } from "@/scenes/BaseScrubScene";
 
 export class DigScene extends BaseScrubScene {
 	private shovel: Phaser.GameObjects.Image;
+	private shoes: Phaser.GameObjects.Image[];
 	private text: Phaser.GameObjects.Text;
 
 	private nextButton: NextButton;
@@ -19,11 +20,26 @@ export class DigScene extends BaseScrubScene {
 
 		let background = this.add.image(this.CX, this.CY, "dig_background");
 
-		for (let i = 0; i < 5; i++) {
-			let x = this.W * (0.2 + 0.6 * Math.random());
-			let y = this.H * (0.1 + 0.9 * Math.random());
+		this.shoes = [];
+		for (let i = 0; i < 4; i++) {
+			let x = 0;
+			let y = 0;
+			let limit = 100;
+			do {
+				x = this.W * (0.1 + 0.6 * Math.random());
+				y = this.H * (0.5 + 0.3 * Math.random());
+			} while (
+				limit-- > 0 &&
+				this.shoes.some(
+					(shoe) => Phaser.Math.Distance.Between(shoe.x, shoe.y, x, y) < 300
+				)
+			);
+
 			let shoe = this.add.image(x, y, "dig_shoe");
+			shoe.setScale(0.5);
+			shoe.setTint(0xaaaaaa);
 			shoe.setAngle(360 * Math.random());
+			this.shoes.push(shoe);
 		}
 
 		this.initDynamicTexture({
@@ -31,13 +47,17 @@ export class DigScene extends BaseScrubScene {
 			brushKey: "soft_brush",
 			centerX: this.CX,
 			centerY: this.CY,
-			// debug: true,
+			debug: true,
+			filter: this.shoes.map(
+				(shoe) => new Phaser.Geom.Circle(shoe.x, shoe.y, 0.55 * shoe.displayWidth)
+			),
 		});
 
 		let foreground = this.add.image(this.CX, this.CY, "dig_foreground");
 
-		this.shovel = this.add.image(100, 1000, "dig_shovel");
-		this.shovel.setOrigin(0, 1);
+		this.shovel = this.add.image(300, 300, "dig_shovel");
+		this.shovel.setOrigin(0.9, 0.8);
+		this.shovel.setScale(0.5);
 
 		this.text = this.addText({
 			x: this.CX,
@@ -86,8 +106,8 @@ export class DigScene extends BaseScrubScene {
 			targets: this.shovel,
 			duration: 1000,
 			ease: "Cubic",
-			x: { from: this.shovel.x, to: 100 },
-			y: { from: this.shovel.y, to: 1000 },
+			x: { from: this.shovel.x, to: 300 },
+			y: { from: this.shovel.y, to: 300 },
 		});
 	}
 }
