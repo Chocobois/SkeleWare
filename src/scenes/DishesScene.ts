@@ -50,7 +50,7 @@ export class DishesScene extends BaseScrubScene {
 		this.nextButton.on("click", () => {
 			this.startScene("CutsceneScene", {
 				textureKey: "0_crimes",
-				nextScene: "BoxingScene",
+				nextScene: "BombScene",
 			});
 		});
 	}
