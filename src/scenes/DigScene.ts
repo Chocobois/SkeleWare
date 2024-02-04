@@ -65,6 +65,17 @@ export class DigScene extends BaseScrubScene {
 		}
 	}
 
+	onPointerDown(pointer: Phaser.Input.Pointer) {
+		super.onPointerMove(pointer);
+		if (pointer.isDown && !this.isComplete) {
+			this.tweens.add({
+				targets: this.shovel,
+				x: pointer.x, y: pointer.y,
+				duration: 120, ease: "Quart"
+			})
+		}
+	}
+
 	onComplete(): void {
 		this.tweens.add({
 			targets: this.shovel,

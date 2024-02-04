@@ -67,6 +67,17 @@ export class DishesScene extends BaseScrubScene {
 		}
 	}
 
+	onPointerDown(pointer: Phaser.Input.Pointer) {
+		super.onPointerMove(pointer);
+		if (pointer.isDown && !this.isComplete) {
+			this.tweens.add({
+				targets: this.sponge,
+				x: pointer.x, y: pointer.y,
+				duration: 120, ease: "Quart"
+			})
+		}
+	}
+
 	onComplete(): void {
 		this.sparkles.setVisible(true);
 
