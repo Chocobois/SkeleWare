@@ -117,7 +117,8 @@ const images: Image[] = [
 	image("scenes/bomb/c6", "c6"),
 	image("scenes/bomb/c7", "c7"),
 	image("scenes/bomb/c8", "c8"),
-	image("scenes/bomb/rip", "rip")
+	image("scenes/bomb/rip", "rip"),
+	image("scenes/bomb/c_alt", "c_alt"),
 ];
 
 /* Spritesheets */
@@ -173,12 +174,14 @@ const audios: Audio[] = [
 	sound("bomb/bad_beep", "beep", 0.5),
 	sound("bomb/button", "button_press", 0.5),
 	sound("bomb/victory", "victory", 0.5),
+	sound("bomb/meme_explosion", "meme_explosion", 0.5),
 	sound("bomb/fail_1", "fail_1", 0.5),
 	sound("bomb/fail_2", "fail_2", 0.5),
 	sound("bomb/fail_3", "fail_3", 0.5),
 	sound("bomb/success", "success", 0.5),
 	sound("bomb/darksouls", "darksouls", 0.5),
 	sound("bomb/air_on_g", "air_on_g", 0.5),
+	sound("bomb/no", "no", 0.5),
 ];
 
 /* Fonts */

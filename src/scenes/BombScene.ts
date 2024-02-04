@@ -46,6 +46,7 @@ export class BombScene extends BaseScene {
 	private stopTimer: boolean = false;
 	private exploded: boolean = false;
 	private flashScreen: Phaser.GameObjects.Graphics;
+	private maxStopLight: number = 3000;
 
 	private initFadeTimer: number = 5000;
 	private imageTimer: number = 2000;
@@ -55,6 +56,9 @@ export class BombScene extends BaseScene {
 	private cFrames: string[] = ["c1","c2","c3","c4","c5","c6","c7","c8","rip"];
 	private baseImage: Phaser.GameObjects.Image;
 	private overImage: Phaser.GameObjects.Image;
+
+	private hasSeenCinematic: boolean = false;
+	private isVictorious: boolean = false;
 
 	constructor() {
 		super({ key: "BombScene" });
@@ -69,7 +73,7 @@ export class BombScene extends BaseScene {
 		this.secondTimer = 1000;
 		this.displayBars = this.add.graphics();
 		this.timerDisplay = this.add.graphics();
-		this.stopLight = 2000;
+		this.stopLight = 3000;
 		this.currentString = "";
 		this.currentPosition = 0;
 		this.indices = [0, 1, 2];
@@ -80,8 +84,10 @@ export class BombScene extends BaseScene {
 		this.stopTimer = false;
 		this.exploded = false;
 		this.cinematicState = 0;
-		this.imageTimer = 1500;
-		this.lingerTimer = 3500;
+		this.imageTimer = 2000;
+		this.lingerTimer = 3000;
+		this.maxStopLight = 3000;
+		this.isVictorious = false;
 		this.cFrames = ["c1","c2","c3","c4","c5","c6","c7","c8","rip"];
 		this.t1 = this.addText({
 			x: this.W*0.10,
@@ -166,10 +172,110 @@ export class BombScene extends BaseScene {
 		this.overImage.setAlpha(0);
 		this.nextButton = new NextButton(this);
 		this.nextButton.on("click", () => {
-			this.startScene("BoxingScene");
+			this.processNext();
 		});
 		this.discombobulateChars();
 
+	}
+
+	resetGameStateVariables(){
+		if(this.hasSeenCinematic)
+		{	
+			this.timer = 99999;
+		} else {
+			this.timer = 45000;
+		}
+
+		if(this.hasSeenCinematic)
+		{	
+			this.maxStopLight = 8000;
+		} else {
+			this.maxStopLight = 2000;
+		}
+		this.stopLight = this.maxStopLight;
+
+		this.stopTimer = false;
+		this.exploded = false;
+
+		//reset failure/success state
+		this.fails = 0;
+		this.successes = 0;
+		this.failCounter.setText("");
+		this.successCounter.setText("");
+
+		//text visible
+		this.t1.setVisible(true);
+		this.t2.setVisible(true);
+		this.t3.setVisible(true);
+		this.t4.setColor("white");
+		this.t4.setVisible(true);
+		this.enteredTextDisplay.setText("_")
+		this.enteredTextDisplay.setVisible(true);
+
+		//reset buttons
+		this.enterButton.turnOn();
+		this.enterButton.setVisible(true);
+		this.enterButton.setInteractive();
+		this.eraseButton.turnOn();
+		this.eraseButton.setVisible(true);
+		this.eraseButton.setInteractive();
+		for(let b = 0; b < this.buttons.length; b++)
+		{
+			this.buttons[b].turnOn();
+			this.buttons[b].setVisible(true);
+			this.buttons[b].setInteractive();
+			this.buttons[b].setIndex(-1);
+		}
+
+		//word state variables
+		this.conservedNumbers = 3;
+		this.currentPosition = 0;
+		this.currentPositionList = [0,0,0];
+		this.indices = [0, 1, 2];
+		this.currentWords = ["bone","dinosaur","humerus"];
+		this.charList = ["a", "b", "c", "d", "e"];
+		this.currentString = "";
+		this.index1 = 0;
+		this.index2 = 1;
+		this.index3 = 2;
+		this.reloadCurrentWords();
+		this.displayBars.clear();
+		this.changeLane();
+		this.drawlanes();
+		this.displayBars.setVisible(true);
+		this.clear();
+
+		//reset graphics stuff
+		this.flashScreen.setVisible(false);
+		this.flashScreen.fillStyle(0xffffff,0.01);
+		this.cinematicState = 0;
+		this.imageTimer = 2000;
+		this.lingerTimer = 3000;
+		this.cIteration = 0;
+		this.baseImage.setTexture("c1");
+		this.baseImage.setAlpha(0);
+		this.overImage.setTexture("c2");
+		this.overImage.setAlpha(0);
+		if(this.hasSeenCinematic)
+		{	
+			this.initFadeTimer = 3000;
+		} else {
+			this.maxStopLight = 5000;
+		}
+	}
+
+	processNext()
+	{
+		if(!this.exploded && !this.isVictorious)
+		{
+			this.sound.play("no");
+		} else if (this.exploded && !this.isVictorious)
+		{
+			this.resetGameStateVariables();
+		} else if (this.isVictorious)
+		{
+			this.startScene("BoxingScene");
+		}
 	}
 
 	playButton(){
@@ -180,7 +286,6 @@ export class BombScene extends BaseScene {
 
 	initiateButtons()
 	{
-
 		this.enterButton = new TextButton(this, this.W*0.875, this.H*0.851, "ENTER", "enter_button", 20);
 		this.enterButton.on("click", () => {
 			this.playButton();
@@ -316,19 +421,20 @@ export class BombScene extends BaseScene {
 		//this.displayBars.clear();
 		//this.displayBars.setVisible(false);
 		if(!this.exploded) {
-			this.enterButton.removeInteractive();
+			this.enterButton.disableInteractive();
 			this.enterButton.turnOff();
-			this.eraseButton.removeInteractive();
+			this.eraseButton.disableInteractive();
 			this.eraseButton.turnOff();
 			for(let i = 0; i < this.buttons.length; i++)
 			{
-				this.buttons[i].removeInteractive();
+				this.buttons[i].disableInteractive();
 				this.buttons[i].turnOff();
 			}
 			this.exploded = true;
 			this.stopTimer = true;
 			this.flashScreen.fillStyle(0xffffff,0.01);
 			this.flashScreen.fillRect(-25, -25, this.W+50, this.H+50);
+			this.flashScreen.setVisible(true);
 			this.cinematicState = 1;
 		}
 		this.nextButton.setVisible(false);
@@ -351,15 +457,6 @@ export class BombScene extends BaseScene {
 		{
 			this.buttons[i].setVisible(false);
 		}
-	}
-
-	initTransition()
-	{
-
-	}
-	
-	explode(){
-
 	}
 
 	advanceString(value: string) {
@@ -580,7 +677,7 @@ export class BombScene extends BaseScene {
 	changeLane()
 	{
 		this.correctLane = Math.round(Math.random()*2);
-		this.stopLight = 3000;
+		this.stopLight = this.maxStopLight;
 	}
 
 	loadChars()
@@ -631,14 +728,28 @@ export class BombScene extends BaseScene {
 					this.initFadeTimer -= d;
 					//this.debugTxt2.setText("DEBUG: " + this.initFadeTimer);
 					this.flashScreen.clear();
-					this.flashScreen.fillStyle(0xffffff, ((5000-this.initFadeTimer)/5000));
+					if(!this.hasSeenCinematic) {
+						this.flashScreen.fillStyle(0xffffff, ((5000-this.initFadeTimer)/5000));
+					} else {
+						this.flashScreen.fillStyle(0xffffff, ((3000-this.initFadeTimer)/3000));
+					}
+
 					this.flashScreen.fillRect(-25, -25, this.W+50, this.H+50);
 					if(this.initFadeTimer <= 0)
 					{
-						this.initFadeTimer = 0;
-						this.hideElements();
-						this.sound.play("air_on_g");
-						this.cinematicState = 2;
+						if(!this.hasSeenCinematic)
+						{
+							this.initFadeTimer = 0;
+							this.hideElements();
+							this.sound.play("air_on_g");
+							this.cinematicState = 2;
+						} else {
+							this.imageTimer = 1000;
+							this.baseImage.setTexture("c_alt");
+							this.baseImage.setAlpha(0);
+							this.cinematicState = 2;
+						}
+
 					}
 				}
 				break;
@@ -647,15 +758,34 @@ export class BombScene extends BaseScene {
 				if (this.imageTimer > 0)
 				{
 					this.imageTimer -= d;
-					this.baseImage.setAlpha(((2000-this.imageTimer)/2000));
+					if(!this.hasSeenCinematic)
+					{
+						this.baseImage.setAlpha(((2000-this.imageTimer)/2000));
+					} else {
+						this.baseImage.setAlpha(((1000-this.imageTimer)/1000));
+					}
+
 				}
 				if(this.imageTimer <= 0)
 				{
-					this.imageTimer = 0;
-					this.baseImage.setAlpha(1);
-					this.flashScreen.setVisible(false);
-					this.lingerTimer = 3000;
-					this.cinematicState = 3;
+					if(!this.hasSeenCinematic){
+						this.imageTimer = 0;
+						this.baseImage.setAlpha(1);
+						this.flashScreen.setVisible(false);
+						this.lingerTimer = 3000;
+						this.cinematicState = 3;
+					} else {
+						this.imageTimer = 0;
+						this.baseImage.setAlpha(1);
+						this.flashScreen.clear();
+						this.flashScreen.fillStyle(0x000000, 1);
+						this.flashScreen.fillRect(-25, -25, this.W+50, this.H+50);
+						this.flashScreen.setVisible(true);
+						this.lingerTimer = 2000;
+						this.sound.play("meme_explosion");
+						this.cinematicState = 3;
+					}
+
 				}
 				break;
 			}
@@ -666,9 +796,19 @@ export class BombScene extends BaseScene {
 				}
 				if(this.lingerTimer <= 0)
 				{
-					this.lingerTimer = 0;
-					this.imageTimer = 2000;
-					this.cinematicState = 4;
+					if(!this.hasSeenCinematic)
+					{
+						this.lingerTimer = 0;
+						this.imageTimer = 2000;
+						this.cinematicState = 4;
+					} else {
+						this.lingerTimer = 0;
+						this.imageTimer = 1000;
+						this.cinematicState = 7;
+						this.overImage.setTexture("rip");
+						this.overImage.setAlpha(0);
+					}
+
 				}
 				break;
 			} case 4: {
@@ -736,7 +876,11 @@ export class BombScene extends BaseScene {
 				if (this.imageTimer > 0)
 				{
 					this.imageTimer -= d;
-					this.baseImage.setAlpha((this.imageTimer/2000));
+					if(!this.hasSeenCinematic){
+						this.baseImage.setAlpha((this.imageTimer/2000));
+					} else {
+						this.baseImage.setAlpha((this.imageTimer/1000));
+					}
 				}
 				if(this.imageTimer <= 0)
 				{
@@ -748,6 +892,8 @@ export class BombScene extends BaseScene {
 					this.sound.play("darksouls");
 					this.lingerTimer = 3000;
 					this.cinematicState = 8;
+					this.hasSeenCinematic = true;
+
 				}
 				break;
 			}

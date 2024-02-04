@@ -37,6 +37,11 @@ export class TextButton extends Button {
         this.resetState();
     }
 
+    turnOn(){
+        this.disabled = false;
+        this.resetState();
+    }
+
     resetState(){
         this.tdisplay.setColor("white");
         this.sprite.setFrame(0);
