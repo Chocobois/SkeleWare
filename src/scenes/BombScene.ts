@@ -47,7 +47,11 @@ export class BombScene extends BaseScene {
 	private exploded: boolean = false;
 	private flashScreen: Phaser.GameObjects.Graphics;
 	private maxStopLight: number = 3000;
+	private currentColor: string = "yellow";
+	private victoryTimer: number = 250;
 
+	private introText: Phaser.GameObjects.Text;
+	private introTimer: number = 5000;
 	private initFadeTimer: number = 5000;
 	private imageTimer: number = 2000;
 	private lingerTimer: number = 3000;
@@ -152,6 +156,14 @@ export class BombScene extends BaseScene {
 			color: "green",
 			text: "",
 		});
+
+		this.introText = this.addText({
+			x: this.W*0.148,
+			y: this.H*0.596,
+			size: 60,
+			color: "yellow",
+			text: "Defuse the bomb!",
+		});
 		this.charList = ["a", "b", "c", "d", "e"];
 		this.currentString = "";
 		/*
@@ -200,17 +212,29 @@ export class BombScene extends BaseScene {
 		//reset failure/success state
 		this.fails = 0;
 		this.successes = 0;
+		this.failCounter.setColor("red");
 		this.failCounter.setText("");
+		this.failCounter.setVisible(true);
+		this.successCounter.setColor("green");
 		this.successCounter.setText("");
+		this.successCounter.setVisible(true);
 
 		//text visible
+		this.t1.setColor("white");
 		this.t1.setVisible(true);
+		this.t2.setColor("white");
 		this.t2.setVisible(true);
+		this.t3.setColor("white");
 		this.t3.setVisible(true);
 		this.t4.setColor("white");
 		this.t4.setVisible(true);
+		this.enteredTextDisplay.setColor("blue");
 		this.enteredTextDisplay.setText("_")
 		this.enteredTextDisplay.setVisible(true);
+		this.introText.setVisible(true);
+		this.introText.setAlpha(1);
+		this.introTimer = 5000;
+
 
 		//reset buttons
 		this.enterButton.turnOn();
@@ -256,6 +280,8 @@ export class BombScene extends BaseScene {
 		this.baseImage.setAlpha(0);
 		this.overImage.setTexture("c2");
 		this.overImage.setAlpha(0);
+		this.victoryTimer = 250;
+		this.currentColor = "yellow";
 		if(this.hasSeenCinematic)
 		{	
 			this.initFadeTimer = 3000;
@@ -326,6 +352,20 @@ export class BombScene extends BaseScene {
 			if(this.successes <= 4) {
 				this.successes++;
 			}
+
+			//refund time if correct word
+			if(this.hasSeenCinematic) {
+				this.timer += 20000;
+			} else {
+				this.timer += 5000;
+			}
+			if(this.timer > 99999) {
+				this.timer = 99999;
+			}
+			if(this.timer > 10500) {
+				this.t4.setColor("white");
+			}
+
 			let st = "";
 			for(let p = 0; p < this.successes; p++)
 			{
@@ -335,10 +375,12 @@ export class BombScene extends BaseScene {
 			if(this.successes >= 4)
 			{
 				this.victory();
+			} else {
+				this.reloadCurrentWords();
+				//this.drawlanes();
+				this.clear();
 			}
-			this.reloadCurrentWords();
-			//this.drawlanes();
-			this.clear();
+
 		} else {
 			if(this.fails <= 2)
 			{
@@ -394,10 +436,26 @@ export class BombScene extends BaseScene {
 	victory(){
 		this.stopTimer = true;
 		this.sound.play("victory");
-		this.currentWords[0] = "Awesome!"
-		this.currentWords[1] = "Impressive."
-		this.currentWords[2] = "POGGERS"
-		this.drawlanes();
+		this.exploded =  false;
+		this.currentColor = "green";
+		this.isVictorious = true;
+		this.currentWords[0] = "Awesome!";
+		this.currentWords[1] = "Impressive.";
+		this.currentWords[2] = "POGGERS";
+		this.t1.setText("Awesome!");
+		this.t1.setColor(this.currentColor);
+		this.t2.setText("Impressive.");
+		this.t2.setColor(this.currentColor);
+		this.t3.setText("POGGERS");
+		this.t3.setColor(this.currentColor);
+
+		this.failCounter.setText("  !                    !                    !");
+		this.failCounter.setColor(this.currentColor);
+		this.enteredTextDisplay.setText("!!BASED!!");
+		this.enteredTextDisplay.setColor(this.currentColor);
+		this.displayBars.clear();
+		this.displayBars.setVisible(false);
+		//this.drawlanes();
 		this.enterButton.removeInteractive();
 		this.enterButton.turnOff();
 		this.eraseButton.removeInteractive();
@@ -453,6 +511,7 @@ export class BombScene extends BaseScene {
 		this.displayBars.setVisible(false);
 		this.eraseButton.setVisible(false);
 		this.enterButton.setVisible(false);
+		this.introText.setVisible(false);
 		for(let i = 0; i < this.buttons.length; i++)
 		{
 			this.buttons[i].setVisible(false);
@@ -662,13 +721,14 @@ export class BombScene extends BaseScene {
 
 	drawlanes(){
 		this.displayBars.clear();
+		let t = (Math.abs(this.secondTimer-500)+300)/1200;
 		for (let i = 0; i < BombScene.LANES.length; i++ )
 		{
 			if(!(i == this.correctLane)) {
-				this.displayBars.fillStyle(0xFF6868,0.35);
+				this.displayBars.fillStyle(0xFF6868,t);
 				this.displayBars.fillRect(this.W*0.05, this.H*BombScene.LANES[i], 1200, 120);
 			} else {
-				this.displayBars.fillStyle(0x6BFF68,0.35);
+				this.displayBars.fillStyle(0x6BFF68,t);
 				this.displayBars.fillRect(this.W*0.05, this.H*BombScene.LANES[i], 1200, 120);
 			}
 		}
@@ -699,14 +759,36 @@ export class BombScene extends BaseScene {
 				this.sound.play("beep");
 				this.t4.setColor("red");
 			}
+			if(this.introTimer > 0) {
+				if(this.currentColor == "yellow")
+				{
+					this.currentColor = "red";
+					this.introText.setColor(this.currentColor);
+				} else {
+					this.currentColor = "yellow";
+					this.introText.setColor(this.currentColor);
+				}
+			}
 			this.secondTimer = 1000;
 		}
 		
 		if(this.stopLight <= 0){
 			this.changeLane();
-			this.displayBars.clear();
-			this.drawlanes();
 		}
+		this.displayBars.clear();
+		this.drawlanes();
+
+		if(this.introTimer > 0)
+		{
+			this.introTimer -= d;
+			this.introText.setAlpha(this.introTimer/5000);
+			if(this.introTimer <= 0) {
+				this.introTimer = 0;
+				this.introText.setAlpha(0);
+			}
+		}
+
+
 
 		this.timer -= d;
 		if(this.timer <= 0)
@@ -900,9 +982,45 @@ export class BombScene extends BaseScene {
 		}
 	}
 
+	updateVictory(d: number){
+		this.victoryTimer -= d;
+		if(this.victoryTimer <= 0)
+		{
+			if(this.currentColor == "green") {
+				this.currentColor = "yellow";
+				this.t4.setColor(this.currentColor);
+				this.t2.setColor(this.currentColor);
+				this.t3.setColor(this.currentColor);
+				this.t1.setColor(this.currentColor);
+
+				this.failCounter.setColor(this.currentColor);
+				this.successCounter.setColor(this.currentColor);
+
+				this.enteredTextDisplay.setColor(this.currentColor);
+
+			} else {
+				this.currentColor = "green";
+				this.t4.setColor(this.currentColor);
+				this.t2.setColor(this.currentColor);
+				this.t3.setColor(this.currentColor);
+				this.t1.setColor(this.currentColor);
+
+				this.failCounter.setColor(this.currentColor);
+				this.successCounter.setColor(this.currentColor);
+
+				this.enteredTextDisplay.setColor(this.currentColor);
+
+			}
+			this.victoryTimer = 250;
+		}
+	}
+
 	update(time: number, delta: number) {
 		if(!this.stopTimer){
 			this.updateTimers(delta);
+		} else if (this.stopTimer && this.isVictorious)
+		{
+			this.updateVictory(delta);
 		}
 		if(this.cinematicState > 0)
 		{
