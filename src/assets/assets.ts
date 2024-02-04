@@ -62,6 +62,9 @@ const images: Image[] = [
 	image("scenes/computer/popupdiagonal", "computer_popup_blank_diagonal"),
 	image("scenes/computer/popuphorizontal", "computer_popup_blank_horizontal"),
 
+	image("scenes/computer/close_horizontal", "close_horizontal"),
+	image("scenes/computer/ibone_popup_horizontal", "computer_ibone_horizontal"),
+
 	// Court scene
 	image("scenes/court/bgCourt", "court_background"),
 	image("scenes/court/foregroundTable", "court_foreground"),
