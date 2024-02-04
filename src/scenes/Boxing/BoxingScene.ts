@@ -88,8 +88,13 @@ export class BoxingScene extends BaseScene {
 			const remaining = removeLast(this.playerHealth);
 			this.player.setHealth(remaining);
 			this.player.shake();
+			const ran = Math.floor(Math.random()*3)+1;
+			this.sound.play(`boxing_punch${ran}`, { volume: 0.75 });
 			if( remaining == 0 ) {
 				this.opponent.setWinner();
+				setTimeout(() => {
+					this.sound.play("boxing_tundouble", { volume: 0.6 });
+				}, 200);
 				setTimeout(() => {
 					this.startScene("BoxingScene");
 				}, 800);
@@ -98,13 +103,22 @@ export class BoxingScene extends BaseScene {
 
 		this.opponent.on("damage", () => {
 			removeLast(this.opponentHealth);
+			const ran = Math.floor(Math.random()*3)+1;
+			this.sound.play(`boxing_punch${ran}`, { volume: 0.75 });
 		});
 
 		this.opponent.on("defeat", () => {
 			setTimeout(() => {
+				this.sound.play("boxing_tundouble", { volume: 0.6 });
+			}, 200);
+			setTimeout(() => {
 				this.startScene("ComputerScene");
 			}, 800);
 		});
+
+		setTimeout(() => {
+			this.sound.play("boxing_tunsingle", { volume: 0.6 });
+		}, 200);
 	}
 
 	update(time: number, delta: number) {
