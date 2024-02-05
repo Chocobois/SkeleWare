@@ -134,9 +134,12 @@ const images: Image[] = [
 const spritesheets: SpriteSheet[] = [
 	spritesheet("effects/meme_explosion", "meme_explosion", 200, 282),
 
-	spritesheet('sprites/enter_button', 'enter_button', 100, 100),
-	spritesheet('sprites/button_text', 'text_button', 120, 120),
-	spritesheet('sprites/erase_button', 'erase_button', 100, 100),
+	spritesheet("sprites/enter_button", "enter_button", 100, 100),
+	spritesheet("sprites/button_text", "text_button", 120, 120),
+	spritesheet("sprites/erase_button", "erase_button", 100, 100),
+
+	spritesheet("audio", "audio", 300, 300),
+	spritesheet("music", "music", 300, 300),,
 	spritesheet('sprites/arrow_button', 'arrow_button', 512, 512)
 ];
 
@@ -145,6 +148,7 @@ const audios: Audio[] = [
 	// Placeholder template
 	music("title", "m_main_menu"),
 	music("first", "m_first"),
+	music("Do the Funky Strut", "m_funky"),
 	sound("tree/rustle", "t_rustle", 0.5),
 	sound("w_explosion", "w_explosion", 0.5),
 

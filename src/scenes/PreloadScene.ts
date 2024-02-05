@@ -74,6 +74,10 @@ export class PreloadScene extends BaseScene {
 	}
 
 	create() {
-		this.startScene("DishesScene");
+		this.fade(true, 200, 0x000000);
+		this.addEvent(200, () => {
+			this.scene.start("TitleScene");
+			this.scene.launch("UIScene");
+		});
 	}
 }

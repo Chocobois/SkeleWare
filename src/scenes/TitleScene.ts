@@ -1,19 +1,23 @@
 import { BaseScene } from "@/scenes/BaseScene";
 import { Music } from "@/components/Music";
 
-import { title, version } from "@/version.json";
+const creditsLeft = `@Golenchu
+@LuxxArt
+@ArcticFqx
+@KonixKun
+@MatoCookies
+Lumie
+Soulsong
+Frassy`;
 
-const creditsLeft = `${title} 
-
-@Handle
-@Handle
-@Handle`;
-
-const creditsRight = `
-
-role
-role
-role`;
+const creditsRight = `code & art
+art
+code
+art
+audio & code
+art & code
+art
+art`;
 
 export class TitleScene extends BaseScene {
 	public sky: Phaser.GameObjects.Image;
@@ -27,7 +31,6 @@ export class TitleScene extends BaseScene {
 	public title: Phaser.GameObjects.Image;
 	public subtitle: Phaser.GameObjects.Text;
 	public tap: Phaser.GameObjects.Text;
-	public version: Phaser.GameObjects.Text;
 
 	public musicTitle: Phaser.Sound.WebAudioSound;
 	public select: Phaser.Sound.WebAudioSound;
@@ -69,9 +72,9 @@ export class TitleScene extends BaseScene {
 		this.title.setAlpha(-2);
 
 		this.subtitle = this.addText({
-			x: 0.25 * this.W,
+			x: 0.2 * this.W,
 			y: 0.87 * this.H,
-			size: 120,
+			size: 100,
 			color: "#000",
 			text: "Tap to start",
 		});
@@ -93,44 +96,34 @@ export class TitleScene extends BaseScene {
 		this.tap.setStroke("#FFF", 8);
 		this.tap.setPadding(2);
 
-		this.version = this.addText({
-			x: this.W,
-			y: this.H,
-			size: 40,
-			color: "#000",
-			text: version,
-		});
-		this.version.setOrigin(1, 1);
-		this.version.setAlpha(-1);
-		this.version.setStroke("#FFF", 8);
-		this.version.setPadding(2);
-
 		this.credits = this.add.container(0, 0);
 		this.credits.setVisible(false);
 		this.credits.setAlpha(0);
 
 		let credits1 = this.addText({
-			x: 0.65 * this.W,
-			y: 0,
+			x: 0.68 * this.W,
+			y: this.H,
 			size: 40,
 			color: "#c2185b",
 			text: creditsLeft,
 		});
+		credits1.setOrigin(0, 1);
 		credits1.setStroke("#FFF", 10);
 		credits1.setPadding(2);
-		credits1.setLineSpacing(0);
+		credits1.setLineSpacing(-10);
 		this.credits.add(credits1);
 
 		let credits2 = this.addText({
 			x: 0.85 * this.W,
-			y: 0,
+			y: this.H,
 			size: 40,
 			color: "#c2185b",
 			text: creditsRight,
 		});
+		credits2.setOrigin(0, 1);
 		credits2.setStroke("#FFF", 10);
 		credits2.setPadding(2);
-		credits2.setLineSpacing(0);
+		credits2.setLineSpacing(-10);
 		this.credits.add(credits2);
 
 		// Music
@@ -186,8 +179,6 @@ export class TitleScene extends BaseScene {
 				0.02 * ((this.title.visible ? 1 : 0) - this.title.alpha);
 			this.subtitle.alpha +=
 				0.02 * ((this.subtitle.visible ? 1 : 0) - this.subtitle.alpha);
-			this.version.alpha +=
-				0.02 * ((this.version.visible ? 1 : 0) - this.version.alpha);
 
 			if (this.credits.visible) {
 				this.credits.alpha += 0.02 * (1 - this.credits.alpha);
@@ -228,7 +219,16 @@ export class TitleScene extends BaseScene {
 				this.fade(true, 1000, 0x000000);
 				this.addEvent(1050, () => {
 					this.musicTitle.stop();
-					this.scene.start("IntroScene");
+
+					// this.scene.start("IntroScene");
+					this.scene.start("CutsceneScene", {
+						textureKey: "1_intro",
+						nextScene: "CutsceneScene",
+						nextArgs: {
+							textureKey: "2_dig",
+							nextScene: "DigScene",
+						},
+					});
 				});
 			});
 		}
