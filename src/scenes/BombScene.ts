@@ -3,6 +3,7 @@ import { NextButton } from "@/components/NextButton";
 import dict1 from './bone_dictionary.txt?raw'
 import dict2 from './devonly_dictionary.txt?raw'
 import { TextButton } from "@/components/TextButton";
+import { UIScene } from "./UIScene";
 
 
 export class BombScene extends BaseScene {
@@ -888,6 +889,8 @@ export class BombScene extends BaseScene {
 						this.lingerTimer = 2000;
 						this.sound.play("meme_explosion");
 						this.cinematicState = 3;
+
+						(this.scene.get("UIScene") as UIScene).stopFunkyMusic();
 					}
 
 				}

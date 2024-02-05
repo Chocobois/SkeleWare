@@ -4,6 +4,7 @@ import OutlinePipelinePlugin from "phaser3-rex-plugins/plugins/outlinepipeline-p
 import { PreloadScene } from "@/scenes/PreloadScene";
 import { TitleScene } from "@/scenes/TitleScene";
 import { GameScene } from "@/scenes/GameScene";
+import { UIScene } from "@/scenes/UIScene";
 
 import { IntroScene } from "@/scenes/IntroScene";
 import { BombScene } from "@/scenes/BombScene";
@@ -44,6 +45,8 @@ const config: Phaser.Types.Core.GameConfig = {
 		PolishScene,
 		DrivethruScene,
 		IroningScene,
+		// Overlay
+		UIScene,
 	],
 
 	plugins: {

@@ -29,6 +29,7 @@ export class BaseScene extends Phaser.Scene {
 	// Start a camera fade effect to a specific color
 	fade(fadeOut: boolean, time: number, hexColor: number) {
 		let c = Phaser.Display.Color.ColorToRGBA(hexColor);
+		this.cameras.main.fadeEffect.reset();
 		this.cameras.main.fadeEffect.start(fadeOut, time, c.r, c.g, c.b);
 	}
 
