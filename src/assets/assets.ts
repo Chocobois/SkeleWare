@@ -39,6 +39,7 @@ const images: Image[] = [
 
 	// Baseball scene
 	image("scenes/baseball/background", "baseball_background"),
+	image("scenes/baseball/trackway", "trackway"),
 
 	// Boxing scene
 	image("scenes/boxing/BGboxingring", "boxing_background"),
@@ -135,7 +136,8 @@ const spritesheets: SpriteSheet[] = [
 
 	spritesheet('sprites/enter_button', 'enter_button', 100, 100),
 	spritesheet('sprites/button_text', 'text_button', 120, 120),
-	spritesheet('sprites/erase_button', 'erase_button', 100, 100)
+	spritesheet('sprites/erase_button', 'erase_button', 100, 100),
+	spritesheet('sprites/arrow_button', 'arrow_button', 512, 512)
 ];
 
 /* Audios */
