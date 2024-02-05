@@ -192,8 +192,10 @@ const audios: Audio[] = [
 	sound("bomb/fail_3", "fail_3", 0.5),
 	sound("bomb/success", "success", 0.5),
 	sound("bomb/darksouls", "darksouls", 0.5),
+	sound("bomb/alarm", "alarm", 0.5),
 	sound("bomb/air_on_g", "air_on_g", 0.5),
 	sound("bomb/no", "no", 0.5),
+	
 ];
 
 /* Fonts */
