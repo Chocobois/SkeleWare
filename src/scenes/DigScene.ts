@@ -134,7 +134,7 @@ export class DigScene extends BaseScrubScene {
 	nextScene() {
 		this.startScene("CutsceneScene", {
 			textureKey: "3_loot",
-			nextScene: "PolishScene",
+			nextScene: "BaseballScene",
 		});
 	}
 }
