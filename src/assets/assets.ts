@@ -139,7 +139,7 @@ const spritesheets: SpriteSheet[] = [
 	spritesheet("sprites/erase_button", "erase_button", 100, 100),
 
 	spritesheet("audio", "audio", 300, 300),
-	spritesheet("music", "music", 300, 300),,
+	spritesheet("music", "music", 300, 300),
 	spritesheet('sprites/arrow_button', 'arrow_button', 512, 512)
 ];
 
