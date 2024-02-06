@@ -3,8 +3,11 @@ import { Music } from "@/components/Music";
 import { Button } from "@/components/elements/Button";
 
 export class UIScene extends BaseScene {
-	private musicFunky: Music;
+	private currentMusic: Music;
+	private songs: { [key: string]: Music };
 
+	public musicEnabled: boolean;
+	public audioEnabled: boolean;
 	private musicButton: Button;
 	private audioButton: Button;
 	private musicCircle: Phaser.GameObjects.Ellipse;
@@ -17,11 +20,20 @@ export class UIScene extends BaseScene {
 	}
 
 	create(): void {
+		this.musicEnabled = true;
+		this.audioEnabled = true;
+
 		/* Music */
 
-		this.musicFunky = new Music(this, "m_funky", { volume: 0.2 });
-		this.musicFunky.on("bar", this.onBar, this);
-		this.musicFunky.on("beat", this.onBeat, this);
+		this.songs = {
+			funky: new Music(this, "m_funky", { volume: 0.25 }),
+			tense: new Music(this, "m_tense", { volume: 0.25 }),
+			air: new Music(this, "m_air_on_g", { volume: 0.25 }),
+		};
+		for (let key in this.songs) {
+			this.songs[key].on("bar", this.onBar, this);
+			this.songs[key].on("beat", this.onBeat, this);
+		}
 
 		/* Buttons */
 
@@ -42,25 +54,18 @@ export class UIScene extends BaseScene {
 		this.audioButton.add(this.audioImage);
 		this.audioButton.bindInteractive(this.audioImage);
 		this.audioButton.on("click", this.toggleAudio, this);
-
-		/* Events */
-
-		this.scene.get("CutsceneScene").events.on(
-			"funkyMusic",
-			(state: boolean) => {
-				if (state) this.musicFunky.play();
-				else this.musicFunky.stop();
-			},
-			this
-		);
 	}
 
 	update(time: number, delta: number) {
 		this.musicButton.setScale(1.0 - 0.1 * this.musicButton.holdSmooth);
 		this.audioButton.setScale(1.0 - 0.1 * this.audioButton.holdSmooth);
 
-		let beat = this.musicFunky.barTime % 2;
-		this.musicButton.angle = 5 * Math.sin(beat * Math.PI);
+		if (this.currentMusic && this.musicEnabled) {
+			let beat = this.currentMusic.barTime % 2;
+			this.musicButton.angle = 10 * Math.sin(beat * Math.PI);
+		} else {
+			this.musicButton.angle = 0;
+		}
 	}
 
 	onBar(bar: number) {}
@@ -68,20 +73,35 @@ export class UIScene extends BaseScene {
 	onBeat(time: number) {}
 
 	toggleMusic() {
-		if (this.musicFunky.isPlaying) {
-			this.musicFunky.pause();
-			this.musicImage.setFrame(1);
-		} else {
-			this.musicFunky.play();
-			this.musicImage.setFrame(0);
+		this.musicEnabled = !this.musicEnabled;
+		this.musicImage.setFrame(this.musicEnabled ? 0 : 1);
+
+		for (let key in this.songs) {
+			this.songs[key].setVolume(this.musicEnabled ? 0.25 : 0.0);
 		}
 	}
 
 	toggleAudio() {
-		this.audioImage.setFrame(1);
+		this.audioEnabled = !this.audioEnabled;
+		this.sound.mute = !this.audioEnabled;
+		this.audioImage.setFrame(this.audioEnabled ? 0 : 1);
 	}
 
-	stopFunkyMusic() {
-		this.musicFunky.stop();
+	playMusic(key: string) {
+		if (this.songs[key]) {
+			if (this.songs[key] != this.currentMusic) {
+				this.stopMusic();
+				this.currentMusic = this.songs[key];
+			}
+
+			this.currentMusic.play();
+		}
+	}
+
+	stopMusic() {
+		// Stop all songs
+		for (let key in this.songs) {
+			this.songs[key].stop();
+		}
 	}
 }

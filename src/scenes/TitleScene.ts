@@ -1,5 +1,6 @@
 import { BaseScene } from "@/scenes/BaseScene";
 import { Music } from "@/components/Music";
+import { UIScene } from "./UIScene";
 
 const creditsLeft = `@Golenchu
 @LuxxArt
@@ -44,6 +45,8 @@ export class TitleScene extends BaseScene {
 
 	create(): void {
 		this.fade(false, 200, 0x000000);
+
+		(this.scene.get("UIScene") as UIScene).stopMusic();
 
 		this.sky = this.add.image(this.CX, this.CY, "title_sky");
 		this.containToScreen(this.sky);
@@ -128,7 +131,7 @@ export class TitleScene extends BaseScene {
 
 		// Music
 		if (!this.musicTitle) {
-			this.musicTitle = new Music(this, "m_first", { volume: 0.0 });
+			this.musicTitle = new Music(this, "m_main_menu", { volume: 0.2 });
 			this.musicTitle.on("bar", this.onBar, this);
 			this.musicTitle.on("beat", this.onBeat, this);
 

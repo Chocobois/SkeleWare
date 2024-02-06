@@ -147,6 +147,8 @@ const audios: Audio[] = [
 	music("title", "m_main_menu"),
 	music("first", "m_first"),
 	music("Do the Funky Strut", "m_funky"),
+	music("Action Preparation", "m_tense"),
+	music("air_on_g", "m_air_on_g"),
 	sound("tree/rustle", "t_rustle", 0.5),
 	sound("w_explosion", "w_explosion", 0.5),
 
@@ -167,7 +169,6 @@ const audios: Audio[] = [
 	sound("computer/balloon", "computer_popup"),
 
 	// Dig scene
-	
 
 	// Dishes scene
 	sound("dishes/rub", "dishes_rub"),
@@ -181,7 +182,7 @@ const audios: Audio[] = [
 	sound("drivethru/sim_stopclick", "drivethru_clickup"),
 
 	// Ironing scene
-	
+
 	//Bomb scene
 	sound("bomb/bad_beep", "beep", 0.5),
 	sound("bomb/button", "button_press", 0.5),
@@ -193,9 +194,7 @@ const audios: Audio[] = [
 	sound("bomb/success", "success", 0.5),
 	sound("bomb/darksouls", "darksouls", 0.5),
 	sound("bomb/alarm", "alarm", 0.5),
-	sound("bomb/air_on_g", "air_on_g", 0.5),
 	sound("bomb/no", "no", 0.5),
-	
 ];
 
 /* Fonts */

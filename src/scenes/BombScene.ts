@@ -1,5 +1,5 @@
 import { BaseScene } from "./BaseScene";
-import { NextButton } from "@/components/NextButton";
+import { RetryButton } from "@/components/RetryButton";
 import dict1 from './bone_dictionary.txt?raw'
 import dict2 from './devonly_dictionary.txt?raw'
 import { TextButton } from "@/components/TextButton";
@@ -12,7 +12,7 @@ export class BombScene extends BaseScene {
 	private FURRYDICTIONARY: boolean = false;
 
 	private background: Phaser.GameObjects.Image;
-	private nextButton: NextButton;
+	private retryButton: RetryButton;
     private currentWords: string[] = ["","",""];
 	private yandereDev: string[] = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
     private correctLane: number = 1; // which lane is safe
@@ -191,15 +191,19 @@ export class BombScene extends BaseScene {
 		this.baseImage.setAlpha(0);
 		this.overImage = this.add.image(this.CX, this.CY, "c2");
 		this.overImage.setAlpha(0);
-		this.nextButton = new NextButton(this);
-		this.nextButton.on("click", () => {
-			this.processNext();
+		this.retryButton = new RetryButton(this);
+		this.retryButton.setVisible(false);
+		this.retryButton.on("click", () => {
+			this.resetGameStateVariables();
+			this.retryButton.setVisible(false);
 		});
 		this.discombobulateChars();
 
 	}
 
 	resetGameStateVariables(){
+		(this.scene.get("UIScene") as UIScene).playMusic("tense");
+
 		if(this.hasSeenCinematic)
 		{	
 			this.timer = 99999;
@@ -299,34 +303,21 @@ export class BombScene extends BaseScene {
 		}
 	}
 
-	processNext()
+	nextScene()
 	{
-		if(!this.exploded && !this.isVictorious)
-		{
-			this.sound.play("no");
-		} else if (this.exploded && !this.isVictorious)
-		{
-			this.resetGameStateVariables();
-		} else if (this.isVictorious)
-		{
-			this.isVictorious = false;
-			this.exploded = false;
-			this.resetGameStateVariables();
-			
-			this.startScene("CutsceneScene", {
-				textureKey: "11_defused",
-				nextScene: "CutsceneScene",
-				nextArgs: {
-					textureKey: "12_miku",
-					nextScene: "BoxingScene",
-				},
-			});
-		}
+		this.startScene("CutsceneScene", {
+			textureKey: "11_defused",
+			nextScene: "CutsceneScene",
+			nextArgs: {
+				textureKey: "12_miku",
+				nextScene: "BoxingScene",
+			},
+		});
 	}
 
 	warningFlash()
 	{
-		this.sound.play("alarm");
+		this.sound.play("alarm", { volume: 0.3 });
 		this.warningTimer = 1000;
 		this.warningScreen.clear();
 		this.warningScreen.setVisible(true);
@@ -336,7 +327,7 @@ export class BombScene extends BaseScene {
 
 	playButton(){
 		if(!this.exploded) {
-			this.sound.play("button_press");
+			this.sound.play("button_press", { volume: 0.3 });
 		}
 	}
 
@@ -439,7 +430,7 @@ export class BombScene extends BaseScene {
 
 	playSuccess(){
 		if(!this.exploded) {
-			this.sound.play("success");
+			this.sound.play("success", { volume: 0.3 });
 		}
 	}
 
@@ -448,11 +439,11 @@ export class BombScene extends BaseScene {
 		if(!this.exploded){
 			if(this.fails == 1)
 			{
-				this.sound.play("fail_1");
+				this.sound.play("fail_1", { volume: 0.2 });
 			} else if (this.fails == 2) {
-				this.sound.play("fail_2")
+				this.sound.play("fail_2", { volume: 0.2 })
 			} else if (this.fails >= 3){
-				this.sound.play("fail_3")
+				this.sound.play("fail_3", { volume: 0.3 })
 			}
 			this.shake(500);
 		}
@@ -461,13 +452,15 @@ export class BombScene extends BaseScene {
 	timeoutSound()
 	{
 		if(!this.exploded){
-			this.sound.play("fail_3")
+			this.sound.play("fail_3", { volume: 0.3 })
 		}
 	}
 
 	victory(){
+		(this.scene.get("UIScene") as UIScene).stopMusic();
+
 		this.stopTimer = true;
-		this.sound.play("victory");
+		this.sound.play("victory", { volume: 0.3 });
 		this.exploded =  false;
 		this.currentColor = "green";
 		this.isVictorious = true;
@@ -497,6 +490,8 @@ export class BombScene extends BaseScene {
 			this.buttons[i].removeInteractive();
 			this.buttons[i].turnOff();
 		}
+
+		this.addEvent(3000, this.nextScene, this);
 	}
 
 	defeat(){
@@ -526,8 +521,9 @@ export class BombScene extends BaseScene {
 			this.flashScreen.fillRect(-25, -25, this.W+50, this.H+50);
 			this.flashScreen.setVisible(true);
 			this.cinematicState = 1;
+
+			(this.scene.get("UIScene") as UIScene).stopMusic();
 		}
-		this.nextButton.setVisible(false);
 	}
 
 	hideElements()
@@ -794,7 +790,7 @@ export class BombScene extends BaseScene {
 		if(this.secondTimer <= 0) {
 			if(this.timer <= 10500)
 			{
-				this.sound.play("beep");
+				this.sound.play("beep", { volume: 0.3 });
 				this.t4.setColor("red");
 			}
 			if(this.introTimer > 0) {
@@ -859,7 +855,7 @@ export class BombScene extends BaseScene {
 						{
 							this.initFadeTimer = 0;
 							this.hideElements();
-							this.sound.play("air_on_g");
+							(this.scene.get("UIScene") as UIScene).playMusic("air");
 							this.cinematicState = 2;
 						} else {
 							this.imageTimer = 1000;
@@ -900,10 +896,8 @@ export class BombScene extends BaseScene {
 						this.flashScreen.fillRect(-25, -25, this.W+50, this.H+50);
 						this.flashScreen.setVisible(true);
 						this.lingerTimer = 2000;
-						this.sound.play("meme_explosion");
+						this.sound.play("meme_explosion", { volume: 0.4 });
 						this.cinematicState = 3;
-
-						(this.scene.get("UIScene") as UIScene).stopFunkyMusic();
 					}
 
 				}
@@ -1008,8 +1002,9 @@ export class BombScene extends BaseScene {
 					this.overImage.setAlpha(1);
 					this.flashScreen.setVisible(false);
 					this.baseImage.setAlpha(0)
-					this.nextButton.setVisible(true);
-					this.sound.play("darksouls");
+					this.retryButton.setVisible(true);
+					(this.scene.get("UIScene") as UIScene).stopMusic();
+					this.sound.play("darksouls", { volume: 0.3 });
 					this.lingerTimer = 3000;
 					this.cinematicState = 8;
 					this.hasSeenCinematic = true;
@@ -1083,6 +1078,6 @@ export class BombScene extends BaseScene {
 		{
 			this.updateCinematics(delta);
 		}
-		this.nextButton.update(time, delta);
+		this.retryButton.update(time, delta);
 	}
 }

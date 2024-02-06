@@ -1,5 +1,6 @@
 import { BaseScene } from "./BaseScene";
 import { NextButton } from "@/components/NextButton";
+import { UIScene } from "./UIScene";
 
 const red = "#f87171";
 const green = "#4ade80";
@@ -31,8 +32,7 @@ const dialogue: { [key: string]: [string, string][] } = {
 	"4_shoes": [
 		[yellow, "Holy shit, full size sneakers!"],
 		[yellow, "Now we can play baseball."],
-		[red, "... Is that all you think about?"],
-		[yellow, "If only we had some cool outfits."],
+		[red, "If only we had some cool outfits."],
 		[blue, "Guys, look. We can order clothes online."],
 	],
 	"5_package": [
@@ -76,7 +76,7 @@ const dialogue: { [key: string]: [string, string][] } = {
 	"14_final": [
 		[red, "Let's do this again tomorrow."],
 		[green, "Dude."],
-		[white, "The End"],
+		[white, "- The End -"],
 	],
 };
 
@@ -153,11 +153,14 @@ export class CutsceneScene extends BaseScene {
 				this.continue();
 			}
 		});
+		this.input.keyboard?.on("keydown-SPACE", () => {
+			if (this.nextIcon.visible) {
+				this.continue();
+			}
+		});
 
 		// Special case for intro cutscene
 		if (textureKey == "1_intro") {
-			this.events.emit("funkyMusic", true);
-
 			let rect = this.add.rectangle(
 				this.background.x,
 				this.background.y,
@@ -186,6 +189,16 @@ export class CutsceneScene extends BaseScene {
 			});
 		} else {
 			this.addEvent(400, this.continue, this);
+		}
+
+		if (textureKey == "1_intro") {
+			(this.scene.get("UIScene") as UIScene).playMusic("funky");
+		}
+		if (textureKey == "10_bomb") {
+			(this.scene.get("UIScene") as UIScene).playMusic("tense");
+		}
+		if (textureKey == "11_defused") {
+			(this.scene.get("UIScene") as UIScene).playMusic("funky");
 		}
 	}
 

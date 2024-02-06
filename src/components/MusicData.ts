@@ -2,8 +2,8 @@ const overlap = 2;
 
 const Data = {
 	m_main_menu: {
-		offset: 0.424,
-		bpm: 60,
+		offset: 1 / (170 / 60),
+		bpm: 170,
 	},
 	m_first: {
 		offset: 0,
@@ -37,6 +37,14 @@ const Data = {
 		loop: true,
 		start: 0 / 48000,
 		end: 7813567 / 48000,
+	},
+	m_tense: {
+		offset: 2171 / 48000,
+		bpm: 140,
+	},
+	m_air_on_g: {
+		offset: 10097 / 48000,
+		bpm: 63,
 	},
 };
 
