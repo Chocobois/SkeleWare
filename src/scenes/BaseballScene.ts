@@ -6,9 +6,9 @@ export class BaseballScene extends BaseScene {
 	private background: Phaser.GameObjects.Image;
 	private nextButton: NextButton;
 	private chainCounter: number; // how many clicks to get a chain;
-	private chainLevel: number; 
+	private chainLevel: number;
 	private maxChain: number = 2;
-	private chainMultipliers: number[] = [2,4];
+	private chainMultipliers: number[] = [2, 4];
 	private battingDisplay: Phaser.GameObjects.Graphics; // displays the bar thingy that you use to bat
 	private effectHandler: Phaser.GameObjects.Graphics; // handles the zoomy lines and such
 
@@ -20,31 +20,24 @@ export class BaseballScene extends BaseScene {
 	private batter: Phaser.GameObjects.Sprite;
 	private QTEBar: Phaser.GameObjects.Sprite;
 
-
 	private phase: number; // where are we in the game cycle
 	private timer: number = 0;
 
-	
-
 	constructor() {
 		super({ key: "BaseballScene" });
-		this.runningMeters = this.add.graphics();
-		this.runningDisplay = this.add.graphics();
-		this.QTEBar = this.add.sprite(0,0,"trackway");
-		this.QTEBar.setVisible(false);
-		this
-
 	}
 
-	initiateScene() //play intro speech and time QTE
-	{
-
-	}
+	initiateScene() {} //play intro speech and time QTE
 	create(): void {
 		this.fade(false, 200, 0x000000);
 		this.cameras.main.setBackgroundColor(0x67e8f9);
 
 		this.background = this.add.image(this.CX, this.CY, "baseball_background");
+
+		this.runningMeters = this.add.graphics();
+		this.runningDisplay = this.add.graphics();
+		this.QTEBar = this.add.sprite(0, 0, "trackway");
+		this.QTEBar.setVisible(false);
 
 		this.nextButton = new NextButton(this);
 		this.nextButton.on("click", () => {
@@ -55,7 +48,7 @@ export class BaseballScene extends BaseScene {
 		});
 	}
 
-	updatePhaseTimer(d: number){
+	updatePhaseTimer(d: number) {
 		this.timer -= d;
 	}
 
