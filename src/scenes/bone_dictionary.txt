@@ -30,6 +30,7 @@ carpals
 scaphoid
 kneecap
 lunate
+jack
 triquetrum
 trapezium
 trapezoid
@@ -38,12 +39,14 @@ fireanddice
 fibula
 pisiform
 stapes
+marowak
 ossification
 ossuary
 capitate
 hamate
 malleus
 incus
+cubone
 lich
 axial
 kiso

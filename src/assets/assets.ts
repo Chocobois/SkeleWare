@@ -39,6 +39,7 @@ const images: Image[] = [
 
 	// Baseball scene
 	image("scenes/baseball/background", "baseball_background"),
+	image("scenes/baseball/trackway", "trackway"),
 
 	// Boxing scene
 	image("scenes/boxing/BGboxingring", "boxing_background"),
@@ -139,6 +140,7 @@ const spritesheets: SpriteSheet[] = [
 
 	spritesheet("audio", "audio", 300, 300),
 	spritesheet("music", "music", 300, 300),
+	spritesheet('sprites/arrow_button', 'arrow_button', 512, 512)
 ];
 
 /* Audios */
