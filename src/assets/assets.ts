@@ -142,7 +142,10 @@ const spritesheets: SpriteSheet[] = [
 	spritesheet("audio", "audio", 300, 300),
 	spritesheet("music", "music", 300, 300),
 	spritesheet('sprites/arrow_button', 'arrow_button', 512, 512),
-	spritesheet('sprites/batting_button', 'batting_button', 256, 256)
+	spritesheet('sprites/batting_button', 'batting_button', 256, 256),
+	spritesheet('sprites/pitcher', 'pitcher', 256, 256),
+	spritesheet('sprites/batter', 'batter', 256, 256),
+	spritesheet('sprites/ball', 'ball', 128, 128)
 ];
 
 /* Audios */
@@ -160,7 +163,10 @@ const audios: Audio[] = [
 
 	// Baseball scene
 	sound("baseball/smashping", "baseball_smashping"),
+	sound("baseball/ball_hit", "ball_hit"),
+	sound("baseball/ball_miss", "ball_miss"),
 	sound("baseball/announcer_q", "announcer_q"),
+	sound("baseball/meme_explosion_sound", "meme_explosion_sound"),
 
 	// Boxing scene
 	sound("boxing/punch1", "boxing_punch1"),

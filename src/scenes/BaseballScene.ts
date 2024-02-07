@@ -1,6 +1,7 @@
 import { BaseScene } from "./BaseScene";
 import { NextButton } from "@/components/NextButton";
 import { TextButton } from "@/components/TextButton";
+import { BasicEffect } from "@/components/elements/BasicEffect";
 import { QTEButton } from "@/components/elements/QTEButton";
 
 export class BaseballScene extends BaseScene {
@@ -19,6 +20,7 @@ export class BaseballScene extends BaseScene {
 	private skellies: Phaser.GameObjects.Container;
 	private pitcher: Phaser.GameObjects.Sprite;
 	private batter: Phaser.GameObjects.Sprite;
+	private ballSprite: BasicEffect;
 	private QTEBar: Phaser.GameObjects.Sprite;
 	private boneBat: Phaser.GameObjects.Sprite;
 	private battingButton: TextButton;
@@ -26,8 +28,15 @@ export class BaseballScene extends BaseScene {
 	private flavorText: Phaser.GameObjects.Text;
 	private textList1: string[] = ["Ready!", "Set!", "GO!"];
 	private stopBat: boolean = false;
-	private velocity: 400;
+	private velocity: number = 0.4;//screens per second
+	private targetWidth: 0.2; //% of screen
+	private boneStopped: boolean =  false;
+	private hitAreaDisplay: Phaser.GameObjects.Graphics;
+	private hitCenter: number = 0.5;
+	private hasExploded: boolean = false;
+	private hasBall: boolean = false;
 
+	private effects: BasicEffect[] = [];
 
 	private phase: number; // where are we in the game cycle
 	private timer: number = 0;
@@ -49,13 +58,20 @@ export class BaseballScene extends BaseScene {
 		this.background = this.add.image(this.CX, this.CY, "baseball_background");
 		this.battingDisplay = this.add.sprite(this.W/2,this.H/2,"trackway");
 		this.battingDisplay.setVisible(false);
+		this.pitcher = this.add.sprite(this.W*0.505, this.H*0.58, "pitcher");
+		this.batter = this.add.sprite (this.W*0.505, this.H*0.838, "batter");
+		this.ballSprite = new BasicEffect(this, "ball", this.W*0.505, this.H*0.58, 2, 100, true, 0);
+		//this.effects[0] = this.ballSprite;
+		this.ballSprite.sp.setVisible(false);
 
 		this.runningMeters = this.add.graphics();
 		this.runningDisplay = this.add.graphics();
 		this.QTEBar = this.add.sprite(this.W/2, this.H*0.75, "trackway");
 		this.QTEBar.setVisible(false);
-		this.boneBat = this.add.sprite(this.W*0.2, this.H*0.75, "bone_bat");
+		this.hitAreaDisplay = this.add.graphics();
+		this.boneBat = this.add.sprite(this.W*0.1, this.H*0.75, "bone_bat");
 		this.boneBat.setVisible(false);
+		
 
 		this.flavorText = this.addText({
 			x: this.W*0.5,
@@ -84,7 +100,17 @@ export class BaseballScene extends BaseScene {
 	}
 
 	hitBall(){
-
+		if(this.phase == 4) {
+			this.boneStopped = true;
+			this.timer = 1000;
+			this.battingButton.turnOff();
+			this.phase = 5;
+			if((this.boneBat.x >= this.hitCenter) && (this.boneBat.x <= (this.hitCenter + (0.2*this.W)))){
+				this.sound.play("ball_hit");
+			} else {
+				this.sound.play("ball_miss");
+			}
+		}
 	}
 
 	spawnQTEBounce(t: number, r: number, s: number)
@@ -135,6 +161,73 @@ export class BaseballScene extends BaseScene {
 				break;
 			}
 			case 3: {
+				break;
+			} case 4: {
+				break;
+			} case 5: {
+				if(this.timer > 0) {
+					this.timer -= d;
+					if(this.timer <= 0) {
+						this.timer = 0;
+						this.boneBat.setAlpha(0);
+						this.phase = 6;
+						this.timer = 500;
+					} else {
+						this.boneBat.setAlpha(this.timer/1000);
+					}
+				}
+				break;
+			} case 6: {
+				if(this.timer > 0) {
+					this.timer -= d;
+					if(this.timer <= 0) {
+						this.timer = 0;
+						this.QTEBar.setAlpha(0);
+						this.battingButton.setAlpha(0);
+						this.battingButton.setVisible(false);
+						this.hitAreaDisplay.clear()
+						this.hitAreaDisplay.setVisible(false);
+						this.timer = 20000;
+						this.phase = 7;
+					} else {
+						this.QTEBar.setAlpha(this.timer/500);
+						this.battingButton.setAlpha(this.timer/500);
+						this.hitAreaDisplay.clear();
+						this.hitAreaDisplay.fillStyle(0x2F99FF, 0.35*(this.timer/500));
+						this.hitAreaDisplay.fillRect(this.hitCenter, this.H*0.65, this.W*0.2, this.H*0.2);
+						this.hitAreaDisplay.fillStyle(0x6D2FFF, 0.35*(this.timer/500));	
+						this.hitAreaDisplay.fillRect(this.hitCenter, this.H*0.65, this.W*0.05, this.H*0.2);
+						this.hitAreaDisplay.fillRect(this.hitCenter+(0.15*this.W), this.H*0.65, this.W*0.05, this.H*0.2);
+					}
+				}
+				break;
+			} case 7: {
+				if(this.timer > 0) {
+					this.timer -= d;
+				}
+				if((this.timer < 15000) && (this.timer >= 14500)) {
+					this.pitcher.setFrame(1);
+				} else if ((this.timer < 14500) && (this.timer >= 14000)) {
+					if(!this.hasBall) {
+						this.ballSprite.sp.setVisible(true);
+						this.ballSprite.setVelocityY(this.H*0.25);
+						//this.effects.push(this.ballSprite);
+						this.sound.play("ball_miss");
+						this.hasBall = true;
+					}
+					this.pitcher.setFrame(2);
+				} else if (this.timer < 14000) {
+					this.pitcher.setFrame(0);
+				}
+
+				if((this.ballSprite.sp.y > (0.763*this.H)) && !this.hasExploded) {
+					let mx = new BasicEffect(this, "meme_explosion", this.W*0.505, this.H*0.838, 18, 50, false, 0);
+					this.effects.push(mx);
+					this.ballSprite.sp.setVisible(false);
+					this.batter.setFrame(3);
+					this.sound.play("meme_explosion_sound");
+					this.hasExploded = true;
+				}
 
 				break;
 			}
@@ -188,6 +281,9 @@ export class BaseballScene extends BaseScene {
 						this.tBounceTimerMax = 1000;
 						this.flavorText.setAlpha(1);
 						this.flavorText.setVisible(true);
+						let r = (0.15+(1*0.5))*this.W;
+						//let r = 0.5*this.W;
+						this.hitCenter = r;
 						this.phase = 3;
 					}
 					 else {
@@ -213,20 +309,65 @@ export class BaseballScene extends BaseScene {
 							this.tAdvance = 0;
 							this.tBounceTimer = 0;
 							this.battingButton.turnOn();
+							this.hitAreaDisplay.clear();
+							this.hitAreaDisplay.fillStyle(0x2F99FF, 0.35);
+							this.hitAreaDisplay.fillRect(this.hitCenter, this.H*0.65, this.W*0.2, this.H*0.2);
+							this.hitAreaDisplay.fillStyle(0x6D2FFF, 0.35);	
+							this.hitAreaDisplay.fillRect(this.hitCenter, this.H*0.65, this.W*0.05, this.H*0.2);
+							this.hitAreaDisplay.fillRect(this.hitCenter+(0.15*this.W), this.H*0.65, this.W*0.05, this.H*0.2);
 							this.phase = 4;
 						}
 					} else {
 						this.flavorText.setAlpha(this.tBounceTimer/this.tBounceTimerMax);
+						if(this.tAdvance == 2)
+						{
+							this.hitAreaDisplay.clear();
+							this.hitAreaDisplay.fillStyle(0x2F99FF, 0.35*(1-(this.tBounceTimer/this.tBounceTimerMax)));
+							this.hitAreaDisplay.fillRect(this.hitCenter, this.H*0.65, this.W*0.2, this.H*0.2);
+							this.hitAreaDisplay.fillStyle(0x6D2FFF, 0.35*(1-(this.tBounceTimer/this.tBounceTimerMax)));	
+							this.hitAreaDisplay.fillRect(this.hitCenter, this.H*0.65, this.W*0.05, this.H*0.2);
+							this.hitAreaDisplay.fillRect(this.hitCenter+(0.15*this.W), this.H*0.65, this.W*0.05, this.H*0.2);
+						}
 					}
 				}
+				break;
+			} case 4: {
+				break;
+			} case 5: {
+				break;
+			} case 6: {
+				break;
+			} case 7: {
+				break;
 			}
 		}
 
 	}
 
+	updateEffects(d: number){
+		for(let i = 0; i < this.effects.length; i++) {
+			this.effects[i].update(d);
+		}
+		this.ballSprite.update(d);
+	}
+
+	updateBonePosition(d: number)
+	{
+		this.boneBat.setX(this.boneBat.x+((this.W*this.velocity)*d/1000));
+		if(this.boneBat.x >= this.W*0.9) {
+			this.boneBat.x = this.W*0.9;
+			this.timer = 1000;
+			this.phase = 5;
+		}
+	}
+
 	update(time: number, delta: number) {
 		this.processPhase(delta);
 		this.nextButton.update(time, delta);
+		this.updateEffects(delta);
+		if(this.phase == 4) {
+			this.updateBonePosition(delta);
+		}
 		this.processBounce(delta);
 	}
 }
