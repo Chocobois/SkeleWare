@@ -92,6 +92,7 @@ const images: Image[] = [
 	image("scenes/dishes/dirt", "dishes_dirt"),
 	image("scenes/dishes/plate", "dishes_plate"),
 	image("scenes/dishes/sponge", "dishes_sponge"),
+	image("scenes/dishes/plate_bomb", "dishes_bomb"),
 
 	// Drivethru scene
 	image("scenes/drivethru/background", "drivethru_background"),

@@ -191,13 +191,9 @@ export class CutsceneScene extends BaseScene {
 			this.addEvent(400, this.continue, this);
 		}
 
-		if (textureKey == "1_intro") {
-			(this.scene.get("UIScene") as UIScene).playMusic("funky");
-		}
 		if (textureKey == "10_bomb") {
 			(this.scene.get("UIScene") as UIScene).playMusic("tense");
-		}
-		if (textureKey == "11_defused") {
+		} else {
 			(this.scene.get("UIScene") as UIScene).playMusic("funky");
 		}
 	}

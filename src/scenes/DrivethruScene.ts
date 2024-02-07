@@ -1,6 +1,5 @@
 import { Button } from "@/components/elements/Button";
 import { BaseScene } from "./BaseScene";
-import { NextButton } from "@/components/NextButton";
 import { RoundRectangle } from "@/components/elements/RoundRectangle";
 
 type Item = {
@@ -52,8 +51,9 @@ const MenuItems = [
 export class DrivethruScene extends BaseScene {
 	private background: Phaser.GameObjects.Image;
 	private buttons: Button[];
-	private nextButton: NextButton;
 	private randomItem: Item;
+	private requestedItem: Phaser.GameObjects.Image;
+	private correctCount: number;
 
 	constructor() {
 		super({ key: "DrivethruScene" });
@@ -70,22 +70,18 @@ export class DrivethruScene extends BaseScene {
 
 		this.randomItem = MenuItems[Math.floor(Math.random() * MenuItems.length)];
 
-		this.add.sprite(280, this.CY - 80, this.randomItem.key);
-
-		this.nextButton = new NextButton(this);
-		this.nextButton.on("click", () => {
-			this.startScene("CutsceneScene", {
-				textureKey: "9_dinner",
-				nextScene: "DishesScene",
-			});
-		});
+		this.requestedItem = this.add.sprite(
+			280,
+			this.CY - 80,
+			this.randomItem.key
+		);
+		this.correctCount = 0;
 	}
 
 	update(time: number, delta: number) {
 		this.buttons.forEach((button) => {
 			button.setScale(1.0 - 0.1 * button.holdSmooth);
 		});
-		this.nextButton.update(time, delta);
 	}
 
 	addMenuButton({ x, y, key, name }: Item) {
@@ -97,20 +93,37 @@ export class DrivethruScene extends BaseScene {
 
 		button.bindInteractive(image);
 
-		button.on("down", () => this.sound.play("drivethru_clickdown", { volume: 0.2 }) );
-		button.on("up",   () => this.sound.play("drivethru_clickup",   { volume: 0.2 }) );
+		button.on("down", () =>
+			this.sound.play("drivethru_clickdown", { volume: 0.2 })
+		);
+		button.on("up", () =>
+			this.sound.play("drivethru_clickup", { volume: 0.2 })
+		);
 
 		button.on("click", () => {
 			const correct = this.randomItem.name == name;
 
 			setTimeout(() => {
-				this.sound.play(`drivethru_${correct ? "success" : "failure"}`, { volume: 0.5 });
+				this.sound.play(`drivethru_${correct ? "success" : "failure"}`, {
+					volume: 0.5,
+				});
 
 				if (correct) {
-					this.startScene("CutsceneScene", {
-						textureKey: "9_dinner",
-						nextScene: "DishesScene",
-					});
+					this.correctCount += 1;
+
+					if (this.correctCount >= 6) {
+						this.startScene("CutsceneScene", {
+							textureKey: "9_dinner",
+							nextScene: "DishesScene",
+						});
+					} else {
+						const previous = this.randomItem.key;
+						do {
+							this.randomItem =
+								MenuItems[Math.floor(Math.random() * MenuItems.length)];
+						} while (this.randomItem.key == previous);
+						this.requestedItem.setTexture(this.randomItem.key);
+					}
 				}
 			}, 150);
 		});

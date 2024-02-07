@@ -1,4 +1,5 @@
 import { BaseScrubScene } from "@/scenes/BaseScrubScene";
+import { UIScene } from "./UIScene";
 
 export class DishesScene extends BaseScrubScene {
 	private background: Phaser.GameObjects.Image;
@@ -97,6 +98,8 @@ export class DishesScene extends BaseScrubScene {
 		});
 
 		if (this.numberPolished >= 3) {
+			(this.scene.get("UIScene") as UIScene).playMusic("tense");
+
 			this.addEvent(2000, () => {
 				this.startScene("CutsceneScene", {
 					textureKey: "10_bomb",
@@ -120,6 +123,23 @@ export class DishesScene extends BaseScrubScene {
 					centerY: this.CY,
 					// debug: true,
 				});
+
+				if (this.numberPolished == 2) {
+					// Add bomb
+					this.plate.setTexture("dishes_bomb");
+					let { width, height } = this.textures.getFrame("dishes_plate");
+					this.texture.draw(
+						"dishes_plate",
+						this.CX - width / 2,
+						this.CY - height / 2
+					);
+					let dims = this.textures.getFrame("dishes_dirt");
+					this.texture.draw(
+						"dishes_dirt",
+						this.CX - dims.width / 2,
+						this.CY - dims.height / 2
+					);
+				}
 
 				this.texture.y += 900;
 
