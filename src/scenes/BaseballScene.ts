@@ -35,6 +35,9 @@ export class BaseballScene extends BaseScene {
 	private hitCenter: number = 0.5;
 	private hasExploded: boolean = false;
 	private hasBall: boolean = false;
+	private missState: number = 1;
+	private hasSwung: boolean = false;
+	private hasHitBall: boolean = false;
 
 	private effects: BasicEffect[] = [];
 
@@ -108,6 +111,11 @@ export class BaseballScene extends BaseScene {
 			if((this.boneBat.x >= this.hitCenter) && (this.boneBat.x <= (this.hitCenter + (0.2*this.W)))){
 				this.sound.play("ball_hit");
 			} else {
+				if(this.boneBat.x < this.hitCenter) {
+					this.missState = -1;
+				} else if ((this.boneBat.x > (this.hitCenter + (0.2*this.W)))) {
+					this.missState = 1;
+				}
 				this.sound.play("ball_miss");
 			}
 		}
@@ -187,7 +195,7 @@ export class BaseballScene extends BaseScene {
 						this.battingButton.setVisible(false);
 						this.hitAreaDisplay.clear()
 						this.hitAreaDisplay.setVisible(false);
-						this.timer = 20000;
+						this.timer = 18000;
 						this.phase = 7;
 					} else {
 						this.QTEBar.setAlpha(this.timer/500);
@@ -205,12 +213,26 @@ export class BaseballScene extends BaseScene {
 				if(this.timer > 0) {
 					this.timer -= d;
 				}
+
+				if(this.missState == -1) {
+					if((this.timer < 17500) && (this.timer >= 17000)) {
+						this.batter.setFrame(1);
+					} else if ((this.timer < 17000) && (this.timer >= 16500)) {
+						this.batter.setFrame(2);
+						if(!this.hasSwung) {
+							this.sound.play("ball_miss");
+							this.hasSwung = true;
+						}
+					} else if ((this.timer < 16500) && (this.timer >= 16000)) {
+						this.batter.setFrame(0);
+					}
+				}
 				if((this.timer < 15000) && (this.timer >= 14500)) {
 					this.pitcher.setFrame(1);
 				} else if ((this.timer < 14500) && (this.timer >= 14000)) {
 					if(!this.hasBall) {
 						this.ballSprite.sp.setVisible(true);
-						this.ballSprite.setVelocityY(this.H*0.25);
+						this.ballSprite.setVelocityY(this.H*0.35);
 						//this.effects.push(this.ballSprite);
 						this.sound.play("ball_miss");
 						this.hasBall = true;
@@ -220,13 +242,30 @@ export class BaseballScene extends BaseScene {
 					this.pitcher.setFrame(0);
 				}
 
-				if((this.ballSprite.sp.y > (0.763*this.H)) && !this.hasExploded) {
-					let mx = new BasicEffect(this, "meme_explosion", this.W*0.505, this.H*0.838, 18, 50, false, 0);
-					this.effects.push(mx);
-					this.ballSprite.sp.setVisible(false);
-					this.batter.setFrame(3);
-					this.sound.play("meme_explosion_sound");
-					this.hasExploded = true;
+				if(this.missState == 0 && ((this.timer < 15000) && (this.timer >= 14500))) {
+					this.batter.setFrame(1);
+				} else if (this.missState == 0 && ((this.timer < 12000) && (this.timer >= 11500))) {
+					this.batter.setFrame(0);
+				}
+
+				if((this.ballSprite.sp.y > (0.763*this.H)) && (this.missState != 0)) {
+					if(!this.hasExploded) {
+						let mx = new BasicEffect(this, "meme_explosion", this.W*0.505, this.H*0.838, 18, 50, false, 0);
+						this.effects.push(mx);
+						this.ballSprite.sp.setVisible(false);
+						this.batter.setFrame(3);
+						this.sound.play("meme_explosion_sound");
+						this.hasExploded = true;
+					}
+				} else if ((this.ballSprite.sp.y > (0.763*this.H)) && (this.missState == 0)) {
+					this.batter.setFrame(2);
+					if(!this.hasHitBall) {
+						this.ballSprite.sp.setScale(-1);
+						this.ballSprite.setVelocityY(-1*this.H*0.45);
+						this.ballSprite.setVelocityX(-1*this.W*0.1);
+						this.sound.play("ball_hit");
+						this.hasHitBall = true;
+					}
 				}
 
 				break;
@@ -281,7 +320,7 @@ export class BaseballScene extends BaseScene {
 						this.tBounceTimerMax = 1000;
 						this.flavorText.setAlpha(1);
 						this.flavorText.setVisible(true);
-						let r = (0.15+(1*0.5))*this.W;
+						let r = (0.15+(Math.random()*0.5))*this.W;
 						//let r = 0.5*this.W;
 						this.hitCenter = r;
 						this.phase = 3;
