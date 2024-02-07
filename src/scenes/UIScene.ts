@@ -94,7 +94,9 @@ export class UIScene extends BaseScene {
 				this.currentMusic = this.songs[key];
 			}
 
-			this.currentMusic.play();
+			if (!this.currentMusic.isPlaying) {
+				this.currentMusic.play();
+			}
 		}
 	}
 
