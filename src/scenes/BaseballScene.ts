@@ -110,6 +110,7 @@ export class BaseballScene extends BaseScene {
 			this.phase = 5;
 			if((this.boneBat.x >= this.hitCenter) && (this.boneBat.x <= (this.hitCenter + (0.2*this.W)))){
 				this.sound.play("ball_hit");
+				this.missState = 0;
 			} else {
 				if(this.boneBat.x < this.hitCenter) {
 					this.missState = -1;
@@ -212,6 +213,10 @@ export class BaseballScene extends BaseScene {
 			} case 7: {
 				if(this.timer > 0) {
 					this.timer -= d;
+					if(this.timer <= 0) {
+						this.timer = 0;
+						this.phase = 8;
+					}
 				}
 
 				if(this.missState == -1) {
