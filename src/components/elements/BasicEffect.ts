@@ -25,6 +25,11 @@ export class BasicEffect {
        // scene.add.existing(this.sp);
 	}
 
+    setPosition(xx: number, yy: number){
+        this.sp.setX(xx);
+        this.sp.setY(yy);
+    }
+
     setVelocityX(v: number){
         this.velocityX = v;
     }

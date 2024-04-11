@@ -168,6 +168,9 @@ const audios: Audio[] = [
 	sound("baseball/ball_miss", "ball_miss"),
 	sound("baseball/announcer_q", "announcer_q"),
 	sound("baseball/meme_explosion_sound", "meme_explosion_sound"),
+	sound("baseball/lag_sound", "lag_sound"),
+	sound("baseball/fail", "fail_run"),
+	sound("baseball/memescream", "memescream"),
 
 	// Boxing scene
 	sound("boxing/punch1", "boxing_punch1"),
