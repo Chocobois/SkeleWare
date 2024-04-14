@@ -770,7 +770,10 @@ export class BombScene extends BaseScene {
 
 	changeLane()
 	{
-		this.correctLane = Math.round(Math.random()*2);
+		let lastLane = this.correctLane;
+		do {
+			this.correctLane = Math.round(Math.random()*2);
+		} while (this.correctLane == lastLane);
 		this.stopLight = this.maxStopLight;
 	}
 

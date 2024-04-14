@@ -75,9 +75,12 @@ const images: Image[] = [
 	// Court scene
 	image("scenes/court/bgCourt", "court_background"),
 	image("scenes/court/foregroundTable", "court_foreground"),
-	image("scenes/court/skeletourneyIdle", "court_skeleton_idle"),
-	image("scenes/court/skeletourneyObjection1", "court_skeleton_objection_1"),
-	image("scenes/court/skeletourneyObjection2", "court_skeleton_objection_2"),
+	image("scenes/court/skeletourneyIdle", "court_skeletourney_idle"),
+	image("scenes/court/skeletourneyObjection1", "court_skeletourney_objection_1"),
+	image("scenes/court/skeletourneyObjection2", "court_skeletourney_objection_2"),
+	image("scenes/court/skelecutorIdle", "court_skelecutor_idle"),
+	image("scenes/court/objection", "court_objection"),
+	image("scenes/court/nameplate", "court_nameplate"),
 
 	// Dig scene
 	image("scenes/dig/background", "dig_background"),
@@ -179,6 +182,9 @@ const audios: Audio[] = [
 	// Computer scene
 	sound("computer/navigationstart", "computer_click"),
 	sound("computer/balloon", "computer_popup"),
+
+	// Court
+	sound("court/sfx-objection", "court_objection"),
 
 	// Dig scene
 

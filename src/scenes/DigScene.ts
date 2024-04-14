@@ -70,11 +70,12 @@ export class DigScene extends BaseScrubScene {
 			x: this.CX,
 			y: 0,
 			size: 60,
-			text: "Dig the grave!",
-			color: "black",
+			text: "Dig for treasure!",
+			color: "white",
 		});
+		this.text.setStroke("black", 8);
 		this.text.setDepth(1000);
-		this.text.setOrigin(0.5, 0.0);
+		this.text.setOrigin(0.5, -0.25);
 	}
 
 	update(time: number, delta: number) {
