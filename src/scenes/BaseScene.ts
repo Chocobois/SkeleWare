@@ -65,6 +65,10 @@ export class BaseScene extends Phaser.Scene {
 		});
 	}
 
+	notify() {
+		
+	}
+
 	// Creates a timer event
 	addEvent(
 		delay: number,

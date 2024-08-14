@@ -2,12 +2,18 @@ import { BaseScene } from "../BaseScene";
 import { NextButton } from "@/components/NextButton";
 import { ComputerPopup } from "./Popup";
 import { Button } from "@/components/elements/Button";
+import { PopupWindow } from "@/components/elements/PopupWindow";
 
 export class ComputerScene extends BaseScene {
 	private background: Phaser.GameObjects.Image;
 	private nextButton: NextButton;
 
 	private popups: ComputerPopup<string[]>[];
+
+	private numPopups: number = 0;
+	private timer: number = 0;
+	private burst: number;
+	private maxPopups: number = 20;
 
 	constructor() {
 		super({ key: "ComputerScene" });
@@ -32,6 +38,14 @@ export class ComputerScene extends BaseScene {
 		return [container, button];
 	}
 
+	spawnPopup(){
+
+	}
+
+	notify(){
+
+	}
+
 	create(): void {
 		this.fade(false, 200, 0x000000);
 		this.cameras.main.setBackgroundColor(0x67e8f9);
@@ -54,6 +68,16 @@ export class ComputerScene extends BaseScene {
 
 	update(time: number, delta: number) {
 		this.nextButton.update(time, delta);
+		/*
+		if(this.numPopups < this.maxPopups) {
+			if(this.timer > 0) {
+				this.timer -= delta;
+				if(this.timer <= 0) {
+					this.timer = 0;
+					this.spawnPopup();
+				}
+			}
+		}*/
 	}
 
 	onPointerDown(pointer: Phaser.Input.Pointer) {

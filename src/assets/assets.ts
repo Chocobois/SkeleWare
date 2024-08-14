@@ -66,12 +66,13 @@ const images: Image[] = [
 
 	// Computer scene
 	image("scenes/computer/background", "computer_background"),
+	image("scenes/computer/computeroverlay", "computer_overlay"),
 	image("scenes/computer/popupdiagonal", "computer_popup_blank_diagonal"),
 	image("scenes/computer/popuphorizontal", "computer_popup_blank_horizontal"),
 
 	image("scenes/computer/close_horizontal", "close_horizontal"),
 	image("scenes/computer/ibone_popup_horizontal", "computer_ibone_horizontal"),
-
+	image("scenes/computer/w1", "w1"),
 	// Court scene
 	image("scenes/court/bgCourt", "court_background"),
 	image("scenes/court/foregroundTable", "court_foreground"),
@@ -149,7 +150,11 @@ const spritesheets: SpriteSheet[] = [
 	spritesheet('sprites/batting_button', 'batting_button', 256, 256),
 	spritesheet('sprites/pitcher', 'pitcher', 256, 256),
 	spritesheet('sprites/batter', 'batter', 256, 256),
-	spritesheet('sprites/ball', 'ball', 128, 128)
+	spritesheet('sprites/ball', 'ball', 128, 128),
+	spritesheet('sprites/xbutton', 'xbutton', 21, 21),
+	spritesheet('sprites/ok1', 'ok1', 58, 26),
+	spritesheet('sprites/ok2', 'ok2', 82, 36),
+	spritesheet('sprites/ok3', 'ok3', 82, 36),
 ];
 
 /* Audios */
