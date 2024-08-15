@@ -1,36 +1,42 @@
 import { BaseScene } from "@/scenes/BaseScene";
 import { Button } from "./elements/Button";
 
-export class TextButton extends Button {
+export class DoubleClickButton extends Button {
 	public index: number;
-    public value: string;
     private sprite: Phaser.GameObjects.Sprite;
-    private tdisplay: Phaser.GameObjects.Text;
     private disabled: boolean = false;
+    private doubleClickTimer: number = 0;
+    private clickCount: number = 0;
 
 
-
-	constructor(scene: BaseScene, x: number, y: number, v: string, spr: string, fsize: number = 40) {
+	constructor(scene: BaseScene, x: number, y: number, spr: string) {
 		super(scene, x, y);
         this.sprite = scene.add.sprite(0, 0, spr, 0);
         this.add(this.sprite);
         this.bindInteractive(this.sprite);
-        this.value = v;
-        this.tdisplay = scene.addText({ text: v, color: "white", size: fsize });
-        this.tdisplay.setOrigin(0.5);
-        this.add(this.tdisplay);
         this.index = -1;
         this.disabled = false;
 	}
+
+    update(t:number,d:number){
+        if(this.disabled) {
+            return;
+        }
+        if(this.clickCount > 0) {
+            if(this.doubleClickTimer > 0) {
+                this.doubleClickTimer -=d;
+                if(this.doubleClickTimer <= 0) {
+                    this.doubleClickTimer = 0;
+                    this.clickCount = 0;
+                }
+            }
+        }
+    }
 
     center() {
         this.sprite.setOrigin(0.5,0.5);
     }
 
-    setValue(data: string){
-        this.value = data;
-        this.tdisplay.setText(this.value);
-    }
 
     setIndex(i: number){
         this.index =  i;
@@ -47,7 +53,6 @@ export class TextButton extends Button {
     }
 
     resetState(){
-        this.tdisplay.setColor("white");
         this.sprite.setFrame(0);
     }
 
@@ -59,7 +64,6 @@ export class TextButton extends Button {
     ) {
         if (!this.disabled) {
             super.onDown(pointer, localX, localY, event);
-            this.tdisplay.setColor("green");
             this.sprite.setFrame(1);
         }
     }
@@ -71,8 +75,19 @@ export class TextButton extends Button {
     ) {
         if (!this.disabled) {
             super.onUp(pointer, localX, localY, event);
-            this.tdisplay.setColor("white");
-            this.sprite.setFrame(0);
+            this.clickCount++;
+            if(this.clickCount == 1){
+                this.doubleClickTimer = 250;
+            } else if (this.clickCount >= 2) {
+                this.sprite.setFrame(0);
+                this.proceed();
+            }
         }
+    }
+
+    proceed(){
+        this.scene.sound.play("close");
+        this.disabled = true;
+        this.scene.notify(4);
     }
 }

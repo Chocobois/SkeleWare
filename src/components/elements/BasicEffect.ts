@@ -14,13 +14,14 @@ export class BasicEffect {
     public velocityY: number = 0;
 
 	// private hover: boolean;
-	constructor(scene: BaseScene, value: string, x: number, y: number, tFrames: number, fLen: number = 100, loop: boolean = false, sFrame: number = 0) {
+	constructor(scene: BaseScene, value: string, x: number, y: number, tFrames: number, fLen: number = 100, loop: boolean = false, sFrame: number = 0, scale: number = 1) {
 		this.sp = scene.add.sprite(x,y,value);
         this.frameLength = fLen;
         this.isLooped = loop;
         this.totalFrames = tFrames;
         this.startingFrame = sFrame;
         this.currentFrame = this.startingFrame;
+        this.sp.setScale(scale);
         this.sp.setFrame(this.startingFrame);
        // scene.add.existing(this.sp);
 	}
@@ -36,6 +37,14 @@ export class BasicEffect {
 
     setVelocityY(v: number) {
         this.velocityY = v;
+    }
+
+    hide(){
+        this.sp.setVisible(false);
+    }
+
+    unhide(){
+        this.sp.setVisible(true);
     }
 
     stopMovement(){
