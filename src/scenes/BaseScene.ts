@@ -12,6 +12,7 @@ export interface TextStyle {
 export class BaseScene extends Phaser.Scene {
 	protected flashRect: Phaser.GameObjects.Rectangle | null;
 	protected cameraShakeValue: number;
+	public gState: number = 0;
 
 	constructor(config: Phaser.Types.Scenes.SettingsConfig) {
 		super(config);
@@ -63,6 +64,10 @@ export class BaseScene extends Phaser.Scene {
 				this.cameraShakeValue = 0;
 			},
 		});
+	}
+
+	notify(n: number) {
+		
 	}
 
 	// Creates a timer event

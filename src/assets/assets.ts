@@ -66,12 +66,22 @@ const images: Image[] = [
 
 	// Computer scene
 	image("scenes/computer/background", "computer_background"),
+	image("scenes/computer/computeroverlay", "computer_overlay"),
+	image("scenes/computer/computeroverlayburnt", "computer_overlay_burnt"),
 	image("scenes/computer/popupdiagonal", "computer_popup_blank_diagonal"),
 	image("scenes/computer/popuphorizontal", "computer_popup_blank_horizontal"),
 
 	image("scenes/computer/close_horizontal", "close_horizontal"),
 	image("scenes/computer/ibone_popup_horizontal", "computer_ibone_horizontal"),
-
+	image("scenes/computer/w1", "w1"),
+	image("scenes/computer/w2", "w2"),
+	image("scenes/computer/w3", "w3"),
+	image("scenes/computer/w4", "w4"),
+	image("scenes/computer/w5", "w5"),
+	image("scenes/computer/w6", "w6"),
+	image("scenes/computer/w7", "w7"),
+	image("scenes/computer/w8", "w8"),
+	image("scenes/computer/debugwindow", "debugwindow"),
 	// Court scene
 	image("scenes/court/bgCourt", "court_background"),
 	image("scenes/court/foregroundTable", "court_foreground"),
@@ -149,7 +159,25 @@ const spritesheets: SpriteSheet[] = [
 	spritesheet('sprites/batting_button', 'batting_button', 256, 256),
 	spritesheet('sprites/pitcher', 'pitcher', 256, 256),
 	spritesheet('sprites/batter', 'batter', 256, 256),
-	spritesheet('sprites/ball', 'ball', 128, 128)
+	spritesheet('sprites/ball', 'ball', 128, 128),
+	spritesheet('sprites/xbutton', 'xbutton', 21, 21),
+	spritesheet('sprites/ok1', 'ok1', 58, 26),
+	spritesheet('sprites/ok2a', 'ok2a', 82, 36),
+	spritesheet('sprites/ok2b', 'ok2b', 82, 36),
+	spritesheet('sprites/ok3a', 'ok3a', 78, 34),
+	spritesheet('sprites/ok3b', 'ok3b', 78, 34),
+	spritesheet('sprites/ok4', 'ok4', 90, 30),
+	spritesheet('sprites/ok5a', 'ok5a', 76, 26),
+	spritesheet('sprites/ok5b', 'ok5b', 76, 26),
+	spritesheet('sprites/ok6a', 'ok6a', 58, 26),
+	spritesheet('sprites/ok6b', 'ok6b', 58, 26),
+	spritesheet('sprites/ok6c', 'ok6c', 84, 26),
+	spritesheet('sprites/ok7a', 'ok7a', 94, 34),
+	spritesheet('sprites/ok7b', 'ok7b', 94, 34),
+	spritesheet('sprites/ok8a', 'ok8a', 144, 34),
+	spritesheet('sprites/ok8b', 'ok8b', 144, 34),
+	spritesheet('sprites/antivirus', 'antivirus', 180, 180),
+	spritesheet('sprites/progressbar', 'progressbar', 834, 42),
 ];
 
 /* Audios */
@@ -185,6 +213,16 @@ const audios: Audio[] = [
 	// Computer scene
 	sound("computer/navigationstart", "computer_click"),
 	sound("computer/balloon", "computer_popup"),
+	sound("computer/err1", "err1"),
+	sound("computer/err2", "err2"),
+	sound("computer/err3", "err3"),
+	sound("computer/err4", "err4"),
+	sound("computer/err5", "err5"),
+	sound("computer/err6", "err6"),
+	sound("computer/err7", "err7"),
+	sound("computer/err8", "err8"),
+	sound("computer/close", "close"),
+	sound("computer/shutdown", "shutdown"),
 
 	// Court
 	sound("court/sfx-objection", "court_objection"),
