@@ -89,6 +89,8 @@ const images: Image[] = [
 	image("scenes/court/skeletourneyObjection1", "court_skeletourney_objection_1"),
 	image("scenes/court/skeletourneyObjection2", "court_skeletourney_objection_2"),
 	image("scenes/court/skelecutorIdle", "court_skelecutor_idle"),
+	image("scenes/court/skelecutorObjection1", "court_skelecutor_objection_1"),
+	image("scenes/court/skelecutorObjection2", "court_skelecutor_objection_2"),
 	image("scenes/court/objection", "court_objection"),
 	image("scenes/court/nameplate", "court_nameplate"),
 
