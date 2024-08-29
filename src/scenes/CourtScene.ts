@@ -10,94 +10,74 @@ interface Dialogue {
 
 const dialogue: Dialogue[] = [
 	{
-		backgroundFlip: false,
-		sprite: "court_skeletourney_idle",
-		name: "Skeletourney",
-		text: "I think we won.",
-	},
-	{
 		text: "objection",
 	},
 	{
-		backgroundFlip: true,
-		sprite: "court_skelecutor_idle",
-		name: "Skelecutor",
-		text: "No, we definitely lost.",
+		text: "fade",
 	},
 	{
-		backgroundFlip: false,
-		sprite: "court_skeletourney_idle",
-		name: "Skeletourney",
-		text: "But didn't we agree to try to lose?",
-	},
-	{
-		backgroundFlip: true,
-		sprite: "court_skelecutor_idle",
-		name: "Skelecutor",
-		text: "Objection! That's hearsay.",
-	},
-	{
-		text: "objection",
-	},
-	{
-		backgroundFlip: false,
 		sprite: "court_skeletourney_objection_2",
 		name: "Skeletourney",
-		text: "Sustained. Let's stick to the facts.",
+		text: "By losing, we demonstrated mastery of the game! A deliberate defeat is a true victory, your honor.",
 	},
 	{
-		text: "objection",
-	},
-	{
-		backgroundFlip: true,
 		sprite: "court_skelecutor_idle",
 		name: "Skelecutor",
-		text: "Well, the fact is, we both tried to lose.",
+		text: "Absurd! A loss is a loss, no matter the intent. Purposeful failure is still failure.",
+	},
+	{
+		sprite: "court_skelecutor_objection_2",
+		name: "Skelecutor",
+		text: "Winning requires more than intent. You can’t claim victory with the bones of a loss.",
+	},
+	{
+		sprite: "court_skeletourney_idle",
+		name: "Skeletourney",
+		text: "Yet, in losing on purpose, did we not achieve a higher strategy? Intent redefines victory!",
 	},
 	{
 		text: "objection",
 	},
 	{
-		backgroundFlip: false,
-		sprite: "court_skeletourney_idle",
+		sprite: "court_skelecutor_objection_2",
+		name: "Skelecutor",
+		text: "Strategy or not, results speak louder than rattles. Losing is a brittle defense!",
+	},
+	{
+		sprite: "court_skelecutor_idle",
+		name: "Skelecutor",
+		text: "You can't turn defeat into victory with mere boneheaded philosophy.",
+	},
+	{
+		text: "objection",
+	},
+	{
+		sprite: "court_skeletourney_objection_2",
 		name: "Skeletourney",
-		text: "But I tried harder to lose!",
+		text: "Our bone of contention isn’t just the score, but the intent behind it!",
 	},
 	{
-		backgroundFlip: false,
-		sprite: "court_skeletourney_idle",
-		text: "That's irrelevant. We both failed at losing.",
+		sprite: "court_skelecutor_idle",
+		name: "Skelecutor",
+		text: "Intent doesn't score points, only runs do!",
 	},
 	{
-		backgroundFlip: false,
-		sprite: "court_skeletourney_idle",
-		text: "Maybe the real victory was in our failure.",
+		text: "objection",
 	},
 	{
-		backgroundFlip: false,
-		sprite: "court_skeletourney_idle",
-		text: "But if failing to lose means winning, then did we really lose?",
+		sprite: "court_skeletourney_objection_2",
+		name: "Skeletourney",
+		text: "Intent is the marrow of victory! The bones of strategy outlast the flesh of mere outcomes!",
 	},
 	{
-		backgroundFlip: false,
-		sprite: "court_skeletourney_idle",
-		text: "This is getting absurd.",
-	},
-	{
-		backgroundFlip: false,
-		sprite: "court_skeletourney_idle",
-		text: "I move to dismiss this case.",
-	},
-	{
-		backgroundFlip: false,
-		sprite: "court_skeletourney_idle",
-		text: "Overruled! Let's settle this over a game of chess.",
+		text: "objection",
 	},
 ];
 
 export class CourtScene extends BaseScene {
 	private background: Phaser.GameObjects.Image;
 	private foreground: Phaser.GameObjects.Image;
+	private black: Phaser.GameObjects.Rectangle;
 	private skeleton: Phaser.GameObjects.Image;
 	private objection: Phaser.GameObjects.Image;
 	private textBox: Phaser.GameObjects.Container;
@@ -118,7 +98,7 @@ export class CourtScene extends BaseScene {
 		this.cameras.main.setBackgroundColor(0x67e8f9);
 
 		this.background = this.add.image(this.CX, this.CY, "court_background");
-		this.skeleton = this.add.image(this.CX, this.CY, "court_skeletourney_idle");
+		this.skeleton = this.add.image(this.CX, this.CY, "court_skeletourney_objection_2");
 		this.foreground = this.add.image(this.CX, this.CY, "court_foreground");
 
 		this.textBox = this.add.container();
@@ -153,11 +133,15 @@ export class CourtScene extends BaseScene {
 			x: tx,
 			y: ty + 55,
 			size: 60,
+			weight: 500,
 			color: "white",
 			text: "",
 		});
+		this.text.setStroke("white", 1);
 		this.text.setWordWrapWidth(this.W - 2 * tx);
 		this.textBox.add(this.text);
+
+		this.black = this.add.rectangle(this.CX, this.CY, this.W, this.H, 0);
 
 		this.objection = this.add.image(this.CX, this.CY, "court_objection");
 		this.objection.setVisible(false);
@@ -209,7 +193,9 @@ export class CourtScene extends BaseScene {
 			return;
 		}
 
-		let { backgroundFlip, sprite, name, text } = this.messages.shift()!;
+		let { sprite, name, text } = this.messages.shift()!;
+
+		const backgroundFlip = sprite ? sprite.includes("skelecutor") : undefined;
 
 		if (backgroundFlip !== undefined) {
 			this.background.flipX = backgroundFlip;
@@ -226,7 +212,7 @@ export class CourtScene extends BaseScene {
 			this.textBox.setVisible(false);
 
 			this.flash(500, 0xffffff, 0.5);
-			this.sound.play("court_objection", { volume: 0.1 });
+			this.sound.play("court_objection", { volume: 0.2 });
 			this.objection.setVisible(true);
 			this.tweens.addCounter({
 				from: 0,
@@ -238,6 +224,16 @@ export class CourtScene extends BaseScene {
 				},
 				onComplete: () => {
 					this.objection.setVisible(false);
+					this.continue();
+				},
+			});
+		} else if (text == "fade") {
+			this.tweens.add({
+				targets: this.black,
+				duration: 200,
+				alpha: 0,
+				onComplete: () => {
+					this.black.setVisible(false);
 					this.continue();
 				},
 			});

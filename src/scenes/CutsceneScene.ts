@@ -128,6 +128,7 @@ export class CutsceneScene extends BaseScene {
 			x: this.CX,
 			y: this.background.y + this.background.displayHeight / 2 + 35,
 			size: 50,
+			weight: 500,
 			color: "white",
 		});
 		this.text.setOrigin(0.5, 0.0);
@@ -235,6 +236,7 @@ export class CutsceneScene extends BaseScene {
 			this.text.setText("");
 			// Text color
 			this.text.setColor(color);
+			this.text.setStroke(color, 2);
 
 			this.tweens.addCounter({
 				from: 0,
@@ -245,7 +247,7 @@ export class CutsceneScene extends BaseScene {
 					this.text.setText(message.substring(0, current));
 				},
 				onComplete: () => {
-					this.addEvent(300, () => {
+					this.addEvent(200, () => {
 						this.nextIcon.setVisible(true);
 					});
 				},
