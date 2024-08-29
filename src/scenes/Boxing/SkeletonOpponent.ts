@@ -81,7 +81,10 @@ export class SkeletonOpponent extends Phaser.GameObjects.GameObject {
 	};
 
 	async tryHit(dir: AnimDir) {
+		this.scene.sound.play("ball_miss", { volume: 0.2, pan: dir == AnimDir.LEFT ? -0.5 : 0.5 });
+
 		if(this.eventState != AnimState.OPEN) return;
+
 		if(dir == this.canHit) {
 			this.setAnimState(AnimState.HIT);
 			this.currentHitPose.visible = true;
