@@ -23,13 +23,19 @@ export class ComputerScene extends BaseScene {
 	private burst: number = 0;
 	private nburst: number = 0;
 	private acc: number = 0;
-	private maxPopups: number = 30;
+	private maxPopups: number = 25;
 	private antivirus: DoubleClickButton;
+	private totalPopups: number = 0;
 
 	private proceedTimer: number = 0;
 
 	constructor() {
 		super({ key: "ComputerScene" });
+		this.numPopups = 0;
+		this.totalPopups = 0;
+		this.timer = 0;
+		this.burst = 0;
+		this.nburst = 0;
 	}
 
 	addPopup(x: number, y: number, frame: string, close: "close_horizontal" | "close_vertical") {
@@ -61,10 +67,10 @@ export class ComputerScene extends BaseScene {
 	}
 
 	double(){
-		if(this.numPopups < 20) {
+		if(this.numPopups < 25) {
 			this.spawnPopup();
 		}
-		if(this.numPopups < 20) {
+		if(this.numPopups < 25) {
 			this.spawnPopup();
 		}
 		return;
@@ -73,6 +79,7 @@ export class ComputerScene extends BaseScene {
 	notify(n: number){
 		if(n == 0) {
 			this.numPopups++;
+			this.totalPopups++;
 			return;
 		}
 		if(n == 1) {
@@ -145,7 +152,7 @@ export class ComputerScene extends BaseScene {
 	}
 
 	parsePopups(delta: number){
-		if(this.numPopups < this.maxPopups) {
+		if(this.totalPopups < this.maxPopups) {
 			if(this.timer > 0) {
 				this.timer -= delta;
 				if(this.timer <= 0) {
