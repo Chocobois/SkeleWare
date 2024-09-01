@@ -23,8 +23,10 @@ export class ComputerScene extends BaseScene {
 	private burst: number = 0;
 	private nburst: number = 0;
 	private acc: number = 0;
-	private maxPopups: number = 30;
+	private maxPopups: number = 20;
 	private antivirus: DoubleClickButton;
+	private totalPopups: number = 0;
+	private titleText: Phaser.GameObjects.Text;
 
 	private proceedTimer: number = 0;
 
@@ -61,10 +63,10 @@ export class ComputerScene extends BaseScene {
 	}
 
 	double(){
-		if(this.numPopups < 20) {
+		if(this.numPopups < 30) {
 			this.spawnPopup();
 		}
-		if(this.numPopups < 20) {
+		if(this.numPopups < 30) {
 			this.spawnPopup();
 		}
 		return;
@@ -73,6 +75,7 @@ export class ComputerScene extends BaseScene {
 	notify(n: number){
 		if(n == 0) {
 			this.numPopups++;
+			this.totalPopups++;
 			return;
 		}
 		if(n == 1) {
@@ -102,8 +105,7 @@ export class ComputerScene extends BaseScene {
 		this.input.on("pointerdown", this.onPointerDown, this);
 
 		//this.addPopup(500,200, "computer_ibone_horizontal", "close_horizontal");
-		this.burst = 7;
-		this.timer = 200;
+
 
 		this.antivirus = new DoubleClickButton(this,584,650,"antivirus");
 		this.add.existing(new PopupWindow(this,794,450,2));
@@ -123,6 +125,25 @@ export class ComputerScene extends BaseScene {
 		this.exp = new BasicEffect(this, "meme_explosion", this.W*0.505, this.H*0.838, 18, 50, false, 0, 15);
 		this.exp.sp.setDepth(6);
 		this.exp.hide();
+
+		this.numPopups = 0;
+		this.totalPopups = 0;
+		this.burst = 7;
+		this.timer = 200;
+		this.nburst = 0;
+		this.acc = 0;
+		this.maxPopups = 25;
+
+		this.titleText = this.addText({
+			x: this.CX,
+			y: 0,
+			size: 60,
+			text: "Close the popups and start the antivirus!",
+			color: "white",
+		});
+		this.titleText.setStroke("black", 8);
+		this.titleText.setDepth(1000);
+		this.titleText.setOrigin(0.5, -0.25);
 
 		this.nextButton = new NextButton(this);
 		this.nextButton.setVisible(false);
@@ -145,7 +166,7 @@ export class ComputerScene extends BaseScene {
 	}
 
 	parsePopups(delta: number){
-		if(this.numPopups < this.maxPopups) {
+		if(this.totalPopups < this.maxPopups) {
 			if(this.timer > 0) {
 				this.timer -= delta;
 				if(this.timer <= 0) {

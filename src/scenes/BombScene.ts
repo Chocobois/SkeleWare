@@ -25,7 +25,7 @@ export class BombScene extends BaseScene {
 	private index2: number;
 	private index3: number;
 	private stopLight: number; //how long before wrong lane changes
-	private timer: number = 45000;
+	private timer: number = 10000;
 	private secondTimer: number = 1000;
 	static LANES: number[] = [0.05, 0.2, 0.35];
 	private displayBars: Phaser.GameObjects.Graphics;
@@ -208,7 +208,7 @@ export class BombScene extends BaseScene {
 		{	
 			this.timer = 99999;
 		} else {
-			this.timer = 45000;
+			this.timer = 10000;
 		}
 
 		if(this.hasSeenCinematic)
