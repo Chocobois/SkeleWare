@@ -18,22 +18,22 @@ const dialogue: Dialogue[] = [
 	{
 		sprite: "court_skeletourney_objection_2",
 		name: "Skeletourney",
-		text: "By losing, we demonstrated mastery of the game! A deliberate defeat is a true victory, your honor.",
+		text: "By losing, we demonstrated mastery of the\ngame! A deliberate defeat is a true victory,\nyour honor.",
 	},
 	{
 		sprite: "court_skelecutor_idle",
 		name: "Skelecutor",
-		text: "Absurd! A loss is a loss, no matter the intent. Purposeful failure is still failure.",
+		text: "Absurd! A loss is a loss, no matter the intent.\nPurposeful failure is still failure.",
 	},
 	{
 		sprite: "court_skelecutor_objection_2",
 		name: "Skelecutor",
-		text: "Winning requires more than intent. You can’t claim victory with the bones of a loss.",
+		text: "Winning requires more than intent. You can't\nclaim victory with the bones of a loss.",
 	},
 	{
-		sprite: "court_skeletourney_idle",
+		sprite: "court_skeletourney_objection_1",
 		name: "Skeletourney",
-		text: "Yet, in losing on purpose, did we not achieve a higher strategy? Intent redefines victory!",
+		text: "Yet, in losing on purpose, did we not achieve a\nhigher strategy? Intent redefines victory!",
 	},
 	{
 		text: "objection",
@@ -41,12 +41,12 @@ const dialogue: Dialogue[] = [
 	{
 		sprite: "court_skelecutor_objection_2",
 		name: "Skelecutor",
-		text: "Strategy or not, results speak louder than rattles. Losing is a brittle defense!",
+		text: "Strategy or not, results speak louder than\nrattles. Losing is a brittle defense!",
 	},
 	{
 		sprite: "court_skelecutor_idle",
 		name: "Skelecutor",
-		text: "You can't turn defeat into victory with mere boneheaded philosophy.",
+		text: "You can't turn defeat into victory with mere\nboneheaded philosophy.",
 	},
 	{
 		text: "objection",
@@ -54,10 +54,10 @@ const dialogue: Dialogue[] = [
 	{
 		sprite: "court_skeletourney_objection_2",
 		name: "Skeletourney",
-		text: "Our bone of contention isn’t just the score, but the intent behind it!",
+		text: "Our bone of contention isn't just the score,\nbut the intent behind it!",
 	},
 	{
-		sprite: "court_skelecutor_idle",
+		sprite: "court_skelecutor_objection_1",
 		name: "Skelecutor",
 		text: "Intent doesn't score points, only runs do!",
 	},
@@ -67,9 +67,10 @@ const dialogue: Dialogue[] = [
 	{
 		sprite: "court_skeletourney_objection_2",
 		name: "Skeletourney",
-		text: "Intent is the marrow of victory! The bones of strategy outlast the flesh of mere outcomes!",
+		text: "Intent is the marrow of victory! The bones of\nstrategy outlast the flesh of mere outcomes!",
 	},
 	{
+		name: "explosion",
 		text: "objection",
 	},
 ];
@@ -98,7 +99,11 @@ export class CourtScene extends BaseScene {
 		this.cameras.main.setBackgroundColor(0x67e8f9);
 
 		this.background = this.add.image(this.CX, this.CY, "court_background");
-		this.skeleton = this.add.image(this.CX, this.CY, "court_skeletourney_objection_2");
+		this.skeleton = this.add.image(
+			this.CX,
+			this.CY,
+			"court_skeletourney_objection_2"
+		);
 		this.foreground = this.add.image(this.CX, this.CY, "court_foreground");
 
 		this.textBox = this.add.container();
@@ -227,6 +232,18 @@ export class CourtScene extends BaseScene {
 					this.continue();
 				},
 			});
+
+			if (name == "explosion") {
+				this.black.setVisible(true);
+				this.tweens.add({
+					targets: this.black,
+					duration: 500,
+					alpha: 1,
+					onComplete: () => {
+						this.sound.play("meme_explosion_sound");
+					},
+				});
+			}
 		} else if (text == "fade") {
 			this.tweens.add({
 				targets: this.black,
@@ -241,13 +258,34 @@ export class CourtScene extends BaseScene {
 			this.textBox.setVisible(true);
 			this.text.setText("");
 
+			// Add spaces for better pacing
+			text = text
+				.replaceAll(",", "," + " ".repeat(5))
+				.replaceAll(".", "." + " ".repeat(10))
+				.replaceAll("!", "!" + " ".repeat(10))
+				.replaceAll("?", "?" + " ".repeat(10))
+				.trim();
+
+			let prevIndex = -1;
+			let timer = 0;
+
 			this.tweens.addCounter({
 				from: 0,
 				to: text.length,
 				delay: 300,
-				duration: 15 * text.length,
+				duration: 20 * text.length,
 				onUpdate: (tween, target, key, current) => {
-					this.text.setText(text.substring(0, current));
+					let index = Math.floor(current);
+					if (index == prevIndex) return;
+					prevIndex = index;
+
+					this.text.setText(text.substring(0, index + 1).replace(/  +/g, " "));
+
+					if (timer <= 0 && this.isLetter(text.charAt(index))) {
+						this.sound.play("court_blip", { volume: 0.2 });
+						timer = 3;
+					}
+					timer -= 1;
 				},
 				onComplete: () => {
 					this.addEvent(300, () => {
@@ -256,5 +294,9 @@ export class CourtScene extends BaseScene {
 				},
 			});
 		}
+	}
+
+	isLetter(c: string) {
+		return c.toLowerCase() != c.toUpperCase();
 	}
 }

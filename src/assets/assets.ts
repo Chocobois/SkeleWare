@@ -228,6 +228,7 @@ const audios: Audio[] = [
 
 	// Court
 	sound("court/sfx-objection", "court_objection"),
+	sound("court/sfx-blipmale", "court_blip"),
 
 	// Dig scene
 
