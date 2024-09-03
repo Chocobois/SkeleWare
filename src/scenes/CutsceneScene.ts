@@ -45,8 +45,8 @@ const dialogue: { [key: string]: [string, string][] } = {
 		[red, "Nothing an iron can't fix."],
 	],
 	"6_baseball": [
+		[yellow, "Baseball baseball baseball!"],
 		[white, "*rattling noises*"],
-		[blue, "Baseball baseball baseball!"],
 		[red, "Last on the field is a numbskull."],
 		[blue, "Hope your swing isn't as dead as you look."],
 	],
