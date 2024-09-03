@@ -54,6 +54,16 @@ export class UIScene extends BaseScene {
 		this.audioButton.add(this.audioImage);
 		this.audioButton.bindInteractive(this.audioImage);
 		this.audioButton.on("click", this.toggleAudio, this);
+
+		this.game.events.on(Phaser.Core.Events.BLUR, () => {
+			this.sound.mute = true;
+		});
+		this.game.events.on(Phaser.Core.Events.FOCUS, () => {
+			setTimeout(() => {
+				this.sound.mute = !this.audioEnabled;
+				this.audioImage.setFrame(this.audioEnabled ? 0 : 1);
+			}, 100);
+		});
 	}
 
 	update(time: number, delta: number) {
