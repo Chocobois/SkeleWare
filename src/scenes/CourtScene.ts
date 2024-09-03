@@ -217,7 +217,7 @@ export class CourtScene extends BaseScene {
 			this.textBox.setVisible(false);
 
 			this.flash(500, 0xffffff, 0.5);
-			this.sound.play("court_objection", { volume: 0.2 });
+			this.sound.play("court_objection", { volume: 0.25 });
 			this.objection.setVisible(true);
 			this.tweens.addCounter({
 				from: 0,
@@ -282,7 +282,7 @@ export class CourtScene extends BaseScene {
 					this.text.setText(text.substring(0, index + 1).replace(/  +/g, " "));
 
 					if (timer <= 0 && this.isLetter(text.charAt(index))) {
-						this.sound.play("court_blip", { volume: 0.2 });
+						this.sound.play("court_blip", { volume: 0.1 });
 						timer = 3;
 					}
 					timer -= 1;

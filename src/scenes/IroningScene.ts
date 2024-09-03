@@ -1,3 +1,4 @@
+import { Instructions } from "@/components/Instructions";
 import { BaseScrubScene } from "@/scenes/BaseScrubScene";
 
 export class IroningScene extends BaseScrubScene {
@@ -6,6 +7,7 @@ export class IroningScene extends BaseScrubScene {
 	private sparkles: Phaser.GameObjects.Image[];
 	private tool: Phaser.GameObjects.Image;
 	private text: Phaser.GameObjects.Text;
+	private instructions: Instructions;
 
 	private numberIroned: number;
 
@@ -42,15 +44,7 @@ export class IroningScene extends BaseScrubScene {
 		this.tool = this.add.image(1500, 600, "ironing_iron");
 		this.tool.setDepth(100);
 
-		this.text = this.addText({
-			x: this.CX,
-			y: 0,
-			size: 60,
-			text: "Iron the shirts!",
-			color: "black",
-		});
-		this.text.setOrigin(0.5, 0.0);
-		this.text.setDepth(1000);
+		this.instructions = new Instructions(this, "Iron the shirts");
 
 		/* Animation */
 
@@ -92,7 +86,8 @@ export class IroningScene extends BaseScrubScene {
 			alpha: { from: 1, to: 0 },
 		});
 
-		if (this.numberIroned >= 3) {
+		if (this.numberIroned >= 2) {
+			this.instructions.destroy();
 			this.addEvent(2000, () => {
 				this.startScene("CutsceneScene", {
 					textureKey: "6_baseball",

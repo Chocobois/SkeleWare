@@ -1,10 +1,11 @@
+import { Instructions } from "@/components/Instructions";
 import { BaseScrubScene } from "@/scenes/BaseScrubScene";
 
 export class DigScene extends BaseScrubScene {
 	private shovel: Phaser.GameObjects.Image;
 	private shoes: Phaser.GameObjects.Image[];
 	private sparkles: Phaser.GameObjects.Image[];
-	private text: Phaser.GameObjects.Text;
+	private instructions: Instructions;
 
 	constructor() {
 		super({ key: "DigScene" });
@@ -66,16 +67,7 @@ export class DigScene extends BaseScrubScene {
 			this.sparkles.push(sparkle);
 		});
 
-		this.text = this.addText({
-			x: this.CX,
-			y: 0,
-			size: 60,
-			text: "Dig for treasure!",
-			color: "white",
-		});
-		this.text.setStroke("black", 8);
-		this.text.setDepth(1000);
-		this.text.setOrigin(0.5, -0.25);
+		this.instructions = new Instructions(this, "Dig for treasure");
 	}
 
 	update(time: number, delta: number) {
@@ -127,6 +119,7 @@ export class DigScene extends BaseScrubScene {
 			});
 		});
 
+		this.instructions.destroy();
 		this.addEvent(2500, () => {
 			this.nextScene();
 		});

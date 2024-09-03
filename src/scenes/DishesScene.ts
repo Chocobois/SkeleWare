@@ -1,5 +1,6 @@
 import { BaseScrubScene } from "@/scenes/BaseScrubScene";
 import { UIScene } from "./UIScene";
+import { Instructions } from "@/components/Instructions";
 
 export class DishesScene extends BaseScrubScene {
 	private background: Phaser.GameObjects.Image;
@@ -8,6 +9,7 @@ export class DishesScene extends BaseScrubScene {
 	private sparkles: Phaser.GameObjects.Image[];
 	private sponge: Phaser.GameObjects.Image;
 	private text: Phaser.GameObjects.Text;
+	private instructions: Instructions;
 
 	private numberPolished: number;
 
@@ -47,15 +49,7 @@ export class DishesScene extends BaseScrubScene {
 		this.sponge.setOrigin(0.5);
 		this.sponge.setDepth(100);
 
-		this.text = this.addText({
-			x: this.CX,
-			y: 0,
-			size: 60,
-			text: "Do the dishes!",
-			color: "black",
-		});
-		this.text.setOrigin(0.5, 0.0);
-		this.text.setDepth(1000);
+		this.instructions = new Instructions(this, "Do the dishes");
 
 		/* Animation */
 
@@ -99,6 +93,7 @@ export class DishesScene extends BaseScrubScene {
 
 		if (this.numberPolished >= 3) {
 			(this.scene.get("UIScene") as UIScene).playMusic("tense");
+			this.instructions.destroy();
 
 			this.addEvent(2000, () => {
 				this.startScene("CutsceneScene", {

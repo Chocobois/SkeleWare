@@ -1,3 +1,4 @@
+import { Instructions } from "@/components/Instructions";
 import { BaseScrubScene } from "@/scenes/BaseScrubScene";
 
 export class PolishScene extends BaseScrubScene {
@@ -5,7 +6,7 @@ export class PolishScene extends BaseScrubScene {
 	private shoe: Phaser.GameObjects.Image;
 	private sparkles: Phaser.GameObjects.Image[];
 	private tool: Phaser.GameObjects.Image;
-	private text: Phaser.GameObjects.Text;
+	private instructions: Instructions;
 
 	private numberPolished: number;
 
@@ -43,16 +44,6 @@ export class PolishScene extends BaseScrubScene {
 		this.tool.setOrigin(0.8, 0.7);
 		this.tool.setDepth(100);
 
-		this.text = this.addText({
-			x: this.CX,
-			y: 0,
-			size: 60,
-			text: "Brush your loot!",
-			color: "black",
-		});
-		this.text.setOrigin(0.5, 0.0);
-		this.text.setDepth(1000);
-
 		/* Animation */
 
 		this.shoe.y += 1000;
@@ -63,6 +54,8 @@ export class PolishScene extends BaseScrubScene {
 			ease: "Cubic.Out",
 			y: "-=1000",
 		});
+
+		this.instructions = new Instructions(this, "Brush the loot");
 	}
 
 	update(time: number, delta: number) {
@@ -95,6 +88,7 @@ export class PolishScene extends BaseScrubScene {
 		});
 
 		if (this.numberPolished >= 2) {
+			this.instructions.destroy();
 			this.addEvent(2000, () => {
 				this.startScene("CutsceneScene", {
 					textureKey: "4_shoes",

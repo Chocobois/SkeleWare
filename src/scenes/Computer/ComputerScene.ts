@@ -5,6 +5,7 @@ import { Button } from "@/components/elements/Button";
 import { PopupWindow } from "@/components/elements/PopupWindow";
 import { DoubleClickButton } from "@/components/DoubleClickButton";
 import { BasicEffect } from "@/components/elements/BasicEffect";
+import { Instructions } from "@/components/Instructions";
 
 export class ComputerScene extends BaseScene {
 	private background: Phaser.GameObjects.Image;
@@ -26,7 +27,7 @@ export class ComputerScene extends BaseScene {
 	private maxPopups: number = 20;
 	private antivirus: DoubleClickButton;
 	private totalPopups: number = 0;
-	private titleText: Phaser.GameObjects.Text;
+	private instructions: Instructions;
 
 	private proceedTimer: number = 0;
 
@@ -87,6 +88,7 @@ export class ComputerScene extends BaseScene {
 			return;
 		}
 		if(n == 4) {
+			this.instructions.destroy();
 			this.debugUI.setVisible(true);
 			this.debugBar.setVisible(true);
 			this.proceedTimer = 9500;
@@ -134,16 +136,7 @@ export class ComputerScene extends BaseScene {
 		this.acc = 0;
 		this.maxPopups = 25;
 
-		this.titleText = this.addText({
-			x: this.CX,
-			y: 0,
-			size: 60,
-			text: "Close the popups and start the antivirus!",
-			color: "white",
-		});
-		this.titleText.setStroke("black", 8);
-		this.titleText.setDepth(1000);
-		this.titleText.setOrigin(0.5, -0.25);
+		this.instructions = new Instructions(this, "Start the antivirus");
 
 		this.nextButton = new NextButton(this);
 		this.nextButton.setVisible(false);
