@@ -59,14 +59,18 @@ export class TitleScene extends BaseScene {
 		this.containToScreen(this.skeleton3);
 		this.containToScreen(this.skeleton4);
 
+		this.skeleton1.setVisible(false);
+		this.skeleton2.setVisible(false);
+		this.skeleton3.setVisible(false);
+		this.skeleton4.setVisible(false);
 		this.skeleton1.setAlpha(0);
-		this.skeleton2.setAlpha(-1);
-		this.skeleton3.setAlpha(-2);
-		this.skeleton4.setAlpha(-3);
-		this.skeleton1.x -= 1 * 200;
-		this.skeleton2.x += 2 * 200;
-		this.skeleton3.x -= 3 * 200;
-		this.skeleton4.x += 4 * 200;
+		this.skeleton2.setAlpha(0);
+		this.skeleton3.setAlpha(0);
+		this.skeleton4.setAlpha(0);
+		this.skeleton1.x -= 200;
+		this.skeleton2.x += 200;
+		this.skeleton3.x -= 200;
+		this.skeleton4.x += 200;
 
 		this.title = this.add.image(400, 200, "title_title");
 		this.title.setVisible(false);
@@ -159,29 +163,27 @@ export class TitleScene extends BaseScene {
 
 	update(time: number, delta: number) {
 		if (this.title.visible) {
-			// this.title.y += 0.02 * (this.CY - this.title.y);
-			// this.foreground.y += 0.025 * (this.CY - this.foreground.y);
-			this.skeleton1.x += 0.02 * (this.CX - this.skeleton1.x);
-			this.skeleton2.x += 0.02 * (this.CX - this.skeleton2.x);
-			this.skeleton3.x += 0.02 * (this.CX - this.skeleton3.x);
-			this.skeleton4.x += 0.02 * (this.CX - this.skeleton4.x);
-
-			this.skeleton1.alpha += 0.02 * (1 - this.skeleton1.alpha);
-			this.skeleton2.alpha += 0.02 * (1 - this.skeleton2.alpha);
-			this.skeleton3.alpha += 0.02 * (1 - this.skeleton3.alpha);
-			this.skeleton4.alpha += 0.02 * (1 - this.skeleton4.alpha);
-			this.title.alpha += 0.02 * (1 - this.title.alpha);
-
-			// this.title.alpha += 0.03 * (1 - this.title.alpha);
-			// this.skeleton1.scaleX = Math.sin((3 * time) / 1000);
-			// this.skeleton2.scaleX = Math.sin((3 * time) / 1000);
-			// this.skeleton3.scaleX = Math.sin((3 * time) / 1000);
-			// this.skeleton4.scaleX = Math.sin((3 * time) / 1000);
+			if (this.skeleton1.visible) {
+				this.skeleton1.x += 0.04 * (this.CX - this.skeleton1.x);
+				this.skeleton1.alpha += 0.04 * (1 - this.skeleton1.alpha);
+			}
+			if (this.skeleton2.visible) {
+				this.skeleton2.x += 0.04 * (this.CX - this.skeleton2.x);
+				this.skeleton2.alpha += 0.04 * (1 - this.skeleton2.alpha);
+			}
+			if (this.skeleton3.visible) {
+				this.skeleton3.x += 0.04 * (this.CX - this.skeleton3.x);
+				this.skeleton3.alpha += 0.04 * (1 - this.skeleton3.alpha);
+			}
+			if (this.skeleton4.visible) {
+				this.skeleton4.x += 0.04 * (this.CX - this.skeleton4.x);
+				this.skeleton4.alpha += 0.04 * (1 - this.skeleton4.alpha);
+			}
 
 			this.title.alpha +=
-				0.02 * ((this.title.visible ? 1 : 0) - this.title.alpha);
+				0.04 * ((this.title.visible ? 1 : 0) - this.title.alpha);
 			this.subtitle.alpha +=
-				0.02 * ((this.subtitle.visible ? 1 : 0) - this.subtitle.alpha);
+				0.04 * ((this.subtitle.visible ? 1 : 0) - this.subtitle.alpha);
 
 			if (this.credits.visible) {
 				this.credits.alpha += 0.02 * (1 - this.credits.alpha);
@@ -206,10 +208,10 @@ export class TitleScene extends BaseScene {
 		if (!this.title.visible) {
 			this.onBar(1);
 		} else if (!this.subtitle.visible) {
-			this.title.setVisible(true);
-			this.title.setAlpha(1);
-			this.subtitle.setVisible(true);
-			this.subtitle.setAlpha(1);
+			// this.title.setVisible(true);
+			// this.title.setAlpha(1);
+			// this.subtitle.setVisible(true);
+			// this.subtitle.setAlpha(1);
 		} else if (!this.isStarting) {
 			this.sound.play("t_rustle", { volume: 0.3 });
 			// this.sound.play("m_slice", { volume: 0.3 });
@@ -238,10 +240,12 @@ export class TitleScene extends BaseScene {
 	}
 
 	onBar(bar: number) {
-		if (bar >= 2) {
-			this.title.setVisible(true);
-		}
-		if (bar >= 4) {
+		if (bar >= 0) this.skeleton1.setVisible(true);
+		if (bar >= 2) this.skeleton2.setVisible(true);
+		if (bar >= 4) this.skeleton3.setVisible(true);
+		if (bar >= 6) this.skeleton4.setVisible(true);
+
+		if (bar >= 8) {
 			this.subtitle.setVisible(true);
 			this.credits.setVisible(true);
 		}
