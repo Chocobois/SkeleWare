@@ -213,9 +213,9 @@ export class BombScene extends BaseScene {
 
 		if(this.hasSeenCinematic)
 		{	
-			this.maxStopLight = 8000;
+			this.maxStopLight = 3000;
 		} else {
-			this.maxStopLight = 2000;
+			this.maxStopLight = 1000;
 		}
 		this.stopLight = this.maxStopLight;
 
@@ -298,8 +298,6 @@ export class BombScene extends BaseScene {
 		if(this.hasSeenCinematic)
 		{	
 			this.initFadeTimer = 3000;
-		} else {
-			this.maxStopLight = 5000;
 		}
 	}
 
@@ -770,10 +768,7 @@ export class BombScene extends BaseScene {
 
 	changeLane()
 	{
-		let lastLane = this.correctLane;
-		do {
-			this.correctLane = Math.round(Math.random()*2);
-		} while (this.correctLane == lastLane);
+		this.correctLane = (this.correctLane + 1) % 3;
 		this.stopLight = this.maxStopLight;
 	}
 
