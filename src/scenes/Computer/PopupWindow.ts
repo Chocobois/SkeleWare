@@ -34,13 +34,10 @@ export class PopupWindow extends Phaser.GameObjects.Container {
 
     private sounds: string[] = ["err1","err2","err3","err4","err5","err6","err7","err8"];
 
-    constructor(scene: BaseScene, x: number, y: number, ix: number = -1) {
+    constructor(scene: BaseScene, x: number, y: number, index: number) {
         super(scene,x,y);
         this.scene = scene;
-        let index = Math.trunc(Math.random()*7.999);
-        if((ix >= 0) && (ix <= 7)){
-            index = ix;
-        }
+
         let ref = this.types[index];
         this.window = new Phaser.GameObjects.Image(this.scene,-1*ref.w,0,ref.spr);
         this.window.setOrigin(0,0);

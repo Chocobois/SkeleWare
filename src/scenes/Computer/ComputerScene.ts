@@ -21,7 +21,7 @@ export class ComputerScene extends BaseScene {
 	private burst: number = 0;
 	private nburst: number = 0;
 	private acc: number = 0;
-	private maxPopups: number = 20;
+	private maxPopups: number = 15;
 	private antivirus: DoubleClickButton;
 	private totalPopups: number = 0;
 	private instructions: Instructions;
@@ -32,11 +32,73 @@ export class ComputerScene extends BaseScene {
 		super({ key: "ComputerScene" });
 	}
 
-	spawnPopup(){
+	create(): void {
+		this.fade(false, 200, 0x000000);
+		this.cameras.main.setBackgroundColor(0x67e8f9);
+
+		this.background = this.add.image(this.CX, this.CY, "computer_background");
+		this.overlay = this.add.image(this.CX, this.CY, "computer_overlay");
+		this.overlay.setDepth(5);
+		this.input.on("pointerdown", this.onPointerDown, this);
+
+
+		this.antivirus = new DoubleClickButton(this,584,650,"antivirus");
+		this.add.existing(new PopupWindow(this,794,450,2));
+		this.addEvent(500, () => {
+			this.spawnPopup(7);
+		});
+
+		this.debugUI = new Phaser.GameObjects.Image(this,986,496,"debugwindow");
+		this.debugUI.setOrigin(0.5,0.5);
+		this.debugUI.setDepth(3);
+		this.debugUI.setVisible(false);
+		this.add.existing(this.debugUI);
+		
+		this.debugBar = new Phaser.GameObjects.Sprite(this,986,386,"progressbar");
+		this.debugBar.setOrigin(0.5,0.5);
+		this.debugBar.setDepth(4);
+		this.debugBar.setVisible(false);
+		this.add.existing(this.debugBar);
+
+		this.exp = new BasicEffect(this, "meme_explosion", this.W*0.505, this.H*0.838, 18, 50, false, 0, 15);
+		this.exp.sp.setDepth(6);
+		this.exp.hide();
+
+		this.numPopups = 0;
+		this.totalPopups = 0;
+		this.burst = 7;
+		this.timer = 200;
+		this.nburst = 0;
+		this.acc = 0;
+
+		this.instructions = new Instructions(this, "Start the antivirus");
+
+		this.nextButton = new NextButton(this);
+		this.nextButton.setVisible(false);
+		this.nextButton.on("click", () => {
+			this.startScene("CutsceneScene", {
+				textureKey: "5_package",
+				nextScene: "IroningScene",
+			});
+		});
+	}
+
+	update(time: number, delta: number) {
+		this.nextButton.update(time, delta);
+
+		if(this.proceedTimer > 0) {
+			this.parseProgress(delta);
+		} else {
+			this.parsePopups(delta);
+		}
+	}
+
+	spawnPopup(index?: number) {
 		if((this.proceedTimer > 0) || (this.pState > 0)){
 			return;
 		}
-		let popup = new PopupWindow(this, 0, 0);
+		index = index ?? Phaser.Math.RND.between(0, 6); // Skip 7
+		let popup = new PopupWindow(this, 0, 0, index);
 		popup.setRandomPosition(
 			410 + popup.width,
 			160,
@@ -64,6 +126,9 @@ export class ComputerScene extends BaseScene {
 		}
 		if(n == 1) {
 			this.numPopups--;
+			if (Math.random() < 0.2) {
+				this.spawnPopup();
+			}
 			return;
 		}
 		if(n == 2) {
@@ -80,65 +145,6 @@ export class ComputerScene extends BaseScene {
 
 	}
 
-	create(): void {
-		this.fade(false, 200, 0x000000);
-		this.cameras.main.setBackgroundColor(0x67e8f9);
-
-		this.background = this.add.image(this.CX, this.CY, "computer_background");
-		this.overlay = this.add.image(this.CX, this.CY, "computer_overlay");
-		this.overlay.setDepth(5);
-		this.input.on("pointerdown", this.onPointerDown, this);
-
-
-		this.antivirus = new DoubleClickButton(this,584,650,"antivirus");
-		this.add.existing(new PopupWindow(this,794,450,2));
-
-		this.debugUI = new Phaser.GameObjects.Image(this,986,496,"debugwindow");
-		this.debugUI.setOrigin(0.5,0.5);
-		this.debugUI.setDepth(3);
-		this.debugUI.setVisible(false);
-		this.add.existing(this.debugUI);
-		
-		this.debugBar = new Phaser.GameObjects.Sprite(this,986,386,"progressbar");
-		this.debugBar.setOrigin(0.5,0.5);
-		this.debugBar.setDepth(4);
-		this.debugBar.setVisible(false);
-		this.add.existing(this.debugBar);
-
-		this.exp = new BasicEffect(this, "meme_explosion", this.W*0.505, this.H*0.838, 18, 50, false, 0, 15);
-		this.exp.sp.setDepth(6);
-		this.exp.hide();
-
-		this.numPopups = 0;
-		this.totalPopups = 0;
-		this.burst = 7;
-		this.timer = 200;
-		this.nburst = 0;
-		this.acc = 0;
-		this.maxPopups = 25;
-
-		this.instructions = new Instructions(this, "Start the antivirus");
-
-		this.nextButton = new NextButton(this);
-		this.nextButton.setVisible(false);
-		this.nextButton.on("click", () => {
-			this.startScene("CutsceneScene", {
-				textureKey: "5_package",
-				nextScene: "IroningScene",
-			});
-		});
-	}
-
-	update(time: number, delta: number) {
-		this.nextButton.update(time, delta);
-
-		if(this.proceedTimer > 0) {
-			this.parseProgress(delta);
-		} else {
-			this.parsePopups(delta);
-		}
-	}
-
 	parsePopups(delta: number){
 		if(this.totalPopups < this.maxPopups) {
 			if(this.timer > 0) {
@@ -148,12 +154,12 @@ export class ComputerScene extends BaseScene {
 					this.spawnPopup();
 					if(this.burst > 0){
 						this.burst--;
-						this.timer = 125+Math.trunc(Math.random()*175);
+						this.timer = Phaser.Math.RND.between(125, 300);
 					} else if (this.burst <= 0) {
 						if((Math.random()*1) < this.nburst) {
 							this.acc = 0;
 							this.nburst = 0;
-							this.burst = 3 + Math.trunc(Math.random()*3.999);
+							this.burst = Phaser.Math.RND.between(3, 6);
 						} else {
 							this.acc++;
 							this.nburst += 0.1;
@@ -161,7 +167,7 @@ export class ComputerScene extends BaseScene {
 								this.nburst = 1;
 							}
 						}
-						this.timer = 800 + Math.trunc(Math.random()*600);
+						this.timer = Phaser.Math.RND.between(800, 1400);
 					}
 				}
 			}
