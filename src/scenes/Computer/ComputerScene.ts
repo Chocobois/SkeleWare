@@ -1,8 +1,7 @@
 import { BaseScene } from "../BaseScene";
 import { NextButton } from "@/components/NextButton";
-import { ComputerPopup } from "./Popup";
 import { Button } from "@/components/elements/Button";
-import { PopupWindow } from "@/components/elements/PopupWindow";
+import { PopupWindow } from "./PopupWindow";
 import { DoubleClickButton } from "@/components/DoubleClickButton";
 import { BasicEffect } from "@/components/elements/BasicEffect";
 import { Instructions } from "@/components/Instructions";
@@ -12,13 +11,11 @@ export class ComputerScene extends BaseScene {
 	private overlay: Phaser.GameObjects.Image;
 	private nextButton: NextButton;
 
-	private popups: ComputerPopup<string[]>[];
 	private exp: BasicEffect;
 
 	private pState: number = 0;
 	private debugUI: Phaser.GameObjects.Image;
 	private debugBar: Phaser.GameObjects.Sprite;
-	private spawnedExp: boolean = false;
 	private numPopups: number = 0;
 	private timer: number = 0;
 	private burst: number = 0;
@@ -35,32 +32,18 @@ export class ComputerScene extends BaseScene {
 		super({ key: "ComputerScene" });
 	}
 
-	addPopup(x: number, y: number, frame: string, close: "close_horizontal" | "close_vertical") {
-		const popup = this.add.sprite(0, 0, frame).setOrigin(0,0);
-		const button = new Button(this, 0, 0);
-		const closeSprite = this.add.sprite(0,0, close).setOrigin(1,0).setX(popup.width - 20).setY(15);
-		button.add(closeSprite);
-		button.bindInteractive(closeSprite);
-
-		const container = this.add.container(x,y,[
-			popup, 
-			button
-		]);
-
-		button.on("click", () => {
-			container.setVisible(false);
-		})
-
-		return [container, button];
-	}
-
 	spawnPopup(){
 		if((this.proceedTimer > 0) || (this.pState > 0)){
 			return;
 		}
-		let nnx = 456+Math.trunc(Math.random()*1068);
-		let nny = 150+Math.trunc(Math.random()*658);
-		this.add.existing(new PopupWindow(this,nnx,nny));
+		let popup = new PopupWindow(this, 0, 0);
+		popup.setRandomPosition(
+			410 + popup.width,
+			160,
+			1520 - 410 - popup.width,
+			770 - 160 - popup.height);
+		popup.on("notify", this.notify, this);
+		this.add.existing(popup);
 	}
 
 	double(){
@@ -105,8 +88,6 @@ export class ComputerScene extends BaseScene {
 		this.overlay = this.add.image(this.CX, this.CY, "computer_overlay");
 		this.overlay.setDepth(5);
 		this.input.on("pointerdown", this.onPointerDown, this);
-
-		//this.addPopup(500,200, "computer_ibone_horizontal", "close_horizontal");
 
 
 		this.antivirus = new DoubleClickButton(this,584,650,"antivirus");
@@ -219,7 +200,6 @@ export class ComputerScene extends BaseScene {
 	}
 
 	onPointerDown(pointer: Phaser.Input.Pointer) {
-		// console.count("click bwah")
 		this.sound.play("computer_click", { volume: 1 });
 	}
 }

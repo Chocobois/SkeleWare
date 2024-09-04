@@ -75,4 +75,14 @@ export class TextButton extends Button {
             this.sprite.setFrame(0);
         }
     }
+    onOut(
+        pointer: Phaser.Input.Pointer,
+        event: Phaser.Types.Input.EventData
+    ) {
+        if (!this.disabled) {
+            super.onOut(pointer, event);
+            this.tdisplay.setColor("white");
+            this.sprite.setFrame(0);
+        }
+    }
 }

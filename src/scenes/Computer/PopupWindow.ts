@@ -1,5 +1,5 @@
+import { TextButton } from "@/components/TextButton";
 import { BaseScene } from "@/scenes/BaseScene";
-import { TextButton } from "../TextButton";
 
 //x button at -12,-12
 
@@ -44,21 +44,25 @@ export class PopupWindow extends Phaser.GameObjects.Container {
         let ref = this.types[index];
         this.window = new Phaser.GameObjects.Image(this.scene,-1*ref.w,0,ref.spr);
         this.window.setOrigin(0,0);
-        this.window.setInteractive();
         //this.window.setOrigin((-1*ref.w),0);
         this.add(this.window);
+
+        this.width = this.window.width;
+        this.height = this.window.height;
+
         this.xbutton = new TextButton(this.scene, -12, 12, "", "xbutton", 10);
         this.xbutton.center();
         this.add(this.xbutton);
         this.xbutton.on("click", () => {
 			this.close();
 		});
+
         if(ref.nbx >= 1) {
             this.okbutton = new TextButton(this.scene, ref.hx[0], ref.hy[0], "", ref.hitspr[0], 10);
             this.okbutton.center();
             this.add(this.okbutton);
             this.okbutton.on("click", () => {
-                this.multiply();
+                this.close();
             });
         }
         if(ref.nbx >= 2) {
@@ -66,7 +70,7 @@ export class PopupWindow extends Phaser.GameObjects.Container {
             this.ok2.center();
             this.add(this.ok2);
             this.ok2.on("click", () => {
-                this.multiply();
+                this.close();
             });
         }
         if(ref.nbx >= 3) {
@@ -74,12 +78,27 @@ export class PopupWindow extends Phaser.GameObjects.Container {
             this.ok3.center();
             this.add(this.ok3);
             this.ok3.on("click", () => {
-                this.multiply();
+                this.close();
             });
         }
-        //this.scene.add.existing(this);
         this.scene.notify(0);
         this.scene.sound.play(this.sounds[Math.trunc(Math.random()*7.999)]);
+
+        // Make the window draggable
+        let dragOffset = {x: 0, y: 0};
+        this.window.setInteractive({ useHandCursor: true, draggable: true })
+            .on("dragstart", (pointer: Phaser.Input.Pointer) => {
+                dragOffset.x = this.x - pointer.x;
+                dragOffset.y = this.y - pointer.y;
+                this.setDepth(1);
+            }, this)
+            .on("drag", (pointer: Phaser.Input.Pointer) => {
+                this.x = pointer.x + dragOffset.x;
+                this.y = pointer.y + dragOffset.y;
+            }, this)
+            .on("dragend", (pointer: Phaser.Input.Pointer) => {
+                this.setDepth(0);
+            }, this);
     }
 
     multiply(){
